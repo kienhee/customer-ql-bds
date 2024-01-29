@@ -1,4 +1,5 @@
 @extends('admin.layout.index')
+@section('title', 'Bảng điều khiển')
 @section('content')
     @can('dashboard')
         <div class="row">
@@ -156,7 +157,7 @@
                         </div>
                     </div>
                     <!-- </div>
-                <div class="row"> -->
+                        <div class="row"> -->
                     <div class="col-12 mb-4">
                         <div class="card">
                             <div class="card-body">

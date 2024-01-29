@@ -673,5 +673,48 @@ if (typeof $ !== 'undefined') {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
- 
+ var editor_config = {
+    path_absolute: "/",
+    relative_urls: false,
+    selector: "textarea.my-editor",
+    codesample_global_prismjs: true,
+    plugins:
+        " fullscreen preview anchor autolink charmap  emoticons image link lists media searchreplace table visualblocks wordcount",
+    toolbar:
+        " fullscreen preview undo redo image media | blocks  fontsize | bold italic underline strikethrough | link  table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
+    file_picker_callback: function (callback, value, meta) {
+        var x =
+            window.innerWidth ||
+            document.documentElement.clientWidth ||
+            document.getElementsByTagName("body")[0].clientWidth;
+        var y =
+            window.innerHeight ||
+            document.documentElement.clientHeight ||
+            document.getElementsByTagName("body")[0].clientHeight;
+
+        var cmsURL =
+            editor_config.path_absolute +
+            "laravel-filemanager?editor=" +
+            meta.fieldname;
+        if (meta.filetype == "image") {
+            cmsURL = cmsURL ;
+        } else {
+            cmsURL = cmsURL ;
+        }
+
+        tinyMCE.activeEditor.windowManager.openUrl({
+            url: cmsURL,
+            title: "Filemanager",
+            width: x * 0.8,
+            height: y * 0.8,
+            resizable: "yes",
+            close_previous: "no",
+            onMessage: (api, message) => {
+                callback(message.content);
+            },
+        });
+    },
+};
+
+tinymce.init(editor_config);
 }

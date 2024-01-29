@@ -3,14 +3,17 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\DropzoneController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\District;
 use App\Models\Group;
+use App\Models\Post;
 use App\Models\Province;
 use App\Models\Region;
 use App\Models\User;
@@ -42,6 +45,17 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
         Route::post('/soft-delete/{id}', [UserController::class, 'softDelete'])->name('soft-delete')->can('delete', User::class);
         Route::post('/restore/{id}', [UserController::class, 'restore'])->name('restore')->can('delete', User::class);
         Route::post('/force-delete/{id}', [UserController::class, 'forceDelete'])->name('force-delete')->can('delete', User::class);
+    });
+    Route::prefix('posts')->name('posts.')->middleware('can:posts')->group(function () {
+        Route::get('/', [PostController::class, 'index'])->name('index')->can('view', Post::class);
+        Route::get('/list', [PostController::class, 'list'])->name('list')->can('view', Post::class);
+        Route::get('/add', [PostController::class, 'add'])->name('add')->can('create', Post::class);
+        Route::post('/store', [PostController::class, 'store'])->name('store')->can('create', Post::class);
+        Route::get('/edit/{id}', [PostController::class, 'edit'])->name('edit')->can('update', Post::class);
+        Route::put('/update/{id}', [PostController::class, 'update'])->name('update')->can('update', Post::class);
+        Route::post('/soft-delete/{id}', [PostController::class, 'softDelete'])->name('soft-delete')->can('delete', Post::class);
+        Route::post('/restore/{id}', [PostController::class, 'restore'])->name('restore')->can('delete', Post::class);
+        Route::post('/force-delete/{id}', [PostController::class, 'forceDelete'])->name('force-delete')->can('delete', Post::class);
     });
     Route::prefix('regions')->name('regions.')->middleware('can:regions')->group(function () {
         Route::get('/', [RegionController::class, 'index'])->name('index')->can('view', Region::class);

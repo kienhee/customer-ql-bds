@@ -37,15 +37,15 @@
                 </div>
 
 
-          
+
                 <div class="col-md-6 mb-3">
-                    <label for="province_id" class="form-label">Miền: <span class="text-danger">*</span></label>
+                    <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
                     <select id="province_id"
                         class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                         data-allow-clear="true" name="province_id">
                         @foreach (provices() as $provice)
                             <option value="{{ $provice->id }}"
-                                @if ((old('provice_id') == $provice->id) | ($district->province_id == $provice->id)) @selected(true) @endif>
+                                @if ((old('province_id') == $provice->id) | ($district->province_id == $provice->id)) @selected(true) @endif>
                                 {{ $provice->name }}</option>
                         @endforeach
                     </select>

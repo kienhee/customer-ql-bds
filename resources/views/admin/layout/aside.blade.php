@@ -16,6 +16,13 @@
             'children' => [],
         ],
         [
+            'name' => 'Quản lý bài viết',
+            'classIcon' => ' bx bx-news ',
+            'route' => 'dashboard.posts.index',
+            'can' => 'posts',
+            'children' => [],
+        ],
+        [
             'name' => 'Người dùng',
             'classIcon' => ' bx bx-user',
             'route' => 'dashboard.users.index',

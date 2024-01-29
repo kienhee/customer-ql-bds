@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Direction;
+use App\Models\District;
 use App\Models\Group;
 use App\Models\Province;
 use App\Models\Region;
@@ -20,6 +22,14 @@ function regions()
 function provices()
 {
   return Province::orderBy('created_at', 'desc')->get();
+}
+function districts()
+{
+  return District::orderBy('created_at', 'desc')->get();
+}
+function directions()
+{
+  return Direction::orderBy('created_at', 'desc')->get();
 }
 
 function isRole($dataArr, $module, $role = 'view')

@@ -67,8 +67,8 @@ return [
             'startup_view' => 'grid',
             'max_size'     => 50000, // size in KB
             'thumb' => true,
-            'thumb_width' => 80,
-            'thumb_height' => 80,
+            'thumb_width' => 200,
+            'thumb_height' => 200,
             'valid_mime'   => [
                 'image/jpeg',
                 'image/pjpeg',
