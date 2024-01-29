@@ -35,9 +35,12 @@
                 </div>
 
 
-                <div class="mb-3 col-md-6">
-                    <label class="form-label" for="province_id">Tỉnh thành: <span class="text-danger">*</span></label>
-                    <select id="province_id" class="form-select @error('province_id') is-invalid @enderror" name="province_id">
+
+                <div class="col-md-6 mb-3">
+                    <label for="province_id" class="form-label">Miền: <span class="text-danger">*</span></label>
+                    <select id="province_id"
+                        class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
+                        data-allow-clear="true" name="province_id">
                         @foreach (provices() as $provice)
                             <option value="{{ $provice->id }}"
                                 @if (old('provice_id') == $provice->id) @selected(true) @endif>
@@ -48,7 +51,6 @@
                         <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                     @enderror
                 </div>
-
             </div>
 
             <div class="d-flex justify-content-end">

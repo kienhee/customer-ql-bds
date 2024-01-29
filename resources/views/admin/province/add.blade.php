@@ -33,11 +33,11 @@
                         <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                     @enderror
                 </div>
-
-
-                <div class="mb-3 col-md-6">
-                    <label class="form-label" for="region_id">Miền: <span class="text-danger">*</span></label>
-                    <select id="region_id" class="form-select @error('region_id') is-invalid @enderror" name="region_id">
+                <div class="col-md-6 mb-3">
+                    <label for="region_id" class="form-label">Miền: <span class="text-danger">*</span></label>
+                    <select id="region_id"
+                        class="select2 form-select form-select-lg @error('region_id') is-invalid @enderror"
+                        data-allow-clear="true" name="region_id">
                         @foreach (regions() as $region)
                             <option value="{{ $region->id }}"
                                 @if (old('region_id') == $region->id) @selected(true) @endif>
@@ -48,7 +48,6 @@
                         <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                     @enderror
                 </div>
-
             </div>
 
             <div class="d-flex justify-content-end">

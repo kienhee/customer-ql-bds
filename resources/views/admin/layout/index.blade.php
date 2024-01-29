@@ -54,6 +54,9 @@
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/select2/select2.css" />
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/animate-css/animate.css" />
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/sweetalert2/sweetalert2.css" />
+
+    <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/tagify/tagify.css" />
+    <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
   {{-- Page CSS --}}
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/pages/page-auth.css" />
     <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/pages/page-profile.css" />
@@ -155,14 +158,18 @@
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/cleavejs/cleave-phone.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
 
-
+    <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/tagify/tagify.js"></script>
+    <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+    <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/bloodhound/bloodhound.js"></script>
   {{-- Main JS --}}
   <script src="{{ asset('admin-frontend') }}/assets/js/main.js"></script>
 
   {{-- Page JS --}}
   <script src="{{ asset('admin-frontend') }}/assets/js/dashboards-analytics.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/js/pages-auth.js"></script>
- 
+ <script src="{{ asset('admin-frontend') }}/assets/js/forms-selects.js"></script>
+    <script src="{{ asset('admin-frontend') }}/assets/js/forms-tagify.js"></script>
+    <script src="{{ asset('admin-frontend') }}/assets/js/forms-typeahead.js"></script>
   {{-- import here --}}
   @yield('script')
 
