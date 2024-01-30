@@ -80,50 +80,52 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
-        $validate = $request->validate([
-            'full_name' => 'required|max:50',
-            'group_id' => 'required|numeric',
-            'phone' => 'required|numeric',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required|min:6',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'facebook' => 'nullable|url',
-            'instagram' => 'nullable|url',
-            'linkedin' => 'nullable|url',
+        // dd($request->all());/
+        $data =   $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'province_id' => 'required|integer',
+            'district_id' => 'required|integer',
+            'address' => 'required|string|max:255',
+            'acreage' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'views' => 'required|integer',
+            'map' => 'nullable|string',
+            'status' => 'integer',
+            'characteristics' => 'nullable|string',
+            'room_number' => 'integer',
+            'direction_id' => 'integer',
+            'format' => 'required|string',
         ], [
-            'full_name.required' => 'Vui lòng nhập Họ và Tên.',
-            'full_name.max' => 'Họ và Tên không được vượt quá 50 ký tự.',
-            'group_id.required' => 'Vui lòng chọn Vai trò Người dùng.',
-            'group_id.numeric' => 'Vai trò Người dùng phải là một số.',
-            'phone.required' => 'Vui lòng nhập Số điện thoại.',
-            'phone.numeric' => 'Số điện thoại phải là một số.',
-            'email.required' => 'Vui lòng nhập Địa chỉ Email.',
-            'email.email' => 'Địa chỉ Email không hợp lệ.',
-            'email.unique' => 'Địa chỉ Email đã được sử dụng.',
-            'password.required' => 'Vui lòng nhập Mật khẩu.',
-            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
-            'password.confirmed' => 'Xác nhận Mật khẩu không khớp.',
-            'password_confirmation.required' => 'Vui lòng nhập Xác nhận Mật khẩu.',
-            'password_confirmation.min' => 'Xác nhận Mật khẩu phải có ít nhất :min ký tự.',
-            'avatar.image' => 'Ảnh đại diện phải là một tệp hình ảnh.',
-            'avatar.mimes' => 'Ảnh đại diện chỉ được phép có định dạng JPEG, PNG hoặc JPG.',
-            'avatar.max' => 'Ảnh đại diện không được vượt quá 2MB.',
-            'facebook.url' => 'Liên kết Facebook không hợp lệ.',
-            'instagram.url' => 'Liên kết Instagram không hợp lệ.',
-            'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',
+            'title.required' => 'Tiêu đề là trường bắt buộc.',
+            'title.string' => 'Tiêu đề phải là chuỗi ký tự.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'content.required' => 'Nội dung là trường bắt buộc.',
+            'content.string' => 'Nội dung phải là chuỗi ký tự.',
+            'province_id.required' => ' Tỉnh/thành phố là trường bắt buộc.',
+            'province_id.integer' => ' Tỉnh/thành phố phải là số nguyên.',
+            'district_id.required' => ' Quận/huyện là trường bắt buộc.',
+            'district_id.integer' => ' Quận/huyện phải là số nguyên.',
+            'address.required' => 'Địa chỉ là trường bắt buộc.',
+            'address.string' => 'Địa chỉ phải là chuỗi ký tự.',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
+            'acreage.required' => 'Diện tích là trường bắt buộc.',
+            'acreage.string' => 'Diện tích phải là chuỗi ký tự.',
+            'acreage.max' => 'Diện tích không được vượt quá 255 ký tự.',
+            'price.required' => 'Giá là trường bắt buộc.',
+            'price.integer' => 'Giá phải là số.',
+            'views.required' => 'Lượt xem là trường bắt buộc.',
+            'views.integer' => 'Lượt xem phải là số nguyên.',
+            'map.string' => 'Dữ liệu bản đồ phải là chuỗi ký tự.',
+            'status.integer' => 'Trạng thái phải là số nguyên.',
+            'characteristics.string' => 'Đặc điểm phải là chuỗi ký tự.',
+            'room_number.integer' => 'Số phòng phải là số nguyên.',
+            'direction_id.integer' => ' hướng nhà phải là số nguyên.',
+            'format.required' => 'Định dạng là trường bắt buộc.',
+            'format.string' => 'Định dạng phải là chuỗi ký tự.',
         ]);
 
-
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $validate['avatar'] = $this->uploadImage($file, 'users');
-        }
-        $validate['password'] = Hash::make($validate['password']);
-
-        unset($validate['password_confirmation']);
-        $check = Post::insert($validate);
+        $check = Post::insert($data);
 
         if ($check) {
             return back()->with('msgSuccess', 'Tạo mới thành công');
