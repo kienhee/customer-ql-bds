@@ -1,38 +1,36 @@
 @extends('admin.layout.index')
-@section('title', 'Quản lý Bài viết')
+@section('title', 'Người dùng')
 @section('content')
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{{ route('dashboard.index') }}">Bảng điều khiển</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="javascript:void(0);">Quản lý Bài viết</a>
+                <a href="javascript:void(0);">Đặc điểm</a>
             </li>
             <li class="breadcrumb-item active">Danh sách</li>
         </ol>
     </nav>
-    <!-- Bảng Danh sách Bài viết -->
+    <!-- Bảng Danh sách Người dùng -->
     <div class="card">
         <div class="px-3 pt-2">
             <x-notice />
         </div>
         <div class="card-header border-bottom d-flex align-items-center justify-content-between">
-            <h5 class="card-title mb-0">Quản lý Bài viết</h5>
-            @can('create', App\Models\User::class)
-                <a href="{{ route('dashboard.posts.add') }}" class="btn btn-outline-primary">
-                    <i class="fa-solid fa-plus"></i> &nbsp;Bài viết mới
+            <h5 class="card-title mb-0">Đặc điểm</h5>
+            @can('create', App\Models\Region::class)
+                <a href="{{ route('dashboard.characteristics.add') }}" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-plus"></i> &nbsp;Thêm Đặc điểm
                 </a>
             @endcan
         </div>
         <div class="card-datatable table-responsive">
-            <table class="datatables-posts table border-top" id="posts-table">
+            <table class="datatables-characteristics table border-top" id="characteristics-table">
                 <thead>
                     <tr>
                         <th style="width: 10px">ID</th>
-                        <th  style="width: 300px">Bài viết</th>
-                        <th>Tác giả</th>
+                        <th>Đặc điểm</th>
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
                         <th style="width: 50px">Thao tác</th>
@@ -46,25 +44,18 @@
 @section('script')
     <script>
         $(function() {
-            $('#posts-table').DataTable({
+            $('#characteristics-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('dashboard.posts.list') !!}',
+                ajax: '{!! route('dashboard.characteristics.list') !!}',
                 columns: [{
                         data: 'id',
                         name: 'id'
                     },
                     {
-                        data: 'title',
-                        name: 'title'
-                    },
-                    {
-                        data: 'author',
-                        name: 'author',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
+                        data: 'name',
+                        name: 'name'
+                    }, {
                         data: 'status',
                         name: 'deleted_at',
                         searchable: false
@@ -81,13 +72,13 @@
                     },
                 ],
                 order: [
-                    [4,
+                    [3,
                         'desc'
-                    ] // 4 tương ứng với chỉ số của cột 'created_at' trong mảng 'columns'
+                    ]
                 ],
                 initComplete: function() {
                     // Tùy chỉnh vị trí placeholder cho ô tìm kiếm
-                    $('#posts-table_filter input').attr('placeholder', 'Tìm kiếm');
+                    $('#characteristics-table_filter input').attr('placeholder', 'Tìm kiếm Đặc điểm');
                 },
             });
         });

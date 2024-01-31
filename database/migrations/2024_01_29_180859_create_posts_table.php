@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('cover');
             $table->string('title');
             $table->longText('content');
             $table->integer('province_id');
             $table->integer('district_id');
+            $table->integer('user_id');
             $table->string('address');
             $table->string('acreage');
             $table->string('price');
-            $table->integer('views');
+            $table->integer('views')->default(0);
             $table->string('map')->nullable();
             $table->integer('status')->default(1);
             $table->string('characteristics')->nullable();

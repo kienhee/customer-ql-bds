@@ -2,7 +2,26 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
-
+.loading-bg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff
+}
+.truncate-3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* number of lines to show */
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
 .menu .app-brand.demo {
   height: 64px;
   margin-top: 12px;

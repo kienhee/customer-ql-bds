@@ -716,5 +716,9 @@ if (typeof $ !== 'undefined') {
     },
 };
 
-tinymce.init(editor_config);
+  tinymce.init(editor_config);
+  window.addEventListener("load", function () {
+    let loadingBg = document.querySelector(".loading-bg");
+    loadingBg.style.display = "none"; // Ẩn nền loading
+});
 }

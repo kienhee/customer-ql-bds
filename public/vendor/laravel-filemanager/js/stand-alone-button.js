@@ -22,7 +22,7 @@
         // set or change the preview image src
         items.forEach(function (item) {
           target_preview.append(
-            $('<img>').css('height', '5rem').attr('src', item.thumb_url)
+            $('<img>').css('width', '100%').attr('src', item.url)
           );
         });
 

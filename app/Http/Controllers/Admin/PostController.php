@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\Facades\DataTables;
 
 class PostController extends Controller
 {
@@ -16,60 +18,63 @@ class PostController extends Controller
 
     public function list()
     {
-        $users = Post::select(['id', 'full_name', 'avatar', 'group_id', 'deleted_at', 'email', 'created_at'])->where('group_id', '<>', 0)->withTrashed();
+        $posts = Post::select(['id', 'title', 'cover', 'province_id', 'user_id', 'deleted_at', 'created_at'])->withTrashed();
 
-        return DataTables::of($users)
-            ->editColumn('full_name', function ($user) {
+        return DataTables::of($posts)
+            ->editColumn('title', function ($post) {
                 return '
-            <div class="d-flex justify-content-start align-items-center user-name">
-                <div class="avatar-wrapper">
-                    <div class="avatar avatar-sm me-3">
-                        <img src="' . ($user->avatar ? $user->avatar : asset('admin-frontend/assets/img/avatar.png')) . '" alt="Avatar" class="w-px-30 h-px-30  rounded-circle object-fit-cover">
+            <div class="d-flex justify-content-start gap-2">
+                    <div class=" me-3">
+                        <img src="' . (getThumb($post->cover)) . '" alt="image" class="w-px-100 h-px-100  rounded-3 object-fit-cover">
                     </div>
-                </div>
                 <div class="d-flex flex-column">
-                    <a href="' . route('dashboard.users.edit', $user->id) . '" class="text-body text-truncate">
-                        <span class="fw-medium">' . $user->full_name . '</span>
-                    </a>
-                    <small class="text-muted">' . $user->email . '</small>
+                    <strong title=" ' . $post->title . '"><a href="' . route('dashboard.posts.edit', $post->id) . '" class="text-body truncate-3" >
+                         ' . $post->title . '
+                    </a></strong>
                 </div>
             </div>';
             })
-            ->editColumn('role', function ($user) {
-                return '<span class="text-truncate d-flex align-items-center"><span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="bx bx-user bx-xs"></i></span>' . $user->group->name . '</span>';
+            ->editColumn('author', function ($post) {
+                return '
+                <div class="d-flex flex-column">
+                    <strong class="text-body text-truncate">
+                        ' . $post->user->full_name . '
+                    </strong>
+                    <small class="text-muted">' . $post->user->email . '</small>
+                </div>
+            ';
             })
-            ->editColumn('status', function ($user) {
-                return '<span class="badge me-1 ' . ($user->deleted_at == null ? 'bg-label-success' : 'bg-label-danger') . '">' . ($user->deleted_at == null ? 'Hoạt động' : 'Đình chỉ') . '</span>';
+            ->editColumn('status', function ($post) {
+                return '<span class="badge me-1 ' . ($post->deleted_at == null ? 'bg-label-success' : 'bg-label-danger') . '">' . ($post->deleted_at == null ? 'Hoạt động' : 'Đình chỉ') . '</span>';
             })
-            ->addColumn('actions', function ($user) {
+            ->addColumn('actions', function ($post) {
                 return '
         <div class="d-inline-block text-nowrap">
-            <a href="' . route('dashboard.users.edit', $user->id) . '" class="btn btn-sm btn-icon "><i class="bx bx-edit"></i></a>
+            <a href="' . route('dashboard.posts.edit', $post->id) . '" class="btn btn-sm btn-icon "><i class="bx bx-edit"></i></a>
 
             <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded me-2"></i></button>
             <div class="dropdown-menu dropdown-menu-end m-0">
-                <a href="' . route('dashboard.users.edit', $user->id) . '" class="dropdown-item">Xem thêm</a>
-                ' . (Auth::user()->id != $user->id ? '
-                    <form action="' . ($user->trashed() == 1 ? route('dashboard.users.restore', $user->id) : route('dashboard.users.soft-delete', $user->id)) . '" class="dropdown-item" method="POST">
+                <a href="' . route('dashboard.posts.edit', $post->id) . '" class="dropdown-item">Xem thêm</a>
+                    <form action="' . ($post->trashed() == 1 ? route('dashboard.posts.restore', $post->id) : route('dashboard.posts.soft-delete', $post->id)) . '" class="dropdown-item" method="POST">
                         ' . csrf_field() . '
-                        <button type="submit" class="btn p-0 w-100 justify-content-start" >' . ($user->trashed() == 1 ? "Hoạt động" : "Đình chỉ") . ' </button>
+                        <button type="submit" class="btn p-0 w-100 justify-content-start" >' . ($post->trashed() == 1 ? "Hoạt động" : "Đình chỉ") . ' </button>
                     </form>
-                    ' . ($user->trashed() == 1 ? '
-                        <form action="' . route('dashboard.users.force-delete', $user->id) . '" class="dropdown-item" method="POST" onsubmit="return confirm(\'Bạn có chắc chắn muốn xóa vĩnh viễn không?\')">
+                    ' . ($post->trashed() == 1 ? '
+                        <form action="' . route('dashboard.posts.force-delete', $post->id) . '" class="dropdown-item" method="POST" onsubmit="return confirm(\'Bạn có chắc chắn muốn xóa vĩnh viễn không?\')">
                             ' . csrf_field() . '
                             <button type="submit" class="btn p-0 w-100 justify-content-start" >Xóa vĩnh viễn </button>
                         </form>
-                    ' : '')
+                    '
                     : '') . '
             </div>
         </div>';
             })
 
-            ->editColumn('created_at', function ($user) {
-                return '<p class="m-0">' . $user->created_at->format('d M Y') . '</p>
-                <small>' . $user->created_at->format('h:i A') . '</small>';
+            ->editColumn('created_at', function ($post) {
+                return '<p class="m-0">' . $post->created_at->format('d M Y') . '</p>
+                <small>' . $post->created_at->format('h:i A') . '</small>';
             })
-            ->rawColumns(['full_name', 'role', 'status', 'actions', 'created_at'])
+            ->rawColumns(['title', 'author', 'status', 'actions', 'created_at'])
             ->make();
     }
 
@@ -80,51 +85,45 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());/
-        $data =   $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
+        $data = $request->validate([
+            'title' => 'required|max:255|unique:posts,title',
+            'content' => 'required',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
-            'address' => 'required|string|max:255',
-            'acreage' => 'required|string|max:255',
+            'address' => 'required|max:255',
+            'acreage' => 'required|max:255',
             'price' => 'required|integer',
-            'views' => 'required|integer',
-            'map' => 'nullable|string',
+            'map' => 'nullable|url',
             'status' => 'integer',
-            'characteristics' => 'nullable|string',
-            'room_number' => 'integer',
-            'direction_id' => 'integer',
-            'format' => 'required|string',
+            'characteristics' => 'required',
+            'room_number' => 'required|integer',
+            'direction_id' => 'required|integer',
+            'cover' => 'required',
         ], [
-            'title.required' => 'Tiêu đề là trường bắt buộc.',
-            'title.string' => 'Tiêu đề phải là chuỗi ký tự.',
-            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'content.required' => 'Nội dung là trường bắt buộc.',
-            'content.string' => 'Nội dung phải là chuỗi ký tự.',
-            'province_id.required' => ' Tỉnh/thành phố là trường bắt buộc.',
-            'province_id.integer' => ' Tỉnh/thành phố phải là số nguyên.',
-            'district_id.required' => ' Quận/huyện là trường bắt buộc.',
-            'district_id.integer' => ' Quận/huyện phải là số nguyên.',
-            'address.required' => 'Địa chỉ là trường bắt buộc.',
-            'address.string' => 'Địa chỉ phải là chuỗi ký tự.',
-            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
-            'acreage.required' => 'Diện tích là trường bắt buộc.',
-            'acreage.string' => 'Diện tích phải là chuỗi ký tự.',
-            'acreage.max' => 'Diện tích không được vượt quá 255 ký tự.',
-            'price.required' => 'Giá là trường bắt buộc.',
-            'price.integer' => 'Giá phải là số.',
-            'views.required' => 'Lượt xem là trường bắt buộc.',
-            'views.integer' => 'Lượt xem phải là số nguyên.',
-            'map.string' => 'Dữ liệu bản đồ phải là chuỗi ký tự.',
-            'status.integer' => 'Trạng thái phải là số nguyên.',
-            'characteristics.string' => 'Đặc điểm phải là chuỗi ký tự.',
-            'room_number.integer' => 'Số phòng phải là số nguyên.',
-            'direction_id.integer' => ' hướng nhà phải là số nguyên.',
-            'format.required' => 'Định dạng là trường bắt buộc.',
-            'format.string' => 'Định dạng phải là chuỗi ký tự.',
+            'title.required' => 'Vui lòng nhập tiêu đề',
+            'title.unique' => 'Tiêu đề đã tồn tại',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự',
+            'content.required' => 'Vui lòng nhập nội dung',
+            'province_id.required' => 'Vui lòng chọn tỉnh thành',
+            'province_id.integer' => ' Tỉnh/thành phố phải là số nguyên',
+            'district_id.required' => 'Vui lòng chọn quận/huyện',
+            'district_id.integer' => ' Quận/huyện phải là số nguyên',
+            'address.required' => 'Vui lòng thêm địa chỉ',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự',
+            'acreage.required' => 'Vui lòng thêm diện tích',
+            'acreage.max' => 'Diện tích không được vượt quá 255 ký tự',
+            'price.required' => 'Vui lòng nhập giá',
+            'price.integer' => 'Giá phải là số',
+            'map.url' => 'Bắt buộc phải là URL',
+            'status.integer' => 'Trạng thái phải là số nguyên',
+            'characteristics.required' => 'Vui lòng chọn đặc điểm',
+            'room_number.required' => 'Vui lòng thêm số phòng',
+            'room_number.integer' => ' Số phòng là số nguyên',
+            'direction_id.required' => 'Vui lòng chọn hướng nhà',
+            'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
         ]);
 
+        $data['user_id'] = Auth::id();
         $check = Post::insert($data);
 
         if ($check) {
@@ -135,44 +134,56 @@ class PostController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $user = Post::withTrashed()->find($id);
+        $post = Post::withTrashed()->find($id);
 
-        if (!$user) {
+        if (!$post) {
             abort(404);
         }
-        return view('admin.user.edit', compact('user'));
+        return view('admin.post.edit', compact('post'));
     }
 
     public function update(Request $request, $id)
     {
-        $validate = $request->validate([
-            'full_name' => 'required|max:50',
-            'group_id' => 'required|numeric',
-            'phone' => 'required|numeric',
-            'avatar' => 'required',
-            'facebook' => 'nullable|url',
-            'instagram' => 'nullable|url',
-            'linkedin' => 'nullable|url',
+        $data = $request->validate([
+            'title' => 'required|max:255|unique:posts,title,' . $id,
+            'content' => 'required',
+            'province_id' => 'required|integer',
+            'district_id' => 'required|integer',
+            'address' => 'required|max:255',
+            'acreage' => 'required|max:255',
+            'price' => 'required|integer',
+            'map' => 'nullable|url',
+            'status' => 'integer',
+            'characteristics' => 'required',
+            'room_number' => 'required|integer',
+            'direction_id' => 'required|integer',
+            'cover' => 'required',
         ], [
-            'full_name.required' => 'Vui lòng nhập Họ và Tên.',
-            'full_name.max' => 'Họ và Tên không được vượt quá 50 ký tự.',
-            'group_id.required' => 'Vui lòng chọn Vai trò Người dùng.',
-            'group_id.numeric' => 'Vai trò Người dùng phải là một số.',
-            'phone.required' => 'Vui lòng nhập Số điện thoại.',
-            'phone.numeric' => 'Số điện thoại phải là một số.',
-            'avatar.required' => 'Vui lòng tải lên Ảnh đại diện.',
-            'facebook.url' => 'Liên kết Facebook không hợp lệ.',
-            'instagram.url' => 'Liên kết Instagram không hợp lệ.',
-            'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',
+            'title.required' => 'Vui lòng nhập tiêu đề',
+            'title.unique' => 'Tiêu đề đã tồn tại',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự',
+            'content.required' => 'Vui lòng nhập nội dung',
+            'province_id.required' => 'Vui lòng chọn tỉnh thành',
+            'province_id.integer' => ' Tỉnh/thành phố phải là số nguyên',
+            'district_id.required' => 'Vui lòng chọn quận/huyện',
+            'district_id.integer' => ' Quận/huyện phải là số nguyên',
+            'address.required' => 'Vui lòng thêm địa chỉ',
+            'address.max' => 'Địa chỉ không được vượt quá 255 ký tự',
+            'acreage.required' => 'Vui lòng thêm diện tích',
+            'acreage.max' => 'Diện tích không được vượt quá 255 ký tự',
+            'price.required' => 'Vui lòng nhập giá',
+            'price.integer' => 'Giá phải là số',
+            'map.url' => 'Bắt buộc phải là URL',
+            'status.integer' => 'Trạng thái phải là số nguyên',
+            'characteristics.required' => 'Vui lòng chọn đặc điểm',
+            'room_number.required' => 'Vui lòng thêm số phòng',
+            'room_number.integer' => ' Số phòng là số nguyên',
+            'direction_id.required' => 'Vui lòng chọn hướng nhà',
+            'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
         ]);
 
-
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $validate['avatar'] = $this->uploadImage($file, 'users');
-        }
-
-        $check = Post::withTrashed()->where('id', $id)->update($validate);
+        $data['user_id'] = Auth::id();
+        $check = Post::withTrashed()->where('id', $id)->update($data);
 
         if ($check) {
             return back()->with('msgSuccess', 'Cập nhật thành công');

@@ -51,6 +51,13 @@
             'children' => [],
         ],
         [
+            'name' => 'Cài đặt đặc điểm',
+            'classIcon' => ' bx bx-building',
+            'route' => 'dashboard.characteristics.index',
+            'can' => 'characteristics',
+            'children' => [],
+        ],
+        [
             'name' => 'Vai trò',
             'classIcon' => 'bx bx-check-shield',
             'route' => 'dashboard.permission.index',
@@ -61,7 +68,7 @@
             'name' => 'Thư viện',
             'classIcon' => ' bx bx-library',
             'route' => 'dashboard.library',
-            'can' => 'library',
+            'can' => '',
             'children' => [],
         ],
         [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Characteristic;
 use App\Models\Direction;
 use App\Models\District;
 use App\Models\Group;
@@ -31,7 +32,24 @@ function directions()
 {
   return Direction::orderBy('created_at', 'desc')->get();
 }
+function characteristics()
+{
+  $list = [];
+  foreach (Characteristic::all() as $value) {
+    $list[] = $value->name;
+  }
+  return  json_encode($list);
+}
+function getThumb($originalPath)
+{
+  // Tách đường dẫn thành thư mục và tên file
+  $pathInfo = pathinfo($originalPath);
 
+  // Tạo đường dẫn mới với thư mục 'thumbs'
+  $newPath = $pathInfo['dirname'] . '/thumbs/' . $pathInfo['basename'];
+
+  return $newPath;
+}
 function isRole($dataArr, $module, $role = 'view')
 {
   if (!empty($dataArr)) {

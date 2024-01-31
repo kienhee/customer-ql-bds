@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CharacteristicController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\DropzoneController;
@@ -68,6 +69,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
         Route::post('/restore/{id}', [RegionController::class, 'restore'])->name('restore')->can('delete', Region::class);
         Route::post('/force-delete/{id}', [RegionController::class, 'forceDelete'])->name('force-delete')->can('delete', Region::class);
     });
+
     Route::prefix('provinces')->name('provinces.')->middleware('can:provinces')->group(function () {
         Route::get('/', [ProvinceController::class, 'index'])->name('index')->can('view', Province::class);
         Route::get('/list', [ProvinceController::class, 'list'])->name('list')->can('view', Province::class);
@@ -97,6 +99,17 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
         Route::put('/change-password/{email}', [ProfileController::class, 'handleChangePassword'])->name('handle-change-password');
         Route::get('/login-history', [ProfileController::class, 'loginHistory'])->name('login-history');
     });
+    Route::prefix('characteristics')->name('characteristics.')->middleware('can:characteristics')->group(function () {
+        Route::get('/', [CharacteristicController::class, 'index'])->name('index')->can('view', Region::class);
+        Route::get('/list', [CharacteristicController::class, 'list'])->name('list')->can('view', Region::class);
+        Route::get('/add', [CharacteristicController::class, 'add'])->name('add')->can('create', Region::class);
+        Route::post('/store', [CharacteristicController::class, 'store'])->name('store')->can('create', Region::class);
+        Route::get('/edit/{id}', [CharacteristicController::class, 'edit'])->name('edit')->can('update', Region::class);
+        Route::put('/update/{id}', [CharacteristicController::class, 'update'])->name('update')->can('update', Region::class);
+        Route::post('/soft-delete/{id}', [CharacteristicController::class, 'softDelete'])->name('soft-delete')->can('delete', Region::class);
+        Route::post('/restore/{id}', [CharacteristicController::class, 'restore'])->name('restore')->can('delete', Region::class);
+        Route::post('/force-delete/{id}', [CharacteristicController::class, 'forceDelete'])->name('force-delete')->can('delete', Region::class);
+    });
     Route::prefix('permission')->name('permission.')->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('index')->can('view', Group::class);
         Route::get('/add-role', [PermissionController::class, 'addRole'])->name('add-role')->can('create', Group::class);
@@ -117,7 +130,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     });
     Route::get('/library', function () {
         return view('admin.library.index');
-    })->middleware('can:library')->name('library');
+    })->name('library');
 });
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');

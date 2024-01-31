@@ -17,4 +17,5 @@ class Controller extends BaseController
         $path = $file->storePubliclyAs('public/photos/1/' . $folder, $filename);
         return Storage::url($path);
     }
+ 
 }

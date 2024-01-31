@@ -43,7 +43,8 @@
         href="{{ asset('admin-frontend') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/typeahead-js/typeahead.css" />
     <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/apex-charts/apex-charts.css" />
-    <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/@form-validation/umd/styles/index.min.css" />
+    <link rel="stylesheet"
+        href="{{ asset('admin-frontend') }}/assets/vendor/libs/@form-validation/umd/styles/index.min.css" />
 
   <link rel="stylesheet"
     href="{{ asset('admin-frontend') }}/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
@@ -131,7 +132,11 @@
   </div>
   {{-- Layout wrapper authentication --}} @endif
 
-
+  <div class="loading-bg ">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
   {{-- Core JS --}}
   {{-- build:js assets/vendor/js/core.js --}}
@@ -173,6 +178,7 @@
   <script src="{{ asset('admin-frontend') }}/assets/js/forms-selects.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/js/forms-tagify.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/js/forms-typeahead.js"></script>
+  <script src="{{ asset('admin-frontend') }}/assets/js/ui-popover.js"></script>
   {{-- import here --}}
   @yield('script')
 

@@ -30,7 +30,7 @@
                     <label class="form-label" for="name">Tên Quận/Huyện: <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('name') invalid @enderror"
                         value="{{ old('name') ?? $district->name }}" name="name" id="name"
-                        placeholder="Vui lòng nhập tên quận/huyện">
+                        placeholder="Vui lòng nhập tên quận/huyện" autofocus>
                     @error('name')
                         <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                     @enderror
