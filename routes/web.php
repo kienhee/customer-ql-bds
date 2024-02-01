@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CharacteristicController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\DropzoneController;
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
@@ -31,10 +32,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(function () {
+Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::prefix('users')->name('users.')->middleware('can:users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index')->can('view', User::class);
@@ -47,6 +45,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
         Route::post('/restore/{id}', [UserController::class, 'restore'])->name('restore')->can('delete', User::class);
         Route::post('/force-delete/{id}', [UserController::class, 'forceDelete'])->name('force-delete')->can('delete', User::class);
     });
+    Route::prefix('news')->name('news.')->group(function () {
+    });
     Route::prefix('posts')->name('posts.')->middleware('can:posts')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('index')->can('view', Post::class);
         Route::get('/list', [PostController::class, 'list'])->name('list')->can('view', Post::class);
@@ -57,6 +57,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
         Route::post('/soft-delete/{id}', [PostController::class, 'softDelete'])->name('soft-delete')->can('delete', Post::class);
         Route::post('/restore/{id}', [PostController::class, 'restore'])->name('restore')->can('delete', Post::class);
         Route::post('/force-delete/{id}', [PostController::class, 'forceDelete'])->name('force-delete')->can('delete', Post::class);
+
+        Route::get('/news', [PostController::class, 'news'])->name('news');
+        Route::get('/news/{id}', [PostController::class, 'detail'])->name('detail');
     });
     Route::prefix('regions')->name('regions.')->middleware('can:regions')->group(function () {
         Route::get('/', [RegionController::class, 'index'])->name('index')->can('view', Region::class);

@@ -222,4 +222,20 @@ class PostController extends Controller
         }
         return back()->with('msgError', 'Xóa thất bại');
     }
+
+    public function news()
+    {
+        $news = Post::all();
+        return view('admin.post.news', compact('news'));
+    }
+
+    public function detail(Request $request, $id)
+    {
+        $post = Post::withTrashed()->find($id);
+
+        if (!$post) {
+            abort(404);
+        }
+        return view('admin.post.detail', compact('post'));
+    }
 }

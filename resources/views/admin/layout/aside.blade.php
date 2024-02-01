@@ -16,6 +16,13 @@
             'children' => [],
         ],
         [
+            'name' => 'Bản tin',
+            'classIcon' => ' bx bx-news ',
+            'route' => 'dashboard.posts.news',
+            'can' => '',
+            'children' => [],
+        ],
+        [
             'name' => 'Quản lý bài viết',
             'classIcon' => ' bx bx-news ',
             'route' => 'dashboard.posts.index',
@@ -52,7 +59,7 @@
         ],
         [
             'name' => 'Cài đặt đặc điểm',
-            'classIcon' => ' bx bx-building',
+            'classIcon' => ' bx bx-cog',
             'route' => 'dashboard.characteristics.index',
             'can' => 'characteristics',
             'children' => [],
