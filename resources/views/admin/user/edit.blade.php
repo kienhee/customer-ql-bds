@@ -16,70 +16,8 @@
         enctype="multipart/form-data">
         @csrf
         @method('put')
-        <!-- Thanh bên Người dùng -->
-        <div class="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
-            <!-- Thẻ Người dùng -->
-            <div class="card mb-4">
-                <div class="card-body">
 
-                    <div class="user-avatar-section">
-                        <div class="d-flex align-items-center flex-column mb-5">
-                            <img class="img-fluid rounded my-4"
-                                src="{{ $user->avatar ? $user->avatar : asset('admin-frontend/assets/img/upload.png') }}"
-                                height="110" width="110" alt="Avatar Người dùng" id="preview" />
-                            <label for="upload" class="btn btn-outline-primary" tabindex="0">
-                                <span class="d-none d-sm-block"><i class='bx bx-cloud-upload'></i>&nbsp;Tải lên Avatar</span>
-                                <input type="file" id="upload" class="account-file-input" hidden name="avatar"
-                                    accept="image/png, image/jpeg" />
-                                <input type="hidden" name="avatar" value="{{ $user->avatar }}">
-                            </label>
-                            @error('avatar')
-                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <h6 class="pb-2 border-bottom mb-4"><i class='bx bx-link'></i> Mạng xã hội <span
-                            class="text-muted">(tùy chọn)</span></h6>
-                    <div class="row g-3">
-                        <div class="col-sm-12">
-                            <label class="form-label" for="facebook">Facebook</label>
-                            <input type="text" id="facebook" name="facebook"
-                                value="{{ old('facebook') ?? $user->facebook }}"
-                                class="form-control form-control-sm @error('facebook') invalid @enderror"
-                                placeholder="https://facebook.com/abc">
-                            @error('facebook')
-                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="col-sm-12">
-                            <label class="form-label" for="instagram">Instagram</label>
-                            <input type="text" id="instagram" name="instagram"
-                                value="{{ old('instagram') ?? $user->instagram }}"
-                                class="form-control form-control-sm @error('instagram') invalid @enderror"
-                                placeholder="https://instagram.com/abc">
-                            @error('instagram')
-                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="col-sm-12">
-                            <label class="form-label" for="linkedin">LinkedIn</label>
-                            <input type="text" id="linkedin" name="linkedin"
-                                value="{{ old('linkedin') ?? $user->linkedin }}"
-                                class="form-control form-control-sm @error('linkedin') invalid @enderror"
-                                placeholder="https://linkedin.com/abc">
-                            @error('linkedin')
-                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /Thẻ Người dùng -->
-
-        </div>
-        <!--/ Thanh bên Người dùng -->
-        <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
+        <div class="col-xl-8 col-lg-7 col-md-7 ">
 
             <div class="card">
 
@@ -126,9 +64,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label" for="group_id">Vai trò Người dùng: <span class="text-danger">*</span></label>
-                        <select id="group_id" class="form-select @error('group_id') is-invalid @enderror"
-                            name="group_id">
+                        <label class="form-label" for="group_id">Vai trò Người dùng: <span
+                                class="text-danger">*</span></label>
+                        <select id="group_id" class="form-select @error('group_id') is-invalid @enderror" name="group_id">
                             <option value="">Vui lòng chọn Vai trò</option>
                             @foreach (groups() as $role)
                                 <option value="{{ $role->id }}"
@@ -147,18 +85,52 @@
                 </div>
             </div>
         </div>
-    </form>
-@endsection
+        <!-- Thanh bên Người dùng -->
+        <div class="col-xl-4 col-lg-5 col-md-5 ">
+            <!-- Thẻ Người dùng -->
+            <div class="card mb-4">
+                <div class="card-body">
 
-@section('script')
-    <script>
-        let imgInp = document.getElementById('upload');
-        let preview = document.getElementById('preview');
-        imgInp.onchange = evt => {
-            const [file] = imgInp.files
-            if (file) {
-                preview.src = URL.createObjectURL(file)
-            }
-        }
-    </script>
+
+                    <h6 class="pb-2 border-bottom mb-4"><i class='bx bx-link'></i> Mạng xã hội <span class="text-muted">(tùy
+                            chọn)</span></h6>
+                    <div class="row g-3">
+                        <div class="col-sm-12">
+                            <label class="form-label" for="facebook">Facebook</label>
+                            <input type="text" id="facebook" name="facebook"
+                                value="{{ old('facebook') ?? $user->facebook }}"
+                                class="form-control form-control-sm @error('facebook') invalid @enderror"
+                                placeholder="https://facebook.com/abc">
+                            @error('facebook')
+                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-label" for="instagram">Instagram</label>
+                            <input type="text" id="instagram" name="instagram"
+                                value="{{ old('instagram') ?? $user->instagram }}"
+                                class="form-control form-control-sm @error('instagram') invalid @enderror"
+                                placeholder="https://instagram.com/abc">
+                            @error('instagram')
+                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-label" for="linkedin">LinkedIn</label>
+                            <input type="text" id="linkedin" name="linkedin"
+                                value="{{ old('linkedin') ?? $user->linkedin }}"
+                                class="form-control form-control-sm @error('linkedin') invalid @enderror"
+                                placeholder="https://linkedin.com/abc">
+                            @error('linkedin')
+                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Thẻ Người dùng -->
+
+        </div>
+        <!--/ Thanh bên Người dùng -->
+    </form>
 @endsection

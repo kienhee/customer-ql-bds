@@ -18,65 +18,77 @@ class PostController extends Controller
 
     public function list()
     {
-        $posts = Post::select(['id', 'title', 'cover', 'province_id', 'user_id', 'deleted_at', 'created_at'])->withTrashed();
+        $posts = Post::select(['id', 'title', 'cover', 'status', 'province_id', 'user_id', 'deleted_at', 'created_at'])->withTrashed();
 
         return DataTables::of($posts)
             ->editColumn('title', function ($post) {
                 return '
-            <div class="d-flex justify-content-start gap-2">
-                    <div class=" me-3">
-                        <img src="' . (getThumb($post->cover)) . '" alt="image" class="w-px-100 h-px-100  rounded-3 object-fit-cover">
-                    </div>
-                <div class="d-flex flex-column">
-                    <strong title=" ' . $post->title . '"><a href="' . route('dashboard.posts.edit', $post->id) . '" class="text-body truncate-3" >
-                         ' . $post->title . '
-                    </a></strong>
+        <div class="d-flex justify-content-start gap-2">
+                <div class=" me-3">
+                    <img src="' . (getThumb($post->cover)) . '" alt="image" class="w-px-100 h-px-100  rounded-3 object-fit-cover">
                 </div>
-            </div>';
+            <div class="d-flex flex-column">
+                <strong title=" ' . $post->title . '"><a href="' . route('dashboard.posts.edit', $post->id) . '" class="text-body truncate-3" >
+                     ' . $post->title . '
+                </a></strong>
+            </div>
+        </div>';
             })
             ->editColumn('author', function ($post) {
                 return '
-                <div class="d-flex flex-column">
-                    <strong class="text-body text-truncate">
-                        ' . $post->user->full_name . '
-                    </strong>
-                    <small class="text-muted">' . $post->user->email . '</small>
-                </div>
-            ';
+            <div class="d-flex flex-column">
+                <strong class="text-body text-truncate">
+                    ' . $post->user->full_name . '
+                </strong>
+                <small class="text-muted">' . $post->user->email . '</small>
+            </div>';
             })
+            ->editColumn('status_1', function ($post) {
+                if ($post->status == 1) {
+                    return '<span class="badge bg-label-success">Bán mạnh</span>';
+                }
+                if ($post->status == 2) {
+                    return '<span class="badge bg-label-danger">Đã bán</span>';
+                }
+                if ($post->status == 3) {
+                    return '<span class="badge bg-label-danger">Chủ tự bán</span>';
+                }
+            })
+
             ->editColumn('status', function ($post) {
                 return '<span class="badge me-1 ' . ($post->deleted_at == null ? 'bg-label-success' : 'bg-label-danger') . '">' . ($post->deleted_at == null ? 'Hoạt động' : 'Đình chỉ') . '</span>';
             })
             ->addColumn('actions', function ($post) {
                 return '
-        <div class="d-inline-block text-nowrap">
-            <a href="' . route('dashboard.posts.edit', $post->id) . '" class="btn btn-sm btn-icon "><i class="bx bx-edit"></i></a>
+    <div class="d-inline-block text-nowrap">
+        <a href="' . route('dashboard.posts.edit', $post->id) . '" class="btn btn-sm btn-icon "><i class="bx bx-edit"></i></a>
 
-            <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded me-2"></i></button>
-            <div class="dropdown-menu dropdown-menu-end m-0">
-                <a href="' . route('dashboard.posts.edit', $post->id) . '" class="dropdown-item">Xem thêm</a>
-                    <form action="' . ($post->trashed() == 1 ? route('dashboard.posts.restore', $post->id) : route('dashboard.posts.soft-delete', $post->id)) . '" class="dropdown-item" method="POST">
+        <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded me-2"></i></button>
+        <div class="dropdown-menu dropdown-menu-end m-0">
+            <a href="' . route('dashboard.posts.edit', $post->id) . '" class="dropdown-item">Xem thêm</a>
+                <form action="' . ($post->trashed() == 1 ? route('dashboard.posts.restore', $post->id) : route('dashboard.posts.soft-delete', $post->id)) . '" class="dropdown-item" method="POST">
+                    ' . csrf_field() . '
+                    <button type="submit" class="btn p-0 w-100 justify-content-start" >' . ($post->trashed() == 1 ? "Hoạt động" : "Đình chỉ") . ' </button>
+                </form>
+                ' . ($post->trashed() == 1 ? '
+                    <form action="' . route('dashboard.posts.force-delete', $post->id) . '" class="dropdown-item" method="POST" onsubmit="return confirm(\'Bạn có chắc chắn muốn xóa vĩnh viễn không?\')">
                         ' . csrf_field() . '
-                        <button type="submit" class="btn p-0 w-100 justify-content-start" >' . ($post->trashed() == 1 ? "Hoạt động" : "Đình chỉ") . ' </button>
+                        <button type="submit" class="btn p-0 w-100 justify-content-start" >Xóa vĩnh viễn </button>
                     </form>
-                    ' . ($post->trashed() == 1 ? '
-                        <form action="' . route('dashboard.posts.force-delete', $post->id) . '" class="dropdown-item" method="POST" onsubmit="return confirm(\'Bạn có chắc chắn muốn xóa vĩnh viễn không?\')">
-                            ' . csrf_field() . '
-                            <button type="submit" class="btn p-0 w-100 justify-content-start" >Xóa vĩnh viễn </button>
-                        </form>
-                    '
+                '
                     : '') . '
-            </div>
-        </div>';
+        </div>
+    </div>';
             })
 
             ->editColumn('created_at', function ($post) {
                 return '<p class="m-0">' . $post->created_at->format('d M Y') . '</p>
-                <small>' . $post->created_at->format('h:i A') . '</small>';
+            <small>' . $post->created_at->format('h:i A') . '</small>';
             })
-            ->rawColumns(['title', 'author', 'status', 'actions', 'created_at'])
+            ->rawColumns(['title', 'author', 'status_1', 'status', 'actions', 'created_at'])
             ->make();
     }
+
 
     public function add()
     {
@@ -225,7 +237,7 @@ class PostController extends Controller
 
     public function news()
     {
-        $news = Post::all();
+        $news = Post::orderBy('created_at', 'desc')->where('status', 1)->get();
         return view('admin.post.news', compact('news'));
     }
 

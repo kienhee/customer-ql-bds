@@ -25,9 +25,13 @@
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                            <img src="{{ Auth::user()->avatar ? Auth::user()->avatar : asset('admin-frontend/assets/img/upload.png') }}"
-                                alt="user image" class="d-block  ms-0 ms-sm-4 rounded user-profile-img object-fit-cover "
-                                width="120" height="120" id="preview" />
+                            <div id="holder" class="mb-3">
+                                <img src="{{ Auth::user()->avatar ? getThumb(Auth::user()->avatar) : asset('admin-frontend/assets/img/upload.png') }}"
+                                    alt="user image"
+                                    class="d-block  ms-0 ms-sm-4 rounded user-profile-img object-fit-cover " width="120"
+                                    height="120" id="preview" />
+                            </div>
+
 
                         </div>
                         <div class="flex-grow-1 mt-3 mt-sm-5">
@@ -46,13 +50,18 @@
                                     </ul>
                                 </div>
                                 <div>
-                                    <label for="upload" class="btn btn-outline-primary" tabindex="0">
-                                        <span class="d-none d-sm-block"><i class='bx bx-cloud-upload'></i>&nbsp;Tải lên ảnh
-                                            đại diện</span>
-                                        <input type="file" id="upload" class="account-file-input" hidden
-                                            name="avatar" accept="image/png, image/jpeg" />
-                                        <input type="hidden" name="avatar" value="{{ Auth::user()->avatar }}">
-                                    </label>
+
+
+                                    <div class="input-group d-flex justify-content-center flex-column align-items-center">
+                                        <span class="input-group-btn">
+                                            <a id="avatar" data-input="thumbnail" data-preview="holder"
+                                                class="btn btn-outline-primary">
+                                                <i class='bx bx-cloud-upload'></i>&nbsp;Tải lên ảnh bìa
+                                            </a>
+                                        </span>
+                                        <input id="thumbnail" class="form-control" value="{{ Auth::user()->avatar }}"
+                                            type="hidden" name="avatar">
+                                    </div>
 
                                 </div>
 
@@ -192,14 +201,8 @@
     </form>
 @endsection
 @section('script')
+    <script src="/vendor/laravel-filemanager/js/avatar-upload.js"></script>
     <script>
-        let imgInp = document.getElementById('upload');
-        let preview = document.getElementById('preview');
-        imgInp.onchange = evt => {
-            const [file] = imgInp.files
-            if (file) {
-                preview.src = URL.createObjectURL(file)
-            }
-        }
+        $('#avatar').filemanager('image');
     </script>
 @endsection

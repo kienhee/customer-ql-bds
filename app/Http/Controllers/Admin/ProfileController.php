@@ -21,7 +21,7 @@ class ProfileController extends Controller
         $validate = $request->validate([
             'full_name' => 'required|max:50',
             'phone' => 'required|numeric',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'avatar' => 'nullable',
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
             'linkedin' => 'nullable|url',
@@ -30,9 +30,6 @@ class ProfileController extends Controller
             'full_name.max' => 'Họ và tên không được vượt quá 50 ký tự.',
             'phone.required' => 'Vui lòng nhập số điện thoại.',
             'phone.numeric' => 'Số điện thoại phải là số.',
-            'avatar.image' => 'Ảnh đại diện phải là hình ảnh.',
-            'avatar.mimes' => 'Ảnh đại diện phải có định dạng jpeg, png, jpg.',
-            'avatar.max' => 'Ảnh đại diện không được vượt quá 2048 KB.',
             'facebook.url' => 'Định dạng URL Facebook không hợp lệ.',
             'instagram.url' => 'Định dạng URL Instagram không hợp lệ.',
             'linkedin.url' => 'Định dạng URL LinkedIn không hợp lệ.',
@@ -40,10 +37,6 @@ class ProfileController extends Controller
 
         $validate['group_id'] = Auth::user()->group_id;
 
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $validate['avatar'] = $this->uploadImage($file, 'users');
-        }
 
         $check = User::where('id', Auth::id())->update($validate);
 

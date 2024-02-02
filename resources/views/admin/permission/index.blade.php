@@ -21,7 +21,7 @@
                                         <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                             title="{{ $user->full_name }}" class="avatar avatar-sm pull-up">
                                             <img class="rounded-circle object-fit-cover"
-                                                src="{{ $user->avatar ? $user->avatar : asset('admin-frontend/assets/img/avatar.png') }}"
+                                                src="{{ $user->avatar ? getThumb($user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
                                                 alt="Avatar" />
                                         </li>
                                     @endforeach
@@ -139,8 +139,8 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label" for="route">Đường Dẫn</label>
-                                <input type="text" id="route" name="route" class="form-control" placeholder="Đường Dẫn"
-                                    name="route" />
+                                <input type="text" id="route" name="route" class="form-control"
+                                    placeholder="Đường Dẫn" name="route" />
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label" for="description">Mô Tả</label>

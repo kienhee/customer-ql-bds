@@ -27,7 +27,7 @@ class UserController extends Controller
             <div class="d-flex justify-content-start align-items-center user-name">
                 <div class="avatar-wrapper">
                     <div class="avatar avatar-sm me-3">
-                        <img src="' . ($user->avatar ? $user->avatar : asset('admin-frontend/assets/img/avatar.png')) . '" alt="Avatar" class="w-px-30 h-px-30  rounded-circle object-fit-cover">
+                        <img src="' . ($user->avatar ? getThumb($user->avatar) : asset('admin-frontend/assets/img/avatar.png')) . '" alt="Avatar" class="w-px-30 h-px-30  rounded-circle object-fit-cover">
                     </div>
                 </div>
                 <div class="d-flex flex-column">
@@ -90,7 +90,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
             'linkedin' => 'nullable|url',
@@ -109,19 +108,13 @@ class UserController extends Controller
             'password.confirmed' => 'Xác nhận Mật khẩu không khớp.',
             'password_confirmation.required' => 'Vui lòng nhập Xác nhận Mật khẩu.',
             'password_confirmation.min' => 'Xác nhận Mật khẩu phải có ít nhất :min ký tự.',
-            'avatar.image' => 'Ảnh đại diện phải là một tệp hình ảnh.',
-            'avatar.mimes' => 'Ảnh đại diện chỉ được phép có định dạng JPEG, PNG hoặc JPG.',
-            'avatar.max' => 'Ảnh đại diện không được vượt quá 2MB.',
             'facebook.url' => 'Liên kết Facebook không hợp lệ.',
             'instagram.url' => 'Liên kết Instagram không hợp lệ.',
             'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',
         ]);
 
 
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $validate['avatar'] = $this->uploadImage($file, 'users');
-        }
+     
         $validate['password'] = Hash::make($validate['password']);
 
         unset($validate['password_confirmation']);
@@ -149,7 +142,6 @@ class UserController extends Controller
             'full_name' => 'required|max:50',
             'group_id' => 'required|numeric',
             'phone' => 'required|numeric',
-            'avatar' => 'required',
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
             'linkedin' => 'nullable|url',
@@ -160,17 +152,11 @@ class UserController extends Controller
             'group_id.numeric' => 'Vai trò Người dùng phải là một số.',
             'phone.required' => 'Vui lòng nhập Số điện thoại.',
             'phone.numeric' => 'Số điện thoại phải là một số.',
-            'avatar.required' => 'Vui lòng tải lên Ảnh đại diện.',
             'facebook.url' => 'Liên kết Facebook không hợp lệ.',
             'instagram.url' => 'Liên kết Instagram không hợp lệ.',
             'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',
         ]);
 
-
-        if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $validate['avatar'] = $this->uploadImage($file, 'users');
-        }
 
         $check = User::withTrashed()->where('id', $id)->update($validate);
 

@@ -47,19 +47,42 @@
             <div class="row gy-4 mb-4">
                 @foreach ($news as $post)
                     <div class="col-sm-6 col-lg-4">
+
                         <div class="card p-2 h-100 shadow-none border">
+
                             <div class="rounded-2 text-center mb-3">
-                                <a href="{{route('dashboard.posts.detail',$post->id)}}"><img class="img-fluid" src="{{ $post->cover }}"
-                                        alt="{{ $post->title }}" /></a>
+                                <a href="{{ route('dashboard.posts.detail', $post->id) }}">
+                                    <img class="object-fit-cover" src="{{ $post->cover }}" alt="{{ $post->title }}"
+                                        height="250" width="100%" /></a>
                             </div>
                             <div class="card-body p-3 pt-2">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <p class="d-flex align-items-center mb-0"> <i
-                                            class='bx bx-calendar me-1'></i><small>10/2/2024</small>
+                                    <p class="d-flex align-items-center mb-0">
+                                        <i
+                                            class='bx bx-calendar me-1'></i><small>{{ $post->created_at->format('d/m/y - h:m') }}&nbsp;</small>
+                                        @if (now()->startOfDay()->eq($post->created_at->startOfDay()))
+                                            - &nbsp;<span class="badge bg-label-success"> Mới nhất</span>
+                                        @else
+                                            - <small>&nbsp;{{ $post->created_at->diffForHumans() }}</small>
+                                        @endif
+
                                     </p>
-                                    <span class="badge bg-label-success">Bán mạnh</span>
+                                    @if ($post->status == '1')
+                                        <span class="badge bg-label-success">Bán mạnh</span>
+                                    @endif
+                                    @if ($post->status == '2')
+                                        <span class="badge bg-label-danger">Đã bán</span>
+                                    @endif
+                                    @if ($post->status == '3')
+                                        <span class="badge bg-label-danger">Chủ tự bán</span>
+                                    @endif
                                 </div>
-                                <a href="{{route('dashboard.posts.detail',$post->id)}}" class="h5 mb-3 d-block truncate-3">{{ $post->title }}</a>
+
+                                <div class="truncate-3 mb-3  text-break">
+                                    <a href="{{ route('dashboard.posts.detail', $post->id) }}"
+                                        class="h5 d-block ">{{ $post->title }}</a>
+                                </div>
+
                                 <div class="truncate-3 mb-3 fw-lighter text-break" style="font-size: 14px">
                                     {!! $post->content !!}
                                 </div>
@@ -69,17 +92,22 @@
 
                                     <div class="d-flex justify-content-start align-items-center">
                                         <div class="avatar-wrapper">
-                                            <div class="avatar avatar-sm me-2"><span
-                                                    class="avatar-initial rounded-circle bg-label-warning">K</span></div>
+                                            <div class="avatar avatar-sm me-3"><img
+                                                    src="{{ getThumb($post->user->avatar) }}" alt="Avatar"
+                                                    class="rounded-circle"></div>
                                         </div>
-                                        <div class="d-flex flex-column"><a href="pages-profile-user.html"
-                                                class="text-body text-truncate"><span class="fw-medium">Trần Trung
-                                                    Kiên</span></a>
-                                            <small class="text-truncate text-muted">kienhee.it@gmail.com</small>
+                                        <div class="d-flex flex-column"><a href="javascript:void(0)"
+                                                class="text-body text-truncate"><span
+                                                    class="fw-medium">{{ $post->user->full_name }}</span></a>
+                                            <small class="text-truncate text-muted">{{ $post->user->email }}</small>
                                         </div>
                                     </div>
 
-                                    <i class='bx bx-bookmark'></i>
+
+                                    <a href="javascript:void(0)" class="text-secondary text-nowrap d-inline-block"><i
+                                            class=' tf-icons bx bx-bookmark fs-4'></i>
+                                        <span class="badge rounded-pill bg-info text-white badge-notifications">10</span>
+                                    </a>
                                 </div>
 
                             </div>

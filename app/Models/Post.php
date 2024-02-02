@@ -13,6 +13,14 @@ class Post extends Model
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+    public function direction()
+    {
+        return $this->belongsTo(Direction::class, 'direction_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

@@ -31,8 +31,9 @@
                 <thead>
                     <tr>
                         <th style="width: 10px">ID</th>
-                        <th  style="width: 300px">Bài viết</th>
-                        <th>Tác giả</th>
+                        <th style="width: 300px">Bài viết</th>
+                        <th>Người đăng</th>
+                        <th>Tình trạng</th>
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
                         <th style="width: 50px">Thao tác</th>
@@ -65,6 +66,11 @@
                         searchable: false
                     },
                     {
+                        data: 'status_1',
+                        name: 'status',
+                        searchable: false
+                    },
+                    {
                         data: 'status',
                         name: 'deleted_at',
                         searchable: false
@@ -81,7 +87,7 @@
                     },
                 ],
                 order: [
-                    [4,
+                    [5,
                         'desc'
                     ] // 4 tương ứng với chỉ số của cột 'created_at' trong mảng 'columns'
                 ],
