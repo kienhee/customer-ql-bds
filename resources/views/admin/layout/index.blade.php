@@ -59,6 +59,7 @@
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/tagify/tagify.css" />
   <link rel="stylesheet"
     href="{{ asset('admin-frontend') }}/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+       <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/nouislider/nouislider.css" />
   {{-- Page CSS --}}
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/pages/page-auth.css" />
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/pages/page-profile.css" />
@@ -171,7 +172,7 @@
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/dropzone/dropzone.js"></script>
   {{-- Main JS --}}
   <script src="{{ asset('admin-frontend') }}/assets/js/main.js"></script>
-
+    <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/nouislider/nouislider.js"></script>
   {{-- Page JS --}}
   <script src="{{ asset('admin-frontend') }}/assets/js/dashboards-analytics.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/js/pages-auth.js"></script>

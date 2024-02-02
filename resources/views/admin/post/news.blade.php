@@ -20,30 +20,74 @@
                 <p class="text-muted mb-0">Total 6 course you have purchased</p>
             </div>
             <div class="d-flex justify-content-md-end align-items-center gap-3 flex-wrap">
-                <select id="select2_course_select" class="select2 form-select" data-placeholder="All Courses">
-                    <option value="">All Courses</option>
-                    <option value="all courses">All Courses</option>
-                    <option value="ui/ux">UI/UX</option>
-                    <option value="seo">SEO</option>
-                    <option value="web">Web</option>
-                    <option value="music">Music</option>
-                    <option value="painting">Painting</option>
-                </select>
 
-                <label class="switch">
-                    <input type="checkbox" class="switch-input" />
-                    <span class="switch-toggle-slider">
-                        <span class="switch-on"></span>
-                        <span class="switch-off"></span>
-                    </span>
-                    <span class="switch-label text-nowrap mb-0">Hide completed</span>
-                </label>
                 <a href="{{ route('dashboard.posts.add') }}" class="btn btn-outline-primary">
                     <i class="fa-solid fa-plus"></i> &nbsp;Bài viết mới
                 </a>
             </div>
         </div>
+
         <div class="card-body">
+            <div class=" mb-4">
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label class="form-label">Bài viết:</label>
+                        <input type="text" class="form-control  @error('title') invalid @enderror" id="title"
+                            placeholder="Tìm kiếm theo tên bài viết" name="title" value="{{ old('title') }}" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
+                        <select id="province_id"
+                            class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
+                            data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh">
+                            <option value="">Vui lòng tỉnh thành</option>
+                            @foreach (provices() as $provice)
+                                <option value="{{ $provice->id }}"
+                                    @if (old('province_id') == $provice->id) @selected(true) @endif>
+                                    {{ $provice->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label for="district_id" class="form-label">Quận/Huyện: <span class="text-danger">*</span></label>
+                        <select id="district_id"
+                            class="select2 form-select form-select-lg @error('district_id') is-invalid @enderror"
+                            data-allow-clear="true" name="district_id" data-placeholder="Vui lòng chọn quận/huyện">
+                            <option value="">Vui lòng chọn quận/huyện</option>
+                            @foreach (districts() as $district)
+                                <option value="{{ $district->id }}"
+                                    @if (old('district_id') == $district->id) @selected(true) @endif>
+                                    {{ $district->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label class="form-label">Địa chỉ:</label>
+                        <input type="text" class="form-control  @error('title') invalid @enderror" id="title"
+                            placeholder="Địa chỉ" name="title" value="{{ old('title') }}" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label class="form-label">Số phòng:</label>
+                        <input type="text" class="form-control  @error('title') invalid @enderror" id="title"
+                            placeholder="Số phòng" name="title" value="{{ old('title') }}" />
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label for="direction_id" class="form-label">Hướng: <span class="text-danger">*</span></label>
+                        <select id="direction_id"
+                            class="select2 form-select form-select-lg @error('direction_id') is-invalid @enderror"
+                            data-allow-clear="true" name="direction_id" data-placeholder="Vui lòng chọn hướng">
+                            <option value="">Vui lòng chọn hướng</option>
+                            @foreach (directions() as $direction)
+                                <option value="{{ $direction->id }}"
+                                    @if (old('direction_id') == $direction->id) @selected(true) @endif>
+                                    {{ $direction->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <hr class="mb-5">
             <div class="row gy-4 mb-4">
                 @foreach ($news as $post)
                     <div class="col-sm-6 col-lg-4">
