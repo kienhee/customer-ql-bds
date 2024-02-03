@@ -110,7 +110,7 @@
                         <ul class="list-unstyled mb-4 mt-3">
                             <li class="d-flex align-items-center mb-3">
                                 <i class='bx bx-calendar'></i><span class="fw-medium mx-2">Năm sinh:</span>
-                                <span>{{ explode('-', $post->user->date_of_birth)[2] }}</span>
+                                <span>{{ $post->user->date_of_birth ? explode('-', $post->user->date_of_birth)[2] : 'Chưa xác định' }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
                                 <i class="bx bx-phone"></i><span class="fw-medium mx-2">SDT:</span>

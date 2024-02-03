@@ -155,7 +155,6 @@
                                     <a href="javascript:void(0)" onclick="savePost({{ $post->id }})"
                                         class="text-secondary text-nowrap d-inline-block"><i
                                             class=' tf-icons bx bx-bookmark fs-4'></i>
-                                        <span class="badge rounded-pill bg-info text-white badge-notifications">10</span>
                                     </a>
                                 </div>
 
