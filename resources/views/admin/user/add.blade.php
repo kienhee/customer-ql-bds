@@ -73,6 +73,29 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="date_of_birth">Sinh nhật: <span class="text-danger">*</span></label>
+                        <input type="text" id="date_of_birth" name="date_of_birth"
+                            class="form-control dob-picker  @error('date_of_birth')
+                                invalid
+                            @enderror"
+                            placeholder="DD-MM-YYYY" value="{{ old('date_of_birth') }}" />
+                        @error('date_of_birth')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="CCCD">CCCD/CMND: <span class="text-danger">*</span></label>
+                        <input type="text"
+                            class="form-control @error('CCCD')
+                                invalid
+                            @enderror"
+                            value="{{ old('CCCD') }}" id="CCCD" name="CCCD"
+                            placeholder="Vui lòng nhập CCCD/CMND">
+                        @error('CCCD')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="form-password-toggle mb-3 ">
                         <label class="form-label" for="password">Mật khẩu: <span class="text-danger">*</span></label>
                         <div class="input-group">
@@ -90,7 +113,8 @@
                         <label class="form-label" for="password_confirmation">Xác nhận Mật khẩu: <span
                                 class="text-danger">*</span></label>
                         <div class="input-group">
-                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                            <input type="password"
+                                class="form-control @error('password_confirmation') is-invalid @enderror"
                                 id="password_confirmation" name="password_confirmation"
                                 placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;">
                             <span id="basic-default-password2" class="input-group-text cursor-pointer"><i
@@ -111,7 +135,8 @@
             <!-- Thẻ Người dùng -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <h6 class="pb-2 border-bottom mb-4"><i class='bx bx-link'></i> Mạng xã hội <span class="text-muted">(tùy
+                    <h6 class="pb-2 border-bottom mb-4"><i class='bx bx-link'></i> Mạng xã hội <span
+                            class="text-muted">(tùy
                             chọn)</span></h6>
                     <div class="row g-3">
                         <div class="col-sm-12">
@@ -123,7 +148,7 @@
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="col-sm-12">
+                        {{-- <div class="col-sm-12">
                             <label class="form-label" for="instagram">Instagram</label>
                             <input type="text" id="instagram" name="instagram" value="{{ old('instagram') }}"
                                 class="form-control form-control-sm @error('instagram') invalid @enderror"
@@ -140,7 +165,7 @@
                             @error('linkedin')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -149,4 +174,17 @@
         </div>
         <!--/ Thanh bên Người dùng -->
     </form>
+@endsection
+@section('script')
+    <script>
+        let datepickerList = document.querySelectorAll('.dob-picker');
+        if (datepickerList) {
+            datepickerList.forEach(function(datepicker) {
+                datepicker.flatpickr({
+                    monthSelectorType: 'static',
+                    dateFormat: "d-m-Y",
+                });
+            });
+        }
+    </script>
 @endsection

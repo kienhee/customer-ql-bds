@@ -21,8 +21,8 @@
                     @if ($post->status != 1)
                         <div
                             class="position-absolute top-0 bottom-0 left-0 right-0 p-2 p-md-5 d-flex justify-content-center align-items-center">
-                            <img src="{{ $post->status == 2 ? asset('admin-frontend/assets/img/stop_sell.png'):asset('admin-frontend/assets/img/self_sold.png') }}" class="img-fluid z-3"
-                                alt="">
+                            <img src="{{ $post->status == 2 ? asset('admin-frontend/assets/img/stop_sell.png') : asset('admin-frontend/assets/img/self_sold.png') }}"
+                                class="img-fluid z-3" alt="">
                         </div>
                     @endif
 
@@ -109,6 +109,10 @@
                         <hr>
                         <ul class="list-unstyled mb-4 mt-3">
                             <li class="d-flex align-items-center mb-3">
+                                <i class='bx bx-calendar'></i><span class="fw-medium mx-2">Năm sinh:</span>
+                                <span>{{ explode('-', $post->user->date_of_birth)[2] }}</span>
+                            </li>
+                            <li class="d-flex align-items-center mb-3">
                                 <i class="bx bx-phone"></i><span class="fw-medium mx-2">SDT:</span>
                                 <span>{{ $post->user->phone }}</span>
                             </li>
@@ -117,18 +121,22 @@
                                 <span>{{ $post->user->email }}</span>
                             </li>
                         </ul>
-                        <small class="text-muted text-uppercase">Teams</small>
+                        <small class="text-muted text-uppercase">Socials</small>
                         <ul class="list-unstyled mt-3 mb-0">
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="bx bxl-github text-primary me-2"></i>
-                                <div class="d-flex flex-wrap">
-                                    <span class="fw-medium me-2">Backend Developer</span><span>(126 Members)</span>
-                                </div>
-                            </li>
+                            @if ($post->user->facebook)
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class='bx bxl-facebook-circle text-primary me-2'></i>
+                                    <div class="d-flex flex-wrap">
+                                        <a href="{{ $post->user->facebook }}" class="fw-medium me-2">Facebook</a>
+                                    </div>
+                                </li>
+                            @endif
                             <li class="d-flex align-items-center">
-                                <i class="bx bxl-react text-info me-2"></i>
+                                <img src="{{ asset('admin-frontend/assets/img/zalo-icon.png') }}" class="me-2"
+                                    alt="">
                                 <div class="d-flex flex-wrap">
-                                    <span class="fw-medium me-2">React Developer</span><span>(98 Members)</span>
+                                    <a href="https://zalo.me/{{ $post->user->phone }}" target="_blank"
+                                        class="fw-medium me-2">Zalo</a>
                                 </div>
                             </li>
                         </ul>

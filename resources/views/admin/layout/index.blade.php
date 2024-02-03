@@ -60,6 +60,7 @@
   <link rel="stylesheet"
     href="{{ asset('admin-frontend') }}/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
        <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/nouislider/nouislider.css" />
+        <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/libs/flatpickr/flatpickr.css" />
   {{-- Page CSS --}}
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/pages/page-auth.css" />
   <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/pages/page-profile.css" />
@@ -170,6 +171,7 @@
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/bloodhound/bloodhound.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/dropzone/dropzone.js"></script>
+      <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/flatpickr/flatpickr.js"></script>
   {{-- Main JS --}}
   <script src="{{ asset('admin-frontend') }}/assets/js/main.js"></script>
     <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/nouislider/nouislider.js"></script>

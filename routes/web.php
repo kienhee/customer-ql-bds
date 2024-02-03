@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\Admin\SavePostController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\District;
@@ -60,6 +61,11 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
 
         Route::get('/news', [PostController::class, 'news'])->name('news');
         Route::get('/news/{id}', [PostController::class, 'detail'])->name('detail');
+    });
+    Route::prefix('save-post')->name('save-post.')->group(function () {
+        Route::get('/', [SavePostController::class, 'index'])->name('index');
+        Route::post('/save-favorite', [SavePostController::class, 'savePost'])->name('savePost');
+        Route::delete('/remove-favorite', [SavePostController::class, 'removePost'])->name('removePost');
     });
     Route::prefix('regions')->name('regions.')->middleware('can:regions')->group(function () {
         Route::get('/', [RegionController::class, 'index'])->name('index')->can('view', Region::class);

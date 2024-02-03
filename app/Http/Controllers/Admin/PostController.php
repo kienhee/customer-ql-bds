@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\SavePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -235,9 +236,31 @@ class PostController extends Controller
         return back()->with('msgError', 'Xóa thất bại');
     }
 
-    public function news()
+    public function news(Request $request)
     {
-        $news = Post::orderBy('created_at', 'desc')->where('status', 1)->get();
+        $result = Post::query();
+
+        if ($request->has('title') && $request->title != null) {
+            $result->where('title', 'like', '%' . $request->title . '%');
+        }
+
+
+        if ($request->has('province_id') && $request->province_id != null) {
+            $result->where('province_id', $request->province_id);
+        }
+        if ($request->has('district_id') && $request->district_id != null) {
+            $result->where('district_id', $request->district_id);
+        }
+        if ($request->has('address') && $request->address != null) {
+            $result->where('address', 'like', '%' . $request->address . '%');
+        }
+        if ($request->has('room_number') && $request->room_number != null) {
+            $result->where('room_number', 'like', '%' . $request->room_number . '%');
+        }
+        if ($request->has('direction_id') && $request->direction_id != null) {
+            $result->where('direction_id', $request->direction_id);
+        }
+        $news = $result->orderBy('created_at', 'desc')->where('status', 1)->paginate(20);
         return view('admin.post.news', compact('news'));
     }
 
@@ -250,4 +273,5 @@ class PostController extends Controller
         }
         return view('admin.post.detail', compact('post'));
     }
+   
 }

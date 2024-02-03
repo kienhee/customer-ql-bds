@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('CCCD')->nullable();
-            $table->timestamp('date_of_birth')->nullable();
+            $table->string('date_of_birth')->nullable();
             $table->string('password');
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();

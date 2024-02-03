@@ -88,6 +88,8 @@ class UserController extends Controller
             'group_id' => 'required|numeric',
             'phone' => 'required|numeric',
             'email' => 'required|email|unique:users,email',
+            'date_of_birth' => "required",
+            'CCCD' => "required|numeric",
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             'facebook' => 'nullable|url',
@@ -103,6 +105,9 @@ class UserController extends Controller
             'email.required' => 'Vui lòng nhập Địa chỉ Email.',
             'email.email' => 'Địa chỉ Email không hợp lệ.',
             'email.unique' => 'Địa chỉ Email đã được sử dụng.',
+            'date_of_birth.required' => 'Vui lòng nhập sinh nhật.',
+            'CCCD.required' => 'Vui lòng nhập CCCD/CMND.',
+            'CCCD.numeric' => 'CCCD/CMND bắt buộc là số.',
             'password.required' => 'Vui lòng nhập Mật khẩu.',
             'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
             'password.confirmed' => 'Xác nhận Mật khẩu không khớp.',
@@ -114,7 +119,7 @@ class UserController extends Controller
         ]);
 
 
-     
+
         $validate['password'] = Hash::make($validate['password']);
 
         unset($validate['password_confirmation']);
@@ -145,6 +150,8 @@ class UserController extends Controller
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
             'linkedin' => 'nullable|url',
+            'date_of_birth' => "required",
+            'CCCD' => "required|numeric",
         ], [
             'full_name.required' => 'Vui lòng nhập Họ và Tên.',
             'full_name.max' => 'Họ và Tên không được vượt quá 50 ký tự.',
@@ -152,6 +159,9 @@ class UserController extends Controller
             'group_id.numeric' => 'Vai trò Người dùng phải là một số.',
             'phone.required' => 'Vui lòng nhập Số điện thoại.',
             'phone.numeric' => 'Số điện thoại phải là một số.',
+            'date_of_birth.required' => 'Vui lòng nhập sinh nhật.',
+            'CCCD.required' => 'Vui lòng nhập CCCD/CMND.',
+            'CCCD.numeric' => 'CCCD/CMND bắt buộc là số.',
             'facebook.url' => 'Liên kết Facebook không hợp lệ.',
             'instagram.url' => 'Liên kết Instagram không hợp lệ.',
             'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',

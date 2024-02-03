@@ -78,7 +78,29 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
-
+                    <div class="mb-3">
+                        <label class="form-label" for="date_of_birth">Sinh nhật: <span class="text-danger">*</span></label>
+                        <input type="text" id="date_of_birth" name="date_of_birth"
+                            class="form-control dob-picker  @error('date_of_birth')
+                                invalid
+                            @enderror"
+                            placeholder="DD-MM-YYYY" value="{{ old('date_of_birth') ?? $user->date_of_birth }}" />
+                        @error('date_of_birth')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="CCCD">CCCD/CMND: <span class="text-danger">*</span></label>
+                        <input type="text"
+                            class="form-control @error('CCCD')
+                                invalid
+                            @enderror"
+                            value="{{ old('CCCD') ?? $user->CCCD }}" id="CCCD" name="CCCD"
+                            placeholder="Vui lòng nhập CCCD/CMND">
+                        @error('CCCD')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary ms-auto ">Lưu thay đổi</button>
                     </div>
@@ -105,7 +127,7 @@
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="col-sm-12">
+                        {{-- <div class="col-sm-12">
                             <label class="form-label" for="instagram">Instagram</label>
                             <input type="text" id="instagram" name="instagram"
                                 value="{{ old('instagram') ?? $user->instagram }}"
@@ -124,7 +146,7 @@
                             @error('linkedin')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -133,4 +155,17 @@
         </div>
         <!--/ Thanh bên Người dùng -->
     </form>
+@endsection
+@section('script')
+    <script>
+        let datepickerList = document.querySelectorAll('.dob-picker');
+        if (datepickerList) {
+            datepickerList.forEach(function(datepicker) {
+                datepicker.flatpickr({
+                    monthSelectorType: 'static',
+                    dateFormat: "d-m-Y",
+                });
+            });
+        }
+    </script>
 @endsection

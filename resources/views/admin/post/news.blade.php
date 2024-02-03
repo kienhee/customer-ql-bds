@@ -17,7 +17,7 @@
         <div class="card-header d-flex flex-wrap justify-content-between gap-3">
             <div class="card-title mb-0 me-1">
                 <h5 class="mb-1">Bản tin</h5>
-                <p class="text-muted mb-0">Total 6 course you have purchased</p>
+                <p class="text-muted mb-0">Hãy chọn bộ lọc ở dưới đây</p>
             </div>
             <div class="d-flex justify-content-md-end align-items-center gap-3 flex-wrap">
 
@@ -28,12 +28,12 @@
         </div>
 
         <div class="card-body">
-            <div class=" mb-4">
-                <div class="row g-3">
+            <form method="GET" class=" mb-4">
+                <div class="row g-3 mb-4">
                     <div class="col-12 col-sm-6 col-lg-4">
-                        <label class="form-label">Bài viết:</label>
+                        <label class="form-label" for="title">Bài viết:</label>
                         <input type="text" class="form-control  @error('title') invalid @enderror" id="title"
-                            placeholder="Tìm kiếm theo tên bài viết" name="title" value="{{ old('title') }}" />
+                            placeholder="Tìm kiếm theo tên bài viết" name="title" value="{{ Request()->title }}" />
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4">
                         <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
@@ -43,7 +43,7 @@
                             <option value="">Vui lòng tỉnh thành</option>
                             @foreach (provices() as $provice)
                                 <option value="{{ $provice->id }}"
-                                    @if (old('province_id') == $provice->id) @selected(true) @endif>
+                                    @if (Request()->province_id == $provice->id) @selected(true) @endif>
                                     {{ $provice->name }}</option>
                             @endforeach
                         </select>
@@ -56,20 +56,20 @@
                             <option value="">Vui lòng chọn quận/huyện</option>
                             @foreach (districts() as $district)
                                 <option value="{{ $district->id }}"
-                                    @if (old('district_id') == $district->id) @selected(true) @endif>
+                                    @if (Request()->district_id == $district->id) @selected(true) @endif>
                                     {{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4">
                         <label class="form-label">Địa chỉ:</label>
-                        <input type="text" class="form-control  @error('title') invalid @enderror" id="title"
-                            placeholder="Địa chỉ" name="title" value="{{ old('title') }}" />
+                        <input type="text" class="form-control  @error('address') invalid @enderror" id="address"
+                            placeholder="Địa chỉ" name="address" value="{{ Request()->address }}" />
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4">
                         <label class="form-label">Số phòng:</label>
-                        <input type="text" class="form-control  @error('title') invalid @enderror" id="title"
-                            placeholder="Số phòng" name="title" value="{{ old('title') }}" />
+                        <input type="text" class="form-control  @error('room_number') invalid @enderror" id="room_number"
+                            placeholder="Số phòng" name="room_number" value="{{ Request()->room_number }}" />
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4">
                         <label for="direction_id" class="form-label">Hướng: <span class="text-danger">*</span></label>
@@ -79,14 +79,18 @@
                             <option value="">Vui lòng chọn hướng</option>
                             @foreach (directions() as $direction)
                                 <option value="{{ $direction->id }}"
-                                    @if (old('direction_id') == $direction->id) @selected(true) @endif>
+                                    @if (Request()->direction_id == $direction->id) @selected(true) @endif>
                                     {{ $direction->name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                 </div>
-            </div>
+                <div class="d-flex justify-content-end gap-3">
+                    <a href="{{ route('dashboard.posts.news') }}" class="btn btn-secondary">Đặt lại</a>
+                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                </div>
+            </form>
             <hr class="mb-5">
             <div class="row gy-4 mb-4">
                 @foreach ($news as $post)
@@ -96,7 +100,7 @@
 
                             <div class="rounded-2 text-center mb-3">
                                 <a href="{{ route('dashboard.posts.detail', $post->id) }}">
-                                    <img class="object-fit-cover" src="{{ $post->cover }}" alt="{{ $post->title }}"
+                                    <img class="object-fit-cover " src="{{ $post->cover }}" alt="{{ $post->title }}"
                                         height="250" width="100%" /></a>
                             </div>
                             <div class="card-body p-3 pt-2">
@@ -124,7 +128,7 @@
 
                                 <div class="truncate-3 mb-3  text-break">
                                     <a href="{{ route('dashboard.posts.detail', $post->id) }}"
-                                        class="h5 d-block ">{{ $post->title }}</a>
+                                        class="h5 d-block mb-0 ">{{ $post->title }}</a>
                                 </div>
 
                                 <div class="truncate-3 mb-3 fw-lighter text-break" style="font-size: 14px">
@@ -148,7 +152,8 @@
                                     </div>
 
 
-                                    <a href="javascript:void(0)" class="text-secondary text-nowrap d-inline-block"><i
+                                    <a href="javascript:void(0)" onclick="savePost({{ $post->id }})"
+                                        class="text-secondary text-nowrap d-inline-block"><i
                                             class=' tf-icons bx bx-bookmark fs-4'></i>
                                         <span class="badge rounded-pill bg-info text-white badge-notifications">10</span>
                                     </a>
@@ -161,33 +166,45 @@
 
 
             </div>
-            <nav aria-label="Page navigation" class="d-flex align-items-center justify-content-center">
-                <ul class="pagination">
-                    <li class="page-post prev">
-                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="javascript:void(0);">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0);">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0);">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0);">4</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="javascript:void(0);">5</a>
-                    </li>
-                    <li class="page-item next">
-                        <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
-                    </li>
-                </ul>
-            </nav>
+            {{ $news->withQueryString()->links() }}
+
         </div>
     </div>
 
 
 @endsection
+<script>
+    function savePost(id) {
+        $.ajax({
+            type: 'POST',
+            url: '{!! route('dashboard.save-post.savePost') !!}',
+            data: {
+                post_id: id,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }, // Dữ liệu gửi đi (có thể là ID của bài viết)
+            success: function(response) {
+                Swal.fire({
+                    title: 'Bài viết đã được lưu!',
+                    icon: 'success',
+                    timer: 2000,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false,
+                })
+            },
+            error: function(error) {
+                Swal.fire({
+                    title: 'Bài viết chưa được lưu!',
+                    icon: 'error',
+                    timer: 2000,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false,
+                })
+            }
+        });
+
+    }
+</script>

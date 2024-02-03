@@ -25,6 +25,8 @@ class ProfileController extends Controller
             'facebook' => 'nullable|url',
             'instagram' => 'nullable|url',
             'linkedin' => 'nullable|url',
+            'date_of_birth' => "required",
+            'CCCD' => "required|numeric",
         ], [
             'full_name.required' => 'Vui lòng nhập họ và tên.',
             'full_name.max' => 'Họ và tên không được vượt quá 50 ký tự.',
@@ -33,6 +35,9 @@ class ProfileController extends Controller
             'facebook.url' => 'Định dạng URL Facebook không hợp lệ.',
             'instagram.url' => 'Định dạng URL Instagram không hợp lệ.',
             'linkedin.url' => 'Định dạng URL LinkedIn không hợp lệ.',
+            'date_of_birth.required' => 'Vui lòng nhập sinh nhật.',
+            'CCCD.required' => 'Vui lòng nhập CCCD/CMND.',
+            'CCCD.numeric' => 'CCCD/CMND bắt buộc là số.',
         ]);
 
         $validate['group_id'] = Auth::user()->group_id;

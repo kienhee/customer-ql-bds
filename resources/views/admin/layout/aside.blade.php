@@ -15,6 +15,7 @@
             'can' => 'dashboard',
             'children' => [],
         ],
+
         [
             'name' => 'Bản tin',
             'classIcon' => ' bx bx-news ',
@@ -27,6 +28,13 @@
             'classIcon' => ' bx bx-news ',
             'route' => 'dashboard.posts.index',
             'can' => 'posts',
+            'children' => [],
+        ],
+        [
+            'name' => 'Bài viết đã lưu',
+            'classIcon' => ' bx bx-bookmark ',
+            'route' => 'dashboard.save-post.index',
+            'can' => '',
             'children' => [],
         ],
         [

@@ -72,15 +72,15 @@ class ProvinceController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'name' => 'required|max:255|unique:provices,name,',
+            'name' => 'required|max:255|unique:provinces,name,',
             'region_id' => 'required|numeric',
         ], [
             'name.required' => 'Vui lòng nhập tỉnh thành.',
             'name.max' => 'Tỉnh thành không được vượt quá :max ký tự.',
+            'name.unique' => 'Tỉnh thành đã tồn tại',
             'region_id.required' => 'Vui lòng chọn miền cho tỉnh.',
             'region_id.numeric' => 'Miền phải phải là một số.',
         ]);
-
         $check = Province::insert($validate);
 
         if ($check) {
@@ -102,11 +102,12 @@ class ProvinceController extends Controller
     public function update(Request $request, $id)
     {
         $validate = $request->validate([
-            'name' => 'required|max:255|unique:provices,name,' . $id,
+            'name' => 'required|max:255|unique:provinces,name,' . $id,
             'region_id' => 'required|numeric',
         ], [
             'name.required' => 'Vui lòng nhập tỉnh thành.',
             'name.max' => 'Tỉnh thành không được vượt quá :max ký tự.',
+            'name.unique' => 'Tỉnh thành đã tồn tại',
             'region_id.required' => 'Vui lòng chọn miền cho tỉnh.',
             'region_id.numeric' => 'Miền phải phải là một số.',
         ]);
