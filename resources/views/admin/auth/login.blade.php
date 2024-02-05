@@ -29,7 +29,7 @@
               is-invalid
           @enderror "
                             id="email" name="email" value="{{ old('email') }}"
-                            placeholder="Nhập email hoặc tên người dùng của bạn" autofocus />
+                            placeholder="Nhập email của bạn" autofocus />
                         @error('email')
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                 <div data-field="email" data-validator="notEmpty">{{ $message }}</div>
