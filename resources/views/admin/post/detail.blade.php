@@ -11,7 +11,20 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h4 class="mb-2">{{ $post->title }}</h4>
+                        <h4 class="mb-3">{{ $post->title }}</h4>
+                        <div class="d-flex gap-3 align-items-center mb-3">
+                            <p class="d-flex align-items-center mb-0">
+                                <i
+                                    class='bx bx-calendar me-1'></i><small>{{ $post->created_at->format('d/m/y - h:m') }}&nbsp;</small>
+                                @if (now()->startOfDay()->eq($post->created_at->startOfDay()))
+                                    - &nbsp;<span class="badge bg-label-success"> Mới nhất</span>
+                                @else
+                                    - <small>&nbsp;{{ $post->created_at->diffForHumans() }}</small>
+                                @endif
+                            </p>
+                            <p class="mb-0"><i class='bx bx-show-alt fs-3'></i> <small>{{ $post->views }} lượt
+                                    xem</small></p>
+                        </div>
                         <hr class="my-4" />
                         <h5>Mô tả</h5>
                         <div class="my-3">
@@ -71,13 +84,14 @@
                                 <i class="bx bx-star"></i><span class="fw-medium mx-2">Đặc điểm:</span>
                                 <div class="mt-1">
                                     @foreach (json_decode($post->characteristics, true) as $item)
-                                        <span class="badge rounded-pill bg-label-secondary me-2">{{ $item['value'] }}</span>
+                                        <span
+                                            class="badge rounded-pill bg-label-secondary me-2">{{ $item['value'] }}</span>
                                     @endforeach
                                 </div>
                             </li>
                             <li class="d-flex align-items-center flex-wrap mb-3">
                                 <i class='bx bx-bed'></i><span class="fw-medium mx-2">Số phòng:</span>
-                                <span>{{ $post->room_number }} đ</span>
+                                <span>{{ $post->room_number }}</span>
                             </li>
                             <li class="d-flex align-items-center flex-wrap mb-3">
                                 <i class='bx bx-directions'></i><span class="fw-medium mx-2">Huớng:</span>

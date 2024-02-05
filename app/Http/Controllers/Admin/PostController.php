@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\PostViewHistory;
 use App\Models\SavePost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -268,10 +269,14 @@ class PostController extends Controller
     {
         $post = Post::withTrashed()->find($id);
 
+        $CheckViewedPost = PostViewHistory::where('post_id', $post->id)->where('user_id', Auth::id())->first();
+        if (!$CheckViewedPost) {
+            $post->increment('views');
+            PostViewHistory::insert(['post_id' => $post->id, 'user_id' => Auth::id()]);
+        }
         if (!$post) {
             abort(404);
         }
         return view('admin.post.detail', compact('post'));
     }
-   
 }
