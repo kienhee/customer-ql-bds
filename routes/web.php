@@ -58,9 +58,9 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
         Route::post('/soft-delete/{id}', [PostController::class, 'softDelete'])->name('soft-delete')->can('delete', Post::class);
         Route::post('/restore/{id}', [PostController::class, 'restore'])->name('restore')->can('delete', Post::class);
         Route::post('/force-delete/{id}', [PostController::class, 'forceDelete'])->name('force-delete')->can('delete', Post::class);
-
         Route::get('/news', [PostController::class, 'news'])->name('news');
         Route::get('/news/{id}', [PostController::class, 'detail'])->name('detail');
+        Route::post('/news/{id}', [PostController::class, 'comment'])->name('comment');
     });
     Route::prefix('save-post')->name('save-post.')->group(function () {
         Route::get('/', [SavePostController::class, 'index'])->name('index');

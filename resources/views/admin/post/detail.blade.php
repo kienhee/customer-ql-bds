@@ -1,7 +1,7 @@
 @extends('admin.layout.index')
 @section('title', $post->title)
 @section('content')
-    <div class="card g-3 ">
+    <div class="card g-3 mb-4">
         <div class="card-body row g-3">
             <div class="col-lg-8">
                 <div class="card shadow-none border position-relative overflow-hidden">
@@ -38,12 +38,77 @@
                                 class="img-fluid z-3" alt="">
                         </div>
                     @endif
+                    <hr>
+                    <section>
+                        <div class="container py-5 text-dark">
+                            <div class="row">
+                                @if ($comments->count() > 0)
+                                    @foreach ($comments as $comment)
+                                        <div class="col-12">
+                                            <div class="d-flex flex-column gap-3 flex-md-row gap-md-0 flex-start mb-4">
+                                                <img class="rounded-circle shadow-1-strong me-3"
+                                                    src="{{ $comment->user ? getThumb($comment->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
+                                                    alt="avatar" width="65" height="65" />
+                                                <div class="card w-100">
+                                                    <div class="card-body p-4">
+                                                        <div class="">
+                                                            <h5 class="mb-2">{{ $comment->user->full_name }}</h5>
+                                                            <i
+                                                                class='bx bx-calendar me-1'></i><small>{{ $comment->created_at->format('d/m/y - h:m') }}&nbsp;</small>
+                                                            @if (now()->startOfDay()->eq($comment->created_at->startOfDay()))
+                                                                - &nbsp;<span class="badge bg-label-success"> Mới
+                                                                    nhất</span>
+                                                            @else
+                                                                -
+                                                                <small>&nbsp;{{ $comment->created_at->diffForHumans() }}</small>
+                                                            @endif
+                                                            <p class="mt-2">
+                                                                {{ $comment->content }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
 
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="col-12 mb-5">
+                                        <p class="h5 text-center text-muted">Chưa có lời nhắn nào!</p>
+                                    </div>
+                                @endif
+
+
+                                <hr class="pb-3">
+                                <h5 class="text-center">Để lại Lời nhắn 📝</h5>
+                                <form action="{{ route('dashboard.posts.comment', $post->id) }}" method="POST"
+                                    class="card-footer border-0">
+                                    @csrf
+                                    <div class="d-flex flex-start w-100">
+                                        <img class="rounded-circle shadow-1-strong me-3 d-none d-md-block"
+                                            src="{{ Auth::user()->avatar ? getThumb(Auth::user()->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
+                                            alt="avatar" width="40" height="40" />
+                                        <div class="form-outline w-100">
+                                            <textarea class="form-control @error('content') invalid @enderror" rows="4" name="content"
+                                                placeholder="Vui lòng để lại Lời nhắn"></textarea>
+                                            @error('content')
+                                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="float-end mt-2 pt-1">
+                                        <button type="submit" class="btn btn-primary btn-sm">Gửi Lời nhắn</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="card mb-4">
-
                     <div class="card-body">
                         <small class="text-muted text-uppercase">Thông tin</small>
                         <ul class="list-unstyled mb-4 mt-3">
@@ -113,8 +178,8 @@
                         <small class="text-muted text-uppercase">Liên hệ</small>
                         <div class="user-avatar-section">
                             <div class="d-flex align-items-center flex-column">
-                                <img class="object-fit-cover rounded my-4" src="{{ $post->user->avatar }}" height="100"
-                                    width="100" alt="User avatar">
+                                <img class="object-fit-cover rounded my-4" src="{{ $post->user->avatar }}"
+                                    height="100" width="100" alt="User avatar">
                                 <div class="user-info text-center">
                                     <h4 class="mb-2">{{ $post->user->full_name }}</h4>
                                 </div>
@@ -159,4 +224,5 @@
             </div>
         </div>
     </div>
+
 @endsection

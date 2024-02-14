@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\PostViewHistory;
 use App\Models\SavePost;
@@ -277,6 +278,24 @@ class PostController extends Controller
         if (!$post) {
             abort(404);
         }
-        return view('admin.post.detail', compact('post'));
+        $comments = Comment::where('post_id', $CheckViewedPost->post_id)->get();
+
+        return view('admin.post.detail', compact('post', 'comments'));
+    }
+    public function comment(Request $request, $id)
+    {
+        $data = $request->validate([
+            'content' => 'required|min:2',
+        ], [
+            'content.required' => "Vui để lại lời nhắn",
+            'content.min' => "Không được nhỏ hơn :min ký tự",
+        ]);
+        $data['user_id'] = Auth::id();
+        $data['post_id'] = $id;
+        $check = Comment::insert($data);
+        if ($check) {
+            return back()->with('msgSuccess', 'Bình luận đã được thêm thành công!');
+        }
+        return back()->with('msgError', 'Bình luận không công, vui lòng thử lại!');
     }
 }

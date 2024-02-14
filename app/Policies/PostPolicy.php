@@ -8,4 +8,8 @@ class PostPolicy extends PolicyParent
 
 {
     public $module = 'posts';
+    public function comment()
+    {
+        return true;
+    }
 }
