@@ -45,12 +45,14 @@ class PermissionController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required|max:255|unique:groups,name,',
+            'roles' => 'required'
         ], [
             'name.required' => 'Vui lòng nhập tên nhóm.',
             'name.max' => 'Tên nhóm không được vượt quá 255 ký tự.',
             'name.unique' => 'Tên nhóm đã tồn tại.',
+            'roles.required' => 'Vui lòng chọn thêm quyền.',
         ]);
-
+        unset($validate['roles']);
         if (!empty($request->roles)) {
             $roleJson = json_encode($request->roles);
         } else {

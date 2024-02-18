@@ -1,5 +1,5 @@
 /**
- *  Pages Authentication
+ * Trang Xác thực
  */
 
 'use strict';
@@ -7,74 +7,107 @@ const formAuthentication = document.querySelector('#formAuthentication');
 
 document.addEventListener('DOMContentLoaded', function (e) {
   (function () {
-    // Form validation for Add new record
+    // Kiểm tra hợp lệ của biểu mẫu để Thêm bản ghi mới
     if (formAuthentication) {
       const fv = FormValidation.formValidation(formAuthentication, {
         fields: {
-          username: {
+          full_name: {
             validators: {
               notEmpty: {
-                message: 'Please enter username'
+                message: 'Vui lòng nhập họ và tên'
               },
               stringLength: {
                 min: 6,
-                message: 'Username must be more than 6 characters'
+                message: 'Tên người dùng phải có hơn 6 ký tự'
+              }
+            }
+          },
+          phone: {
+            validators: {
+              notEmpty: {
+                message: 'Vui lòng nhập số điện thoại của bạn'
+              },
+              regexp: {
+                regexp: /^[0-9\s]+$/,
+                message: 'Vui lòng nhập số điện thoại hợp lệ'
+              }
+            }
+          },
+          CCCD: {
+            validators: {
+              notEmpty: {
+                message: 'Vui lòng nhập số CCCD/CMND'
+              },
+              regexp: {
+                regexp: /^[0-9\s]+$/,
+                message: 'Vui lòng nhập CCCD/CMND hợp lệ'
+              }
+            }
+          },
+          referralCode: {
+            validators: {
+              notEmpty: {
+                message: 'Vui lòng nhập mã giới thiệu'
+              },
+              stringLength: {
+                min: 6,
+                message: 'Mã giới thiệu phải có hơn 6 ký tự'
               }
             }
           },
           email: {
             validators: {
               notEmpty: {
-                message: 'Please enter your email'
+                message: 'Vui lòng nhập địa chỉ email của bạn'
               },
               emailAddress: {
-                message: 'Please enter valid email address'
+                message: 'Vui lòng nhập địa chỉ email hợp lệ'
               }
             }
           },
           'email-username': {
             validators: {
               notEmpty: {
-                message: 'Please enter email / username'
+                message: 'Vui lòng nhập email / tên người dùng'
               },
               stringLength: {
                 min: 6,
-                message: 'Username must be more than 6 characters'
+                message: 'Tên người dùng phải có hơn 6 ký tự'
               }
             }
           },
           password: {
             validators: {
               notEmpty: {
-                message: 'Please enter your password'
+                message: 'Vui lòng nhập mật khẩu của bạn'
               },
               stringLength: {
                 min: 6,
-                message: 'Password must be more than 6 characters'
+                message: 'Mật khẩu phải có hơn 6 ký tự'
               }
             }
           },
-          'confirm-password': {
+          'password_confirmation': {
             validators: {
               notEmpty: {
-                message: 'Please confirm password'
+                message: 'Vui lòng xác nhận mật khẩu'
               },
               identical: {
                 compare: function () {
                   return formAuthentication.querySelector('[name="password"]').value;
                 },
-                message: 'The password and its confirm are not the same'
+                message: 'Mật khẩu và mật khẩu xác nhận không giống nhau'
               },
               stringLength: {
                 min: 6,
-                message: 'Password must be more than 6 characters'
+                message: 'Mật khẩu phải có hơn 6 ký tự'
               }
             }
           },
           terms: {
             validators: {
               notEmpty: {
-                message: 'Please agree terms & conditions'
+                message: 'Vui lòng đồng ý các điều khoản & điều kiện'
               }
             }
           }
@@ -100,10 +133,10 @@ document.addEventListener('DOMContentLoaded', function (e) {
       });
     }
 
-    //  Two Steps Verification
+    // Xác thực hai bước
     const numeralMask = document.querySelectorAll('.numeral-mask');
 
-    // Verification masking
+    // Mặt nạ xác thực
     if (numeralMask.length) {
       numeralMask.forEach(e => {
         new Cleave(e, {

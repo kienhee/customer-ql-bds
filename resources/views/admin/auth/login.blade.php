@@ -16,7 +16,7 @@
         <!-- Đăng nhập -->
         <div class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg p-sm-5 p-4">
             <div class="w-px-400 mx-auto">
-               
+
                 <h4 class="mb-2">Chào mừng trở lại! 👋</h4>
                 <p class="mb-4">Vui lòng đăng nhập vào tài khoản của bạn để bắt đầu công việc.</p>
 
@@ -28,8 +28,8 @@
                             class="form-control @error('email')
               is-invalid
           @enderror "
-                            id="email" name="email" value="{{ old('email') }}"
-                            placeholder="Nhập email của bạn" autofocus />
+                            id="email" name="email" value="{{ old('email') }}" placeholder="Nhập email của bạn"
+                            autofocus />
                         @error('email')
                             <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
                                 <div data-field="email" data-validator="notEmpty">{{ $message }}</div>
@@ -70,7 +70,12 @@
                     </div>
                     <button class="btn btn-primary d-grid w-100">Đăng nhập</button>
                 </form>
-
+                <p class="text-center">
+                    <span>Bạn chưa có tài khoản?</span>
+                    <a href="{{route('auth.register')}}">
+                        <span>Tạo tài khoản</span>
+                    </a>
+                </p>
 
 
 

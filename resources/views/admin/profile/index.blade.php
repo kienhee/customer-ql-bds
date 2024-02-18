@@ -47,6 +47,12 @@
                                             <i class="bx bx-calendar-alt"></i> Tham gia
                                             {{ Auth::user()->created_at->format('m Y') }}
                                         </li>
+                                        <li class="list-inline-item fw-medium">
+                                            <i class='bx bxs-user-account'></i>
+                                            Mã giới thiệu: {{ Auth::user()->referralCode }}
+                                        </li>
+
+
                                     </ul>
                                 </div>
                                 <div>

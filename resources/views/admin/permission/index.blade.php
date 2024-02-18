@@ -7,6 +7,10 @@
         Một vai trò cung cấp quyền truy cập vào các menu và tính năng được xác định trước, để tùy thuộc vào <br />
         vai trò được chỉ định, một quản trị viên có thể truy cập vào những gì người dùng cần.
     </p>
+    <div class="  alert alert-danger alert-dismissible" role="alert">
+        Vui lòng không tự ý xoá bất kỳ thông tin nào ở đây, có thể gây ra lỗi hệ thống
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <!-- Các thẻ vai trò -->
     <div class="row g-4 align-items-center mb-3">
         @foreach ($roleList as $item)
@@ -83,7 +87,7 @@
 
 
 
-    @if (Auth::user()->group_id == 0)
+    @if (Auth::user()->group_id == 1)
         <h4 class="py-3 mb-2">Danh sách quyền hạn</h4>
         <p>
             Chỉ sử dụng trong quá trình phát triển và chỉ bởi các tài khoản của nhà phát triển.

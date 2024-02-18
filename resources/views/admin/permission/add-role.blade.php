@@ -31,6 +31,12 @@
                         <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                     @enderror
                 </div>
+                @error('roles')
+                    <div class="  alert alert-danger alert-dismissible" role="alert">
+                        {{ $message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @enderror
                 <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <h5 class="mb-0"> Quyền hạn</h5>
                     <button id="toggleCheckboxesBtn" class="btn btn-sm btn-outline-primary" type="button">Chọn
@@ -160,7 +166,7 @@
                                                 </div>
                                             </td>
                                         @endforeach
-                                     
+
                                     </tr>
                                 @endif
                             @endforeach

@@ -138,18 +138,36 @@
 
                                 <div class="d-flex justify-content-between align-items-center ">
 
-                                    <div class="d-flex justify-content-start align-items-center">
-                                        <div class="avatar-wrapper">
-                                            <div class="avatar avatar-sm me-3"><img
-                                                    src="{{ getThumb($post->user->avatar) }}" alt="Avatar"
-                                                    class="rounded-circle"></div>
+                                    @if ($post->user)
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <div class="avatar-wrapper">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <img src="{{ $post->user->avatar ? getThumb($post->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
+                                                        alt="Avatar" class="rounded-circle">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <a href="javascript:void(0)" class="text-body text-truncate"><span
+                                                        class="fw-medium">{{ $post->user->full_name }}</span></a>
+                                                <small class="text-truncate text-muted">{{ $post->user->email }}</small>
+                                            </div>
                                         </div>
-                                        <div class="d-flex flex-column"><a href="javascript:void(0)"
-                                                class="text-body text-truncate"><span
-                                                    class="fw-medium">{{ $post->user->full_name }}</span></a>
-                                            <small class="text-truncate text-muted">{{ $post->user->email }}</small>
+                                    @else
+                                        <div class="d-flex justify-content-start align-items-center">
+                                            <div class="avatar-wrapper">
+                                                <div class="avatar avatar-sm me-3">
+                                                    <img src="{{ asset('admin-frontend/assets/img/avatar.png') }}"
+                                                        alt="Avatar" class="rounded-circle">
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <a href="javascript:void(0)" class="text-body text-truncate"><span
+                                                        class="fw-medium">Đang đình chỉ</span></a>
+                                                <small class="text-truncate text-muted">Không xác định</small>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
+
 
 
                                     <a href="javascript:void(0)" onclick="savePost({{ $post->id }})"

@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('linkedin')->nullable();
             $table->string('behance')->nullable();
             $table->string('dribbble')->nullable();
+            $table->string('referralCode', 6)->nullable();
+            $table->string('referralCode_parent', 6)->nullable();
             $table->integer('group_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

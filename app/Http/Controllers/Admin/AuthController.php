@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\ResetPassword;
 use App\Models\LoginHistory;
 use App\Models\PasswordRessetTokens;
+use App\Models\RefCode;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
@@ -16,6 +17,80 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+
+    public function register()
+    {
+        if (Auth::check()) {
+            return redirect()->back();
+        } else {
+            $layout = "auth";
+            return view('admin.auth.register', compact('layout'));
+        }
+    }
+    public function handleRegister(Request $request)
+    {
+        // dd($request->all());
+        $validate = $request->validate([
+            'full_name' => 'required|max:50',
+            'phone' => 'required|numeric',
+            'email' => 'required|email|unique:users,email',
+            'CCCD' => "required|numeric",
+            'referralCode' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // Kiểm tra xem mã giới thiệu có tồn tại trong cơ sở dữ liệu hay không
+                    $existingUser = User::where('referralCode', $value)->exists();
+                    if (!$existingUser) {
+                        $fail('Mã giới thiệu không hợp lệ.');
+                    }
+                },
+            ],
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|min:6',
+        ], [
+            'full_name.required' => 'Vui lòng nhập Họ và Tên.',
+            'full_name.max' => 'Họ và Tên không được vượt quá 50 ký tự.',
+            'phone.required' => 'Vui lòng nhập Số điện thoại.',
+            'phone.numeric' => 'Số điện thoại phải là một số.',
+            'email.required' => 'Vui lòng nhập Địa chỉ Email.',
+            'email.email' => 'Địa chỉ Email không hợp lệ.',
+            'email.unique' => 'Địa chỉ Email đã được sử dụng.',
+            'CCCD.required' => 'Vui lòng nhập CCCD/CMND.',
+            'CCCD.numeric' => 'CCCD/CMND bắt buộc là số.',
+            'referralCode.required' => 'Mã giới thiệu là bắt buộc.',
+            'password.required' => 'Vui lòng nhập Mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất :min ký tự.',
+            'password.confirmed' => 'Xác nhận Mật khẩu không khớp.',
+            'password_confirmation.required' => 'Vui lòng nhập Xác nhận Mật khẩu.',
+            'password_confirmation.min' => 'Xác nhận Mật khẩu phải có ít nhất :min ký tự.',
+        ]);
+
+
+        $validate['group_id'] = 8;
+        $validate['password'] = Hash::make($validate['password']);
+        $referralCode = strtoupper(Str::random(6));
+        // check mã giới thiệu và tạo mã mới cho người dùng.
+        $checkReferralCode = User::where('referralCode', $referralCode)->first();
+        if ($checkReferralCode) {
+            $validate['referralCode'] = $referralCode;
+        } else {
+            $validate['referralCode'] = strtoupper(Str::random(6));
+        }
+        $validate['referralCode_parent'] = $request->referralCode;
+        $validate['deleted_at'] = date("Y-m-d H:m:s", time());
+        unset($validate['password_confirmation']);
+        $check = User::insert($validate);
+
+        if ($check) {
+            session()->flash(
+                'success',
+                'Tạo tài khoản thành công, Vui lòng xác nhận email!'
+            );
+            return redirect()->route('auth.login', ['status' => "successfully"]);
+        }
+        return back()->with('msgError', 'Tạo mới thất bại');
+    }
+
     public function login()
     {
         if (Auth::check()) {
@@ -36,12 +111,18 @@ class AuthController extends Controller
             'email.email' => 'Địa chỉ email không hợp lệ.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
         ]);
-        $checkSuspend = User::where('email', $request->email)->withTrashed()->first();
-        if ($checkSuspend && $checkSuspend->deleted_at != null) {
+        $findUser = User::where('email', $request->email)->withTrashed()->first();
+        // checkSuspend
+        if ($findUser && $findUser->deleted_at != null) {
             return back()->withErrors([
-                'password' => 'Tài khoản đang bị đình chỉ, vui lòng liên hệ quản trị viên!',
+                'password' => 'Tài khoản đang không hoạt động, vui lòng liên hệ quản trị viên!',
             ])->onlyInput('password');
         }
+        // if ($findUser && $findUser->email_verified_at == null) {
+        //     return back()->withErrors([
+        //         'password' => 'Vui lòng kiểm tra hộp thư và xác nhận email!',
+        //     ])->onlyInput('password');
+        // }
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
             LoginHistory::insert(['user_id' => Auth::id()]);

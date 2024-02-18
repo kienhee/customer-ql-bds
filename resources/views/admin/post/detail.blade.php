@@ -47,7 +47,7 @@
                                         <div class="col-12">
                                             <div class="d-flex flex-column gap-3 flex-md-row gap-md-0 flex-start mb-4">
                                                 <img class="rounded-circle shadow-1-strong me-3"
-                                                    src="{{ $comment->user ? getThumb($comment->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
+                                                    src="{{ $comment->user->avatar ? getThumb($comment->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
                                                     alt="avatar" width="65" height="65" />
                                                 <div class="card w-100">
                                                     <div class="card-body p-4">
@@ -178,7 +178,8 @@
                         <small class="text-muted text-uppercase">Liên hệ</small>
                         <div class="user-avatar-section">
                             <div class="d-flex align-items-center flex-column">
-                                <img class="object-fit-cover rounded my-4" src="{{ $post->user->avatar }}"
+                                <img class="object-fit-cover rounded my-4"
+                                    src="{{ $post->user->avatar ? getThumb($post->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
                                     height="100" width="100" alt="User avatar">
                                 <div class="user-info text-center">
                                     <h4 class="mb-2">{{ $post->user->full_name }}</h4>
