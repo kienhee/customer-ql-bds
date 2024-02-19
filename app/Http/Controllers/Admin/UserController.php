@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -90,6 +91,18 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'date_of_birth' => "required",
             'CCCD' => "required|numeric",
+            'referralCode' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    // Kiểm tra xem mã giới thiệu có tồn tại trong cơ sở dữ liệu hay không
+                    $existingUser = User::where('referralCode', $value)->exists();
+                    if (!$existingUser) {
+                        $fail('Mã giới thiệu không hợp lệ.');
+                    }
+                },
+            ],
+            'region_id' => 'required|numeric',
+            'province_id' => 'required|numeric',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             'facebook' => 'nullable|url',
@@ -116,12 +129,25 @@ class UserController extends Controller
             'facebook.url' => 'Liên kết Facebook không hợp lệ.',
             'instagram.url' => 'Liên kết Instagram không hợp lệ.',
             'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',
+            'referralCode.required' => 'Mã giới thiệu là bắt buộc.',
+            'region_id.required' => 'Vui lòng chọn miền.',
+            'region_id.numeric' => 'Miền phải là một số.',
+            'province_id.required' => 'Vui lòng chọn tỉnh thành.',
+            'province_id.numeric' => 'Tỉnh thành phải là một số.',
         ]);
 
 
 
         $validate['password'] = Hash::make($validate['password']);
-
+        $referralCode = strtoupper(Str::random(6));
+        // check mã giới thiệu và tạo mã mới cho người dùng.
+        $checkReferralCode = User::where('referralCode', $referralCode)->first();
+        if ($checkReferralCode) {
+            $validate['referralCode'] = $referralCode;
+        } else {
+            $validate['referralCode'] = strtoupper(Str::random(6));
+        }
+        $validate['referralCode_parent'] = $request->referralCode;
         unset($validate['password_confirmation']);
         $check = User::insert($validate);
 
@@ -152,6 +178,8 @@ class UserController extends Controller
             'linkedin' => 'nullable|url',
             'date_of_birth' => "required",
             'CCCD' => "required|numeric",
+            'region_id' => 'required|numeric',
+            'province_id' => 'required|numeric'
         ], [
             'full_name.required' => 'Vui lòng nhập Họ và Tên.',
             'full_name.max' => 'Họ và Tên không được vượt quá 50 ký tự.',
@@ -165,6 +193,10 @@ class UserController extends Controller
             'facebook.url' => 'Liên kết Facebook không hợp lệ.',
             'instagram.url' => 'Liên kết Instagram không hợp lệ.',
             'linkedin.url' => 'Liên kết LinkedIn không hợp lệ.',
+            'region_id.required' => 'Vui lòng chọn miền.',
+            'region_id.numeric' => 'Miền phải là một số.',
+            'province_id.required' => 'Vui lòng chọn tỉnh thành.',
+            'province_id.numeric' => 'Tỉnh thành phải là một số.',
         ]);
 
 

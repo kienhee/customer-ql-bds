@@ -101,6 +101,38 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class=" mb-3">
+                        <label for="region_id" class="form-label">Miền: <span class="text-danger">*</span></label>
+                        <select id="region_id"
+                            class="select2 form-select form-select-lg @error('region_id') is-invalid @enderror"
+                            data-allow-clear="true" name="region_id">
+                            <option value="">Vui lòng chọn</option>
+                            @foreach (regions() as $region)
+                                <option value="{{ $region->id }}"
+                                    @if (old('region_id') == $region->id || $user->region_id == $region->id) @selected(true) @endif>
+                                    {{ $region->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('region_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class=" mb-3">
+                        <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
+                        <select id="province_id"
+                            class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
+                            data-allow-clear="true" name="province_id">
+                            <option value="">Vui lòng chọn</option>
+                            @foreach (provices() as $provice)
+                                <option value="{{ $provice->id }}"
+                                    @if (old('province_id') == $provice->id || $user->region_id == $provice->id) @selected(true) @endif>
+                                    {{ $provice->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('province_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary ms-auto ">Lưu thay đổi</button>
                     </div>
@@ -114,7 +146,8 @@
                 <div class="card-body">
 
 
-                    <h6 class="pb-2 border-bottom mb-4"><i class='bx bx-link'></i> Mạng xã hội <span class="text-muted">(tùy
+                    <h6 class="pb-2 border-bottom mb-4"><i class='bx bx-link'></i> Mạng xã hội <span
+                            class="text-muted">(tùy
                             chọn)</span></h6>
                     <div class="row g-3">
                         <div class="col-sm-12">

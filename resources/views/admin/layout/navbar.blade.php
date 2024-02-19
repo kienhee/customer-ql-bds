@@ -287,6 +287,17 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
+                        <a class="dropdown-item" href="javascript:void(0)">
+
+                            <i class='bx bxs-user-account me-2'></i>
+
+                            <span class="align-middle"> Mã: {{ Auth::user()->referralCode }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
                         <a class="dropdown-item" href="{{ route('dashboard.profile.index') }}">
                             <i class="bx bx-user me-2"></i>
                             <span class="align-middle">Hồ sơ</span>

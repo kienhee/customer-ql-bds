@@ -96,6 +96,51 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class=" mb-3">
+                        <label for="region_id" class="form-label">Miền: <span class="text-danger">*</span></label>
+                        <select id="region_id"
+                            class="select2 form-select form-select-lg @error('region_id') is-invalid @enderror"
+                            data-allow-clear="true" name="region_id">
+                            <option value="">Vui lòng chọn</option>
+                            @foreach (regions() as $region)
+                                <option value="{{ $region->id }}"
+                                    @if (old('region_id') == $region->id) @selected(true) @endif>
+                                    {{ $region->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('region_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class=" mb-3">
+                        <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
+                        <select id="province_id"
+                            class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
+                            data-allow-clear="true" name="province_id">
+                            <option value="">Vui lòng chọn</option>
+                            @foreach (provices() as $provice)
+                                <option value="{{ $provice->id }}"
+                                    @if (old('province_id') == $provice->id) @selected(true) @endif>
+                                    {{ $provice->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('province_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="referralCode" class="form-label">Mã giới thiệu: <span
+                                class="text-danger">*</span></label>
+                        <input type="referralCode"
+                            class="form-control @error('referralCode')
+              is-invalid
+          @enderror "
+                            id="referralCode" name="referralCode" value="{{ old('referralCode') }}"
+                            placeholder="Nhập mã giới thiệu" />
+                        @error('referralCode')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="form-password-toggle mb-3 ">
                         <label class="form-label" for="password">Mật khẩu: <span class="text-danger">*</span></label>
                         <div class="input-group">

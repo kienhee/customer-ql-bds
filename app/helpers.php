@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 function groups()
 {
-  if (Auth::user()->group_id == 0) {
-    return Group::orderBy('created_at', 'desc')->get();
+  if (Auth::user()->group_id == 1) {
+    return Group::orderBy('created_at', 'asc')->get();
   } else {
-    return Group::orderBy('created_at', 'desc')->where('id', '<>', 0)->get();
+    return Group::orderBy('created_at', 'asc')->where('id', '<>', 1)->get();
   }
 }
 function regions()
