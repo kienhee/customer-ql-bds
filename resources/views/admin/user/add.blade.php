@@ -1,6 +1,10 @@
 @extends('admin.layout.index')
 @section('title', 'Thêm Người Dùng Mới')
 @section('content')
+    @php
+
+        $userGroupId = Auth::user()->group_id;
+    @endphp
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -61,8 +65,10 @@
                     <div class="mb-3">
                         <label class="form-label" for="group_id">Vai trò Người dùng: <span
                                 class="text-danger">*</span></label>
+
                         <select id="group_id" class="form-select @error('group_id') is-invalid @enderror" name="group_id">
                             <option value="">Vui lòng chọn Vai trò</option>
+
                             @foreach (groups() as $role)
                                 <option value="{{ $role->id }}"
                                     @if (old('group_id') == $role->id) @selected(true) @endif>
@@ -100,13 +106,21 @@
                         <label for="region_id" class="form-label">Miền: <span class="text-danger">*</span></label>
                         <select id="region_id"
                             class="select2 form-select form-select-lg @error('region_id') is-invalid @enderror"
-                            data-allow-clear="true" name="region_id">
+                            data-allow-clear="true" name="region_id" data-placeholder="Vui lòng chọn miền">
                             <option value="">Vui lòng chọn</option>
-                            @foreach (regions() as $region)
-                                <option value="{{ $region->id }}"
-                                    @if (old('region_id') == $region->id) @selected(true) @endif>
-                                    {{ $region->name }}</option>
-                            @endforeach
+                            @if ($userGroupId != 1)
+                                @foreach (regions() as $region)
+                                    <option value="{{ $region->id }}" @selected(true)>
+                                        {{ $region->name }}</option>
+                                @endforeach
+                            @else
+                                @foreach (regions() as $region)
+                                    <option value="{{ $region->id }}"
+                                        @if (old('region_id') == $region->id) @selected(true) @endif>
+                                        {{ $region->name }}</option>
+                                @endforeach
+                            @endif
+
                         </select>
                         @error('region_id')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
@@ -116,15 +130,48 @@
                         <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
                         <select id="province_id"
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
-                            data-allow-clear="true" name="province_id">
+                            data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh/thành">
                             <option value="">Vui lòng chọn</option>
-                            @foreach (provices() as $provice)
-                                <option value="{{ $provice->id }}"
-                                    @if (old('province_id') == $provice->id) @selected(true) @endif>
-                                    {{ $provice->name }}</option>
-                            @endforeach
+                            @if ($userGroupId != 1)
+                                @foreach (provinces() as $province)
+                                    <option value="{{ $province->id }}" @selected(true)>
+                                        {{ $province->name }}</option>
+                                @endforeach
+                            @else
+                                @foreach (provinces() as $province)
+                                    <option value="{{ $province->id }}"
+                                        @if (old('province_id') == $province->id) @selected(true) @endif>
+                                        {{ $province->name }}</option>
+                                @endforeach
+                            @endif
+
                         </select>
                         @error('province_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="district_id" class="form-label">Quận/Huyện: <span
+                                class="text-danger">*</span></label>
+                        <select id="district_id"
+                            class="select2 form-select form-select-lg @error('district_id') is-invalid @enderror"
+                            data-allow-clear="true" name="district_id" data-placeholder="Vui lòng chọn quận/huyện">
+                            <option value="">Vui lòng chọn quận/huyện</option>
+                            @if ($userGroupId != 1)
+                                @foreach (districts() as $district)
+                                    <option value="{{ $district->id }}" @selected(true)>
+                                        {{ $district->name }}</option>
+                                @endforeach
+                            @else
+                                @foreach (districts() as $district)
+                                    <option value="{{ $district->id }}"
+                                        @if (old('district_id') == $district->id) @selected(true) @endif>
+                                        {{ $district->name }}</option>
+                                @endforeach
+                            @endif
+
+                        </select>
+                        @error('district_id')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
@@ -135,8 +182,9 @@
                             class="form-control @error('referralCode')
               is-invalid
           @enderror "
-                            id="referralCode" name="referralCode" value="{{ old('referralCode') }}"
-                            placeholder="Nhập mã giới thiệu" />
+                            id="referralCode" name="referralCode"
+                            value="{{ old('referralCode') ?? Auth::user()->referralCode }}"
+                            placeholder="Nhập mã giới thiệu" readonly />
                         @error('referralCode')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror

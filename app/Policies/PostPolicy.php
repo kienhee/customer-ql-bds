@@ -12,4 +12,8 @@ class PostPolicy extends PolicyParent
     {
         return true;
     }
+    public function news()
+    {
+        return true;
+    }
 }

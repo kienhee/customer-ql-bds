@@ -19,7 +19,7 @@
         [
             'name' => 'Bản tin',
             'classIcon' => ' bx bx-news ',
-            'route' => 'dashboard.posts.news',
+            'route' => 'dashboard.news.index',
             'can' => '',
             'children' => [],
         ],
@@ -73,26 +73,26 @@
             'children' => [],
         ],
         [
-            'name' => 'Vai trò',
+            'name' => 'Phân quyền',
             'classIcon' => 'bx bx-check-shield',
             'route' => 'dashboard.permission.index',
             'can' => 'permission',
             'children' => [],
         ],
-        [
-            'name' => 'Thư viện',
-            'classIcon' => ' bx bx-library',
-            'route' => 'dashboard.library',
-            'can' => '',
-            'children' => [],
-        ],
-        [
-            'name' => 'Cài đặt',
-            'classIcon' => 'bx bx-cog',
-            'route' => 'dashboard.settings.index',
-            'can' => 'settings',
-            'children' => [],
-        ],
+        // [
+        //     'name' => 'Thư viện',
+        //     'classIcon' => ' bx bx-library',
+        //     'route' => 'dashboard.library',
+        //     'can' => '',
+        //     'children' => [],
+        // ],
+        // [
+        //     'name' => 'Cài đặt',
+        //     'classIcon' => 'bx bx-cog',
+        //     'route' => 'dashboard.settings.index',
+        //     'can' => 'settings',
+        //     'children' => [],
+        // ],
     ];
 
 @endphp

@@ -20,10 +20,11 @@
                 <p class="text-muted mb-0">Hãy chọn bộ lọc ở dưới đây</p>
             </div>
             <div class="d-flex justify-content-md-end align-items-center gap-3 flex-wrap">
-
-                <a href="{{ route('dashboard.posts.add') }}" class="btn btn-outline-primary">
-                    <i class="fa-solid fa-plus"></i> &nbsp;Bài viết mới
-                </a>
+                @can('create', App\Models\Post::class)
+                    <a href="{{ route('dashboard.posts.add') }}" class="btn btn-outline-primary">
+                        <i class="fa-solid fa-plus"></i> &nbsp;Bài viết mới
+                    </a>
+                @endcan
             </div>
         </div>
 
@@ -41,10 +42,10 @@
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                             data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh">
                             <option value="">Vui lòng tỉnh thành</option>
-                            @foreach (provices() as $provice)
-                                <option value="{{ $provice->id }}"
-                                    @if (Request()->province_id == $provice->id) @selected(true) @endif>
-                                    {{ $provice->name }}</option>
+                            @foreach (provinces() as $province)
+                                <option value="{{ $province->id }}"
+                                    @if (Request()->province_id == $province->id) @selected(true) @endif>
+                                    {{ $province->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -87,7 +88,7 @@
 
                 </div>
                 <div class="d-flex justify-content-end gap-3">
-                    <a href="{{ route('dashboard.posts.news') }}" class="btn btn-secondary">Đặt lại</a>
+                    <a href="{{ route('dashboard.news.index') }}" class="btn btn-secondary">Đặt lại</a>
                     <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                 </div>
             </form>

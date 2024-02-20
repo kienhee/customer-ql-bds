@@ -20,8 +20,23 @@ class UserController extends Controller
 
     public function list()
     {
-        $users = User::select(['id', 'full_name', 'avatar', 'group_id', 'deleted_at', 'email', 'created_at'])->where('group_id', '<>', 0)->withTrashed();
-
+        $userGroupId = Auth::user()->group_id;
+        // admin -> list all,
+        $users = User::select(['id', 'full_name', 'avatar', 'group_id', 'deleted_at', 'email', 'created_at']);
+        if ($userGroupId == 2) {
+            // Quản lý miền -> list tất cả tài khoản nằm trong miền đó. và không lấy tài khoản admin
+            $users->where('region_id', Auth::user()->region_id)->where('group_id', '<>', 1);
+        } elseif ($userGroupId == 3) {
+            // Quản lý tỉnh-> list tất cả tài khoản nằm trong tỉnh, và không lấy tài khoản miền và admin
+            $users->where('province_id', Auth::user()->province_id)->whereNotIn('group_id', range(1, 2));
+        } elseif ($userGroupId == 4) {
+            // Quản lý huyện-> list tất cả tài khoản nằm trong huyện, không lấy admin, miền, tỉnh.
+            $users->where('district_id', Auth::user()->district_id)->whereNotIn('group_id', range(1, 3));
+        } elseif ($userGroupId == 5) {
+            // Trưởng phòng -> list tất cả tài khoản có ma giới thiệu của nó. và không lấy cấp trên của chúng
+            $users->where('referralCode_parent', Auth::user()->referralCode)->whereNotIn('group_id', range(1, 4));
+        }
+        $users->where('id', '<>', Auth::id())->withTrashed();
         return DataTables::of($users)
             ->editColumn('full_name', function ($user) {
                 return '
@@ -103,6 +118,7 @@ class UserController extends Controller
             ],
             'region_id' => 'required|numeric',
             'province_id' => 'required|numeric',
+            'district_id' => 'required|numeric',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             'facebook' => 'nullable|url',
@@ -134,6 +150,8 @@ class UserController extends Controller
             'region_id.numeric' => 'Miền phải là một số.',
             'province_id.required' => 'Vui lòng chọn tỉnh thành.',
             'province_id.numeric' => 'Tỉnh thành phải là một số.',
+            'district_id.required' => 'Vui lòng chọn quận/huyện.',
+            'district_id.numeric' => 'Quận/huyện phải là một số.',
         ]);
 
 

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'id' => 0,
+            'id' => 1,
             'avatar' => 'https://lh3.googleusercontent.com/proxy/S6lTG-RoRrNLwoGkeloceV8t5CPt5P74lp8qty1JaQn3V9ZO9-xQc7IlJbrIDSNrAfJ1ffemUZnoBMG5A8-XHzbPxkXC4nS8BYqG0WKnQuN5XQ',
             'full_name' => 'Trần Trung Kiên',
             'email' => 'kienhee.it@gmail.com',
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'dribbble' => "",
             'phone' => "0376172628",
             'password' => Hash::make('123456'),
-            'group_id' => 0,
+            'group_id' => 1,
             'created_at' => Date('y-m-d h:m:s'),
             'updated_at' => Date('y-m-d h:m:s'),
         ]);

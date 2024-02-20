@@ -13,7 +13,8 @@
         </ol>
     </nav>
 
-    <form class="row" action="{{ route('dashboard.posts.update',$post->id) }}" method="POST" enctype="multipart/form-data">
+    <form class="row" action="{{ route('dashboard.posts.update', $post->id) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         @method('put')
         <div class="col-12 col-lg-8">
@@ -38,7 +39,8 @@
                                     <i class='bx bx-cloud-upload'></i>&nbsp;Tải lên ảnh bìa
                                 </a>
                             </span>
-                            <input id="thumbnail" class="form-control" type="hidden" value="{{ $post->cover }}" name="cover">
+                            <input id="thumbnail" class="form-control" type="hidden" value="{{ $post->cover }}"
+                                name="cover">
                             @error('cover')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
@@ -98,10 +100,10 @@
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                             data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh">
                             <option value="">Vui lòng tỉnh thành</option>
-                            @foreach (provices() as $provice)
-                                <option value="{{ $provice->id }}"
-                                    @if (old('province_id') == $provice->id || $post->province_id == $provice->id) @selected(true) @endif>
-                                    {{ $provice->name }}</option>
+                            @foreach (provinces() as $province)
+                                <option value="{{ $province->id }}"
+                                    @if (old('province_id') == $province->id || $post->province_id == $province->id) @selected(true) @endif>
+                                    {{ $province->name }}</option>
                             @endforeach
                         </select>
                         @error('province_id')
@@ -174,7 +176,7 @@
                                 class="text-danger">*</span></label>
                         <input id="characteristics" name="characteristics"
                             class="form-control  @error('characteristics') is-invalid @enderror"
-                            placeholder="Mặt phố, ô tô,  kinh doanh,..v.v" value="{{$post->characteristics}}" />
+                            placeholder="Mặt phố, ô tô,  kinh doanh,..v.v" value="{{ $post->characteristics }}" />
                         @error('characteristics')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror

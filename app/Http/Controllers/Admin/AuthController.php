@@ -35,6 +35,7 @@ class AuthController extends Controller
             'phone' => 'required|numeric',
             'email' => 'required|email|unique:users,email',
             'CCCD' => "required|numeric",
+            'group_id' => 'required|numeric',
             'referralCode' => [
                 'required',
                 function ($attribute, $value, $fail) {
@@ -63,10 +64,11 @@ class AuthController extends Controller
             'password.confirmed' => 'Xác nhận Mật khẩu không khớp.',
             'password_confirmation.required' => 'Vui lòng nhập Xác nhận Mật khẩu.',
             'password_confirmation.min' => 'Xác nhận Mật khẩu phải có ít nhất :min ký tự.',
+            'group_id.required' => 'Vui lòng chọn mục này.',
+            'group_id.numeric' => 'Vai trò Người dùng phải là một số.',
         ]);
 
 
-        $validate['group_id'] = 8;
         $validate['password'] = Hash::make($validate['password']);
         $referralCode = strtoupper(Str::random(6));
         // check mã giới thiệu và tạo mã mới cho người dùng.
@@ -76,6 +78,10 @@ class AuthController extends Controller
         } else {
             $validate['referralCode'] = strtoupper(Str::random(6));
         }
+        $parrent = User::where('referralCode', $request->referralCode)->first();
+        $validate['region_id'] = $parrent->region_id;
+        $validate['province_id'] = $parrent->province_id;
+        $validate['district_id'] = $parrent->district_id;
         $validate['referralCode_parent'] = $request->referralCode;
         $validate['deleted_at'] = date("Y-m-d H:m:s", time());
         unset($validate['password_confirmation']);
@@ -84,7 +90,7 @@ class AuthController extends Controller
         if ($check) {
             session()->flash(
                 'success',
-                'Tạo tài khoản thành công, Vui lòng xác nhận email!'
+                'Tạo tài khoản thành công, Vui lòng liên hệ admin để xác nhận!'
             );
             return redirect()->route('auth.login', ['status' => "successfully"]);
         }

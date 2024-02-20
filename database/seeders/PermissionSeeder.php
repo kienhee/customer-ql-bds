@@ -15,8 +15,8 @@ class PermissionSeeder extends Seeder
     {
         // Thêm dữ liệu cho bảng 'groups'
         $groups = [
-            ['name' => 'Developer', 'permissions' => '{"users":["view","add","edit","delete"],"library":["view"],"permission":["view","add","edit","delete"],"settings":["view"],"dashboard":["view"]}', 'created_at' => '2024-01-25 18:07:18', 'updated_at' => '2024-01-26 11:02:21'],
-            ['name' => 'Admin', 'permissions' => '{"users":["view","add","edit","delete"],"library":["view"],"permission":["view","add","edit","delete"],"settings":["view"],"dashboard":["view"]}', 'created_at' => '2024-01-24 02:16:42', 'updated_at' => '2024-01-26 11:02:30'],
+            ['id' => 1, 'name' => 'Developer', 'permissions' => '{"users":["view","add","edit","delete"],"library":["view"],"permission":["view","add","edit","delete"],"settings":["view"],"dashboard":["view"]}', 'created_at' => '2024-01-25 18:07:18', 'updated_at' => '2024-01-26 11:02:21'],
+            ['id' => 2,'name' => 'Admin', 'permissions' => '{"users":["view","add","edit","delete"],"library":["view"],"permission":["view","add","edit","delete"],"settings":["view"],"dashboard":["view"]}', 'created_at' => '2024-01-24 02:16:42', 'updated_at' => '2024-01-26 11:02:30'],
         ];
 
         DB::table('groups')->insert($groups);

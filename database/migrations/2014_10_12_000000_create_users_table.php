@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('referralCode_parent', 6)->nullable();
             $table->integer('region_id');
             $table->integer('province_id');
+            $table->integer('district_id');
             $table->integer('group_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

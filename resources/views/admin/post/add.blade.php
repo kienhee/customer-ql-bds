@@ -36,14 +36,14 @@
                                 </a>
                             </span>
                             <input id="thumbnail" class="form-control" type="hidden" name="cover">
-                               @error('cover')
-                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
-                        @enderror
+                            @error('cover')
+                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                            @enderror
                         </div>
-                     
+
                     </div>
 
-                    
+
                     <div class="mb-3">
                         <label class="form-label" for="title">Tiêu đề bài đăng: <span
                                 class="text-danger">*</span></label>
@@ -95,10 +95,10 @@
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                             data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh">
                             <option value="">Vui lòng tỉnh thành</option>
-                            @foreach (provices() as $provice)
-                                <option value="{{ $provice->id }}"
-                                    @if (old('province_id') == $provice->id) @selected(true) @endif>
-                                    {{ $provice->name }}</option>
+                            @foreach (provinces() as $province)
+                                <option value="{{ $province->id }}"
+                                    @if (old('province_id') == $province->id) @selected(true) @endif>
+                                    {{ $province->name }}</option>
                             @endforeach
                         </select>
                         @error('province_id')

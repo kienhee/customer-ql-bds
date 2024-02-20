@@ -20,7 +20,7 @@
         </div>
         <div class="card-header border-bottom d-flex align-items-center justify-content-between">
             <h5 class="card-title mb-0">Quản lý Bài viết</h5>
-            @can('create', App\Models\User::class)
+            @can('create', App\Models\Post::class)
                 <a href="{{ route('dashboard.posts.add') }}" class="btn btn-outline-primary">
                     <i class="fa-solid fa-plus"></i> &nbsp;Bài viết mới
                 </a>

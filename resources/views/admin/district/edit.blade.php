@@ -43,10 +43,10 @@
                     <select id="province_id"
                         class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                         data-allow-clear="true" name="province_id">
-                        @foreach (provices() as $provice)
-                            <option value="{{ $provice->id }}"
-                                @if ((old('province_id') == $provice->id) | ($district->province_id == $provice->id)) @selected(true) @endif>
-                                {{ $provice->name }}</option>
+                        @foreach (provinces() as $province)
+                            <option value="{{ $province->id }}"
+                                @if ((old('province_id') == $province->id) | ($district->province_id == $province->id)) @selected(true) @endif>
+                                {{ $province->name }}</option>
                         @endforeach
                     </select>
                     @error('province_id')

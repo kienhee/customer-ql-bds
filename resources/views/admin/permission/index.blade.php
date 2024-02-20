@@ -87,82 +87,79 @@
 
 
 
-    @if (Auth::user()->group_id == 1)
-        <h4 class="py-3 mb-2">Danh sách quyền hạn</h4>
-        <p>
-            Chỉ sử dụng trong quá trình phát triển và chỉ bởi các tài khoản của nhà phát triển.
-        </p>
-        <!-- Bảng quyền hạn -->
-        <div class="card">
+    <h4 class="py-3 mb-2">Danh sách quyền hạn</h4>
+    <p>
+        Chỉ sử dụng trong quá trình phát triển và chỉ bởi các tài khoản của nhà phát triển.
+    </p>
+    <!-- Bảng quyền hạn -->
+    <div class="card">
 
-            <div class="card-header border-bottom d-flex align-items-center justify-content-end">
-                <button class="dt-button add-new btn btn-primary mb-3 mb-md-0" tabindex="0"
-                    aria-controls="DataTables_Table_0" type="button" data-bs-toggle="modal"
-                    data-bs-target="#addPermissionModal"><span><i class="fa-solid fa-plus"></i> &nbsp; Thêm
-                        Quyền Hạn</span></button>
-            </div>
-            <div class="card-datatable table-responsive">
-                <table class="datatables-permissions table border-top" id="permission-table">
-                    <thead>
-                        <tr>
-                            <th>tên</th>
-                            <th>đường dẫn</th>
-                            <th>mô tả</th>
-                            <th>đã tạo lúc</th>
-                            <th>hành động</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+        <div class="card-header border-bottom d-flex align-items-center justify-content-end">
+            <button class="dt-button add-new btn btn-primary mb-3 mb-md-0" tabindex="0" aria-controls="DataTables_Table_0"
+                type="button" data-bs-toggle="modal" data-bs-target="#addPermissionModal"><span><i
+                        class="fa-solid fa-plus"></i> &nbsp; Thêm
+                    Quyền Hạn</span></button>
         </div>
-        <!--/ Bảng quyền hạn -->
+        <div class="card-datatable table-responsive">
+            <table class="datatables-permissions table border-top" id="permission-table">
+                <thead>
+                    <tr>
+                        <th>tên</th>
+                        <th>đường dẫn</th>
+                        <th>mô tả</th>
+                        <th>đã tạo lúc</th>
+                        <th>hành động</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <!--/ Bảng quyền hạn -->
 
-        <!-- Modal -->
-        <!-- Modal Thêm Quyền Hạn -->
-        <div class="modal fade" id="addPermissionModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-simple">
-                <div class="modal-content p-3 p-md-5">
-                    <div class="modal-body">
-                        <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                        <div class="text-center mb-4">
-                            <h3>Thêm Quyền Hạn Mới</h3>
-                            <p>Những quyền bạn có thể sử dụng và gán cho người dùng của bạn.</p>
-                        </div>
-
-                        <div class="alert alert-danger d-none" id="alert-error">
-                            <ul id="list-error" class="mb-0">
-                            </ul>
-                        </div>
-                        <div class="alert alert-success d-none" id="alert-success"></div>
-                        <form id="addPermissionForm" class="row" onsubmit="return false">
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="title">Tên Quyền Hạn</label>
-                                <input type="text" id="title" name="title" class="form-control"
-                                    placeholder="Tên Quyền Hạn" name="title" autofocus />
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="route">Đường Dẫn</label>
-                                <input type="text" id="route" name="route" class="form-control"
-                                    placeholder="Đường Dẫn" name="route" />
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="description">Mô Tả</label>
-                                <textarea class="form-control" id="description" placeholder="Mô Tả" name="description" rows="3"></textarea>
-                            </div>
-                            <div class="col-12 text-center demo-vertical-spacing">
-                                <button type="submit" class="btn btn-primary me-sm-3 me-1">Tạo Quyền Hạn</button>
-                                <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal"
-                                    aria-label="Close">
-                                    Hủy Bỏ
-                                </button>
-                            </div>
-                        </form>
+    <!-- Modal -->
+    <!-- Modal Thêm Quyền Hạn -->
+    <div class="modal fade" id="addPermissionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-simple">
+            <div class="modal-content p-3 p-md-5">
+                <div class="modal-body">
+                    <button type="button" class="btn-close btn-pinned" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="text-center mb-4">
+                        <h3>Thêm Quyền Hạn Mới</h3>
+                        <p>Những quyền bạn có thể sử dụng và gán cho người dùng của bạn.</p>
                     </div>
+
+                    <div class="alert alert-danger d-none" id="alert-error">
+                        <ul id="list-error" class="mb-0">
+                        </ul>
+                    </div>
+                    <div class="alert alert-success d-none" id="alert-success"></div>
+                    <form id="addPermissionForm" class="row" onsubmit="return false">
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="title">Tên Quyền Hạn</label>
+                            <input type="text" id="title" name="title" class="form-control"
+                                placeholder="Tên Quyền Hạn" name="title" autofocus />
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="route">Đường Dẫn</label>
+                            <input type="text" id="route" name="route" class="form-control" placeholder="Đường Dẫn"
+                                name="route" />
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="description">Mô Tả</label>
+                            <textarea class="form-control" id="description" placeholder="Mô Tả" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="col-12 text-center demo-vertical-spacing">
+                            <button type="submit" class="btn btn-primary me-sm-3 me-1">Tạo Quyền Hạn</button>
+                            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">
+                                Hủy Bỏ
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    @endif
+    </div>
 @endsection
 @section('script')
     <script>

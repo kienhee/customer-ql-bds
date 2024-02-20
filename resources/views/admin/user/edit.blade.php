@@ -123,13 +123,30 @@
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                             data-allow-clear="true" name="province_id">
                             <option value="">Vui lòng chọn</option>
-                            @foreach (provices() as $provice)
-                                <option value="{{ $provice->id }}"
-                                    @if (old('province_id') == $provice->id || $user->region_id == $provice->id) @selected(true) @endif>
-                                    {{ $provice->name }}</option>
+                            @foreach (provinces() as $province)
+                                <option value="{{ $province->id }}"
+                                    @if (old('province_id') == $province->id || $user->province_id == $province->id) @selected(true) @endif>
+                                    {{ $province->name }}</option>
                             @endforeach
                         </select>
                         @error('province_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="district_id" class="form-label">Quận/Huyện: <span
+                                class="text-danger">*</span></label>
+                        <select id="district_id"
+                            class="select2 form-select form-select-lg @error('district_id') is-invalid @enderror"
+                            data-allow-clear="true" name="district_id" data-placeholder="Vui lòng chọn quận/huyện">
+                            <option value="">Vui lòng chọn quận/huyện</option>
+                            @foreach (districts() as $district)
+                                <option value="{{ $district->id }}"
+                                    @if (old('district_id') == $district->id || $user->district_id == $district->id) @selected(true) @endif>
+                                    {{ $district->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('district_id')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>

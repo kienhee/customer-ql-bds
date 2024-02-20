@@ -23,7 +23,7 @@
                 <form id="formAuthentication" class="mb-3" action="{{ route('auth.handleRegister') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="full_name" class="form-label">Họ và tên</label>
+                        <label for="full_name" class="form-label">Họ và tên: <span class="text-danger">*</span></label>
                         <input type="text"
                             class="form-control @error('full_name')
               is-invalid
@@ -37,7 +37,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
+                        <label for="email" class="form-label">Email: <span class="text-danger">*</span></label>
                         <input type="email"
                             class="form-control @error('email')
               is-invalid
@@ -51,7 +51,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">SDT</label>
+                        <label for="phone" class="form-label">SDT: <span class="text-danger">*</span></label>
                         <input type="text"
                             class="form-control @error('phone')
               is-invalid
@@ -65,7 +65,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="CCCD" class="form-label">CCCD/CMND</label>
+                        <label for="CCCD" class="form-label">CCCD/CMND: <span class="text-danger">*</span></label>
                         <input type="CCCD"
                             class="form-control @error('CCCD')
               is-invalid
@@ -78,7 +78,23 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="referralCode" class="form-label">Mã giới thiệu</label>
+                        <label class="form-label" for="group_id">Bạn là ai: <span class="text-danger">*</span></label>
+                        <select id="group_id" class="form-select @error('group_id') is-invalid @enderror" name="group_id">
+                            <option value="">Vui lòng chọn</option>
+                            <option value="6" @if (old('group_id') == 6) @selected(true) @endif>
+                                Người ký hợp đồng</option>
+                            <option value="7" @if (old('group_id') == 7) @selected(true) @endif>
+                                Người bán hàng</option>
+                        </select>
+                        @error('group_id')
+                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+                                <div data-field="CCCD" data-validator="notEmpty">{{ $message }}</div>
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="referralCode" class="form-label">Mã giới thiệu: <span
+                                class="text-danger">*</span></label>
                         <input type="referralCode"
                             class="form-control @error('referralCode')
               is-invalid
@@ -93,7 +109,7 @@
                     </div>
                     <div class="mb-3 form-password-toggle">
                         <div class="d-flex justify-content-between">
-                            <label class="form-label" for="password">Mật khẩu</label>
+                            <label class="form-label" for="password">Mật khẩu: <span class="text-danger">*</span></label>
                         </div>
                         <div class="input-group input-group-merge">
                             <input type="password" id="password"
@@ -111,7 +127,8 @@
                     </div>
                     <div class="mb-3 form-password-toggle">
                         <div class="d-flex justify-content-between">
-                            <label class="form-label" for="password_confirmation">Mật khẩu</label>
+                            <label class="form-label" for="password_confirmation">Mật khẩu: <span
+                                    class="text-danger">*</span></label>
                         </div>
                         <div class="input-group input-group-merge">
                             <input type="password" id="password_confirmation"

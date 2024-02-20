@@ -10,23 +10,51 @@ use Illuminate\Support\Facades\Auth;
 
 function groups()
 {
-  if (Auth::user()->group_id == 1) {
-    return Group::orderBy('created_at', 'asc')->get();
-  } else {
-    return Group::orderBy('created_at', 'asc')->where('id', '<>', 1)->get();
+  $userGroupId = Auth::user()->group_id;
+  $groups = Group::query();
+  if ($userGroupId == 2) {
+    // Miền
+    $groups->whereNotIn('id', range(1, 2));
+  } elseif ($userGroupId == 3) {
+    // tỉnh
+    $groups->whereNotIn('id', range(1, 3));
+  } elseif ($userGroupId == 4) {
+    // huyện
+    $groups->whereNotIn('id', range(1, 4));
+  } elseif ($userGroupId == 5) {
+    // trưởng phòng
+    $groups->whereNotIn('id', range(1, 5));
   }
+
+  return $groups->get();
 }
 function regions()
 {
-  return Region::orderBy('created_at', 'desc')->get();
+  $userGroupId = Auth::user()->group_id;
+  $regions = Region::query();
+  if ($userGroupId != 1) {
+    $regions->where('id', Auth::user()->region_id);
+  }
+  return $regions->get();
 }
-function provices()
+function provinces()
 {
-  return Province::orderBy('created_at', 'desc')->get();
+  $userGroupId = Auth::user()->group_id;
+  $provinces = Province::query();
+  if ($userGroupId != 1) {
+    $provinces->where('id', Auth::user()->province_id);
+  }
+  return $provinces->get();
 }
 function districts()
 {
-  return District::orderBy('created_at', 'desc')->get();
+  $userGroupId = Auth::user()->group_id;
+  $districts = District::query();
+  if ($userGroupId != 1) {
+    $districts->where('id', Auth::user()->district_id);
+  }
+  return $districts->get();
+  // return District::orderBy('created_at', 'desc')->get();
 }
 function directions()
 {
