@@ -100,7 +100,7 @@
                         <div class="card p-2 h-100 shadow-none border">
 
                             <div class="rounded-2 text-center mb-3">
-                                <a href="{{ route('dashboard.posts.detail', $post->id) }}">
+                                <a href="{{ route('dashboard.news.detail', $post->id) }}">
                                     <img class="object-fit-cover " src="{{ $post->cover }}" alt="{{ $post->title }}"
                                         height="250" width="100%" /></a>
                             </div>
@@ -128,7 +128,7 @@
                                 </div>
 
                                 <div class="truncate-3 mb-3  text-break">
-                                    <a href="{{ route('dashboard.posts.detail', $post->id) }}"
+                                    <a href="{{ route('dashboard.news.detail', $post->id) }}"
                                         class="h5 d-block mb-0 ">{{ $post->title }}</a>
                                 </div>
 

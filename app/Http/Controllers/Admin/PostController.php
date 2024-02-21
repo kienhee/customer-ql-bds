@@ -103,6 +103,7 @@ class PostController extends Controller
         $data = $request->validate([
             'title' => 'required|max:255|unique:posts,title',
             'content' => 'required',
+            'papers' => 'nullable',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
             'address' => 'required|max:255',
@@ -162,6 +163,7 @@ class PostController extends Controller
         $data = $request->validate([
             'title' => 'required|max:255|unique:posts,title,' . $id,
             'content' => 'required',
+            'papers' => 'nullable',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
             'address' => 'required|max:255',
@@ -278,7 +280,7 @@ class PostController extends Controller
         if (!$post) {
             abort(404);
         }
-        $comments = Comment::where('post_id', $CheckViewedPost->post_id)->get();
+        $comments = Comment::where('post_id', $id)->get();
 
         return view('admin.post.detail', compact('post', 'comments'));
     }

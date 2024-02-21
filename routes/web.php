@@ -47,8 +47,7 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
         Route::post('/restore/{id}', [UserController::class, 'restore'])->name('restore')->can('delete', User::class);
         Route::post('/force-delete/{id}', [UserController::class, 'forceDelete'])->name('force-delete')->can('delete', User::class);
     });
-    Route::prefix('news')->name('news.')->group(function () {
-    });
+
     Route::prefix('posts')->name('posts.')->middleware('can:posts')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('index')->can('view', Post::class);
         Route::get('/list', [PostController::class, 'list'])->name('list')->can('view', Post::class);
@@ -62,8 +61,8 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
     });
     Route::prefix('news')->name('news.')->group(function () {
         Route::get('/', [PostController::class, 'news'])->name('index');
-        Route::get('/news/{id}', [PostController::class, 'detail'])->name('detail');
-        Route::post('/news/{id}', [PostController::class, 'comment'])->name('comment');
+        Route::get('/detail/{id}', [PostController::class, 'detail'])->name('detail');
+        Route::post('/detail/{id}', [PostController::class, 'comment'])->name('comment');
     });
     Route::prefix('save-post')->name('save-post.')->group(function () {
         Route::get('/', [SavePostController::class, 'index'])->name('index');

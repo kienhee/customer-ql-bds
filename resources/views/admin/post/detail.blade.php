@@ -30,6 +30,13 @@
                         <div class="my-3">
                             {!! $post->content !!}
                         </div>
+                        <hr>
+                        @if (Auth::user()->group_id != 7)
+                            <p class="h5">Giấy tờ liên quan</p>
+                            <div class="my-3">
+                                {!! $post->papers !!}
+                            </div>
+                        @endif
                     </div>
                     @if ($post->status != 1)
                         <div
@@ -83,7 +90,7 @@
 
                                 <hr class="pb-3">
                                 <h5 class="text-center">Để lại Lời nhắn 📝</h5>
-                                <form action="{{ route('dashboard.posts.comment', $post->id) }}" method="POST"
+                                <form action="{{ route('dashboard.news.comment', $post->id) }}" method="POST"
                                     class="card-footer border-0">
                                     @csrf
                                     <div class="d-flex flex-start w-100">

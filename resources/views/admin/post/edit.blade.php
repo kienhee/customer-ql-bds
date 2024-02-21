@@ -68,6 +68,14 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
+                      <div class="mb-3">
+                        <label class="form-label" for="papers">Giấy tờ liên quan: </label>
+                        <textarea name="papers" id="papers" class="my-editor @error('papers') is-invalid @enderror" cols="30"
+                            rows="20">{{ old('papers')?? $post->papers  }}</textarea>
+                        @error('papers')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="mb-3">
                         <label class="form-label" for="map">Google map: <span
                                 class="text-muted">(option)</span></label>
