@@ -19,7 +19,7 @@
         </div>
         <div class="card-header border-bottom d-flex align-items-center justify-content-between">
             <h5 class="card-title mb-0">Đặc điểm</h5>
-            @can('create', App\Models\Region::class)
+            @can('create', App\Models\Characteristic::class)
                 <a href="{{ route('dashboard.characteristics.add') }}" class="btn btn-outline-primary">
                     <i class="fa-solid fa-plus"></i> &nbsp;Thêm Đặc điểm
                 </a>

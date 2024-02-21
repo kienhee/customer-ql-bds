@@ -19,7 +19,7 @@
         </div>
         <div class="card-header border-bottom d-flex align-items-center justify-content-between">
             <h5 class="card-title mb-0">Quản lý Quận/Huyện</h5>
-            @can('create', App\Models\Province::class)
+            @can('create', App\Models\District::class)
                 <a href="{{ route('dashboard.districts.add') }}" class="btn btn-outline-primary">
                     <i class="fa-solid fa-plus"></i> &nbsp;Thêm Quận/Huyện
                 </a>

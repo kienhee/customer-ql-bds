@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\RegionController;
 use App\Http\Controllers\Admin\SavePostController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
+use App\Models\Characteristic;
 use App\Models\District;
 use App\Models\Group;
 use App\Models\Post;
@@ -111,15 +112,15 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
         Route::get('/login-history', [ProfileController::class, 'loginHistory'])->name('login-history');
     });
     Route::prefix('characteristics')->name('characteristics.')->middleware('can:characteristics')->group(function () {
-        Route::get('/', [CharacteristicController::class, 'index'])->name('index')->can('view', Region::class);
-        Route::get('/list', [CharacteristicController::class, 'list'])->name('list')->can('view', Region::class);
-        Route::get('/add', [CharacteristicController::class, 'add'])->name('add')->can('create', Region::class);
-        Route::post('/store', [CharacteristicController::class, 'store'])->name('store')->can('create', Region::class);
-        Route::get('/edit/{id}', [CharacteristicController::class, 'edit'])->name('edit')->can('update', Region::class);
-        Route::put('/update/{id}', [CharacteristicController::class, 'update'])->name('update')->can('update', Region::class);
-        Route::post('/soft-delete/{id}', [CharacteristicController::class, 'softDelete'])->name('soft-delete')->can('delete', Region::class);
-        Route::post('/restore/{id}', [CharacteristicController::class, 'restore'])->name('restore')->can('delete', Region::class);
-        Route::post('/force-delete/{id}', [CharacteristicController::class, 'forceDelete'])->name('force-delete')->can('delete', Region::class);
+        Route::get('/', [CharacteristicController::class, 'index'])->name('index')->can('view', Characteristic::class);
+        Route::get('/list', [CharacteristicController::class, 'list'])->name('list')->can('view', Characteristic::class);
+        Route::get('/add', [CharacteristicController::class, 'add'])->name('add')->can('create', Characteristic::class);
+        Route::post('/store', [CharacteristicController::class, 'store'])->name('store')->can('create', Characteristic::class);
+        Route::get('/edit/{id}', [CharacteristicController::class, 'edit'])->name('edit')->can('update', Characteristic::class);
+        Route::put('/update/{id}', [CharacteristicController::class, 'update'])->name('update')->can('update', Characteristic::class);
+        Route::post('/soft-delete/{id}', [CharacteristicController::class, 'softDelete'])->name('soft-delete')->can('delete', Characteristic::class);
+        Route::post('/restore/{id}', [CharacteristicController::class, 'restore'])->name('restore')->can('delete', Characteristic::class);
+        Route::post('/force-delete/{id}', [CharacteristicController::class, 'forceDelete'])->name('force-delete')->can('delete', Characteristic::class);
     });
     Route::prefix('permission')->name('permission.')->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('index')->can('view', Group::class);

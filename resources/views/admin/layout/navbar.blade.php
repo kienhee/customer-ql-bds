@@ -259,12 +259,19 @@
             </li>
             <!--/ Notification -->
             <!-- User -->
-            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+            <li class="nav-item navbar-dropdown dropdown-user dropdown ms-2">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                        <img src="{{ Auth::user()->avatar ? getThumb(Auth::user()->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
-                            alt class="w-px-40 h-px-40  rounded-circle object-fit-cover" />
+                    <div class="d-flex">
+                        <div class="flex-grow-1 me-3 d-none d-md-block">
+                            <span class="fw-semibold d-block">{{ Auth::user()->full_name }}</span>
+                            <small class="text-muted  text-end d-block">{{ Auth::user()->group->name }}</small>
+                        </div>
+                        <div class="avatar avatar-online">
+                            <img src="{{ Auth::user()->avatar ? getThumb(Auth::user()->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
+                                alt class="w-px-40 h-px-40  rounded-circle object-fit-cover" />
+                        </div>
                     </div>
+
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
