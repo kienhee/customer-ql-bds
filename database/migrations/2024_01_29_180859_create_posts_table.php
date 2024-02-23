@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('content');
             $table->longText('papers')->nullable();
+            $table->integer('region_id');
             $table->integer('province_id');
             $table->integer('district_id');
             $table->integer('user_id');

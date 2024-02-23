@@ -2,7 +2,6 @@
 @section('title', 'Thêm Người Dùng Mới')
 @section('content')
     @php
-
         $userGroupId = Auth::user()->group_id;
     @endphp
     <nav aria-label="breadcrumb">
@@ -34,7 +33,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="full_name">Họ và Tên: <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('full_name') invalid @enderror"
-                            value="{{ old('full_name') }}" name="full_name" id="full_name" placeholder="John Doe">
+                            value="{{ old('full_name') }}" name="full_name" id="full_name" placeholder="Nguyen Van A">
                         @error('full_name')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
@@ -45,7 +44,7 @@
                             class="form-control @error('email')
                                 invalid
                             @enderror"
-                            value="{{ old('email') }}" id="email" name="email" placeholder="john.doe@example.com">
+                            value="{{ old('email') }}" id="email" name="email" placeholder="nguyenvana@example.com">
                         @error('email')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
@@ -56,7 +55,8 @@
                             class="form-control @error('phone')
                                 invalid
                             @enderror"
-                            value="{{ old('phone') }}" id="phone" name="phone" placeholder="+1 (609) 988-44-11">
+                            value="{{ old('phone') }}" id="phone" name="phone"
+                            placeholder="Vui lòng nhập số điện thoại">
                         @error('phone')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
@@ -85,7 +85,7 @@
                             class="form-control dob-picker  @error('date_of_birth')
                                 invalid
                             @enderror"
-                            placeholder="DD-MM-YYYY" value="{{ old('date_of_birth') }}" />
+                            placeholder="Vui lòng chọn ngày sinh" value="{{ old('date_of_birth') }}" />
                         @error('date_of_birth')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
@@ -108,18 +108,12 @@
                             class="select2 form-select form-select-lg @error('region_id') is-invalid @enderror"
                             data-allow-clear="true" name="region_id" data-placeholder="Vui lòng chọn miền">
                             <option value="">Vui lòng chọn</option>
-                            @if ($userGroupId != 1)
-                                @foreach (regions() as $region)
-                                    <option value="{{ $region->id }}" @selected(true)>
-                                        {{ $region->name }}</option>
-                                @endforeach
-                            @else
-                                @foreach (regions() as $region)
-                                    <option value="{{ $region->id }}"
-                                        @if (old('region_id') == $region->id) @selected(true) @endif>
-                                        {{ $region->name }}</option>
-                                @endforeach
-                            @endif
+
+                            @foreach (regions() as $region)
+                                <option value="{{ $region->id }}"
+                                    @if (old('region_id') == $region->id) @selected(true) @endif>
+                                    {{ $region->name }}</option>
+                            @endforeach
 
                         </select>
                         @error('region_id')
@@ -131,20 +125,6 @@
                         <select id="province_id"
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                             data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh/thành">
-                            <option value="">Vui lòng chọn</option>
-                            @if ($userGroupId != 1)
-                                @foreach (provinces() as $province)
-                                    <option value="{{ $province->id }}" @selected(true)>
-                                        {{ $province->name }}</option>
-                                @endforeach
-                            @else
-                                @foreach (provinces() as $province)
-                                    <option value="{{ $province->id }}"
-                                        @if (old('province_id') == $province->id) @selected(true) @endif>
-                                        {{ $province->name }}</option>
-                                @endforeach
-                            @endif
-
                         </select>
                         @error('province_id')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
@@ -156,20 +136,6 @@
                         <select id="district_id"
                             class="select2 form-select form-select-lg @error('district_id') is-invalid @enderror"
                             data-allow-clear="true" name="district_id" data-placeholder="Vui lòng chọn quận/huyện">
-                            <option value="">Vui lòng chọn quận/huyện</option>
-                            @if ($userGroupId != 1)
-                                @foreach (districts() as $district)
-                                    <option value="{{ $district->id }}" @selected(true)>
-                                        {{ $district->name }}</option>
-                                @endforeach
-                            @else
-                                @foreach (districts() as $district)
-                                    <option value="{{ $district->id }}"
-                                        @if (old('district_id') == $district->id) @selected(true) @endif>
-                                        {{ $district->name }}</option>
-                                @endforeach
-                            @endif
-
                         </select>
                         @error('district_id')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
@@ -279,5 +245,36 @@
                 });
             });
         }
+        // Tìm tỉnh thuộc miền
+        $("#region_id").on('change', function() {
+            let region_id = $(this).val();
+            $.get(`/get-provinces-by-region-id/${region_id}`, function(data, status) {
+                if (data && status == "success") {
+                    let selectElement = $('#province_id');
+                    selectElement.empty();
+                    selectElement.append('<option value=""></option>');
+                    $.each(data, function(index, item) {
+                        selectElement.append('<option value="' + item.id + '">' + item.name +
+                            '</option>');
+                    });
+                }
+            })
+        });
+        // Tìm quận/huyện thuộc tỉnh
+        $("#province_id").on('change', function() {
+            let province_id = $(this).val();
+            $.get(`/get-districts-by-province-id/${province_id}`, function(data, status) {
+                if (data && status == "success") {
+                    let selectElement = $('#district_id');
+                    selectElement.empty();
+                    selectElement.append('<option value=""></option>');
+                    $.each(data, function(index, item) {
+                        selectElement.append('<option value="' + item.id + '">' + item.name +
+                            '</option>');
+                    });
+                }
+            })
+        });
     </script>
+
 @endsection

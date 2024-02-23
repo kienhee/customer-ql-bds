@@ -120,7 +120,7 @@
                             <label class="form-label" for="full_name">Họ và tên: <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @error('full_name') invalid @enderror"
                                 value="{{ old('full_name') ?? Auth::user()->full_name }}" name="full_name" id="full_name"
-                                placeholder="John Doe">
+                                placeholder="Nguyen Van A">
                             @error('full_name')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
@@ -132,7 +132,7 @@
                                 invalid
                             @enderror"
                                 value="{{ old('email') ?? Auth::user()->email }}" id="email" name="email"
-                                placeholder="john.doe@example.com" readonly disabled>
+                                placeholder="nguyenvana@example.com" readonly disabled>
                             @error('email')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
@@ -144,7 +144,7 @@
                                 invalid
                             @enderror"
                                 value="{{ old('phone') ?? Auth::user()->phone }}" id="phone" name="phone"
-                                placeholder="+1 (609) 988-44-11">
+                                placeholder="Vui lòng nhập số điện thoại">
                             @error('phone')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                             @enderror
@@ -161,7 +161,7 @@
                                 class="form-control dob-picker  @error('date_of_birth')
                                 invalid
                             @enderror"
-                                placeholder="DD-MM-YYYY"
+                                placeholder="Vui lòng chọn ngày sinh"
                                 value="{{ old('date_of_birth') ?? Auth::user()->date_of_birth }}" />
                             @error('date_of_birth')
                                 <p class="text-danger mt-1 fs-6">{{ $message }}</p>

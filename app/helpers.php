@@ -41,10 +41,16 @@ function provinces()
 {
   $userGroupId = Auth::user()->group_id;
   $provinces = Province::query();
-  if ($userGroupId != 1) {
-    $provinces->where('id', Auth::user()->province_id);
+  if ($userGroupId == 1) {
+    // admin->lấy hết
+    return $provinces->get();
+  } elseif ($userGroupId == 2) {
+    // ql miền -> lấy các tỉnh trong miền
+    return $provinces->where('region_id', Auth::user()->region_id)->get();
+  } else {
+    // Cấp khác chỉ lấy nguyên tỉnh nó ở
+    return $provinces->where('id', Auth::user()->province_id)->get();
   }
-  return $provinces->get();
 }
 function districts()
 {
@@ -55,6 +61,15 @@ function districts()
   }
   return $districts->get();
   // return District::orderBy('created_at', 'desc')->get();
+}
+function districtByProvince()
+{
+  $userGroupId = Auth::user()->group_id;
+  $districts = District::query();
+  if ($userGroupId != 1) {
+    $districts->where('province_id', Auth::user()->province_id);
+  }
+  return $districts->get();
 }
 function directions()
 {

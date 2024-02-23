@@ -68,10 +68,10 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
-                      <div class="mb-3">
+                    <div class="mb-3">
                         <label class="form-label" for="papers">Giấy tờ liên quan: </label>
                         <textarea name="papers" id="papers" class="my-editor @error('papers') is-invalid @enderror" cols="30"
-                            rows="20">{{ old('papers')?? $post->papers  }}</textarea>
+                            rows="20">{{ old('papers') ?? $post->papers }}</textarea>
                         @error('papers')
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
@@ -102,6 +102,22 @@
                     </a>
                 </div>
                 <div class="card-body">
+                    <div class=" mb-3">
+                        <label for="region_id" class="form-label">Miền: <span class="text-danger">*</span></label>
+                        <select id="region_id"
+                            class="select2 form-select form-select-lg @error('region_id') is-invalid @enderror"
+                            data-allow-clear="true" name="region_id">
+                            <option value="">Vui lòng chọn</option>
+                            @foreach (regions() as $region)
+                                <option value="{{ $region->id }}"
+                                    @if (old('region_id') == $region->id || $post->region_id == $region->id) @selected(true) @endif>
+                                    {{ $region->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('region_id')
+                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="mb-3">
                         <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
                         <select id="province_id"
@@ -119,12 +135,13 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="district_id" class="form-label">Quận/Huyện: <span class="text-danger">*</span></label>
+                        <label for="district_id" class="form-label">Quận/Huyện: <span
+                                class="text-danger">*</span></label>
                         <select id="district_id"
                             class="select2 form-select form-select-lg @error('district_id') is-invalid @enderror"
                             data-allow-clear="true" name="district_id" data-placeholder="Vui lòng chọn quận/huyện">
                             <option value="">Vui lòng chọn quận/huyện</option>
-                            @foreach (districts() as $district)
+                            @foreach (districtByProvince() as $district)
                                 <option value="{{ $district->id }}"
                                     @if (old('district_id') == $district->id || $post->district_id == $district->id) @selected(true) @endif>
                                     {{ $district->name }}</option>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\District;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class DistrictController extends Controller
@@ -148,5 +149,14 @@ class DistrictController extends Controller
             return back()->with('msgSuccess', 'Xóa thành công');
         }
         return back()->with('msgError', 'Xóa thất bại');
+    }
+
+    public function getDistrictsByProvinceID(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->group_id == 4 || $user->group_id == 5) {
+            return District::where('id', $user->district_id)->get();
+        }
+        return District::where('province_id', $request->province_id)->get();
     }
 }

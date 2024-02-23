@@ -64,7 +64,7 @@
                                         is-invalid
                                     @enderror"
                                         name="email" value="{{ old('email') ?? $setting->email }}"
-                                        placeholder="john.doe@example.com" />
+                                        placeholder="nguyenvana@example.com" />
                                     @error('email')
                                         <p class="text-danger my-1">{{ $message }}</p>
                                     @enderror
@@ -76,7 +76,7 @@
                                         is-invalid
                                     @enderror"
                                         name="phone" value="{{ old('phone') ?? $setting->phone }}"
-                                        placeholder="+1 (609) 988-44-11" />
+                                        placeholder="Vui lòng nhập số điện thoại" />
                                     @error('phone')
                                         <p class="text-danger my-1">{{ $message }}</p>
                                     @enderror

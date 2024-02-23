@@ -152,4 +152,19 @@ class ProvinceController extends Controller
         }
         return back()->with('msgError', 'Xóa thất bại');
     }
+
+    // Lấy danh sách tỉnh trong miền.
+    public function getProvincesByRegionID(Request $request)
+    {
+        $user = Auth::user();
+        if (
+            $user->group_id == 3 ||
+            $user->group_id == 4 || $user->group_id == 5
+        ) {
+            return Province::where('id', $user->province_id)->get();
+        } else {
+
+            return Province::where('region_id', $request->region_id)->get();
+        }
+    }
 }

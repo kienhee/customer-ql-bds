@@ -21,6 +21,7 @@ use App\Models\Post;
 use App\Models\Province;
 use App\Models\Region;
 use App\Models\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -92,6 +93,7 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
         Route::post('/restore/{id}', [ProvinceController::class, 'restore'])->name('restore')->can('delete', Province::class);
         Route::post('/force-delete/{id}', [ProvinceController::class, 'forceDelete'])->name('force-delete')->can('delete', Province::class);
     });
+
     Route::prefix('districts')->name('districts.')->middleware('can:districts')->group(function () {
         Route::get('/', [DistrictController::class, 'index'])->name('index')->can('view', District::class);
         Route::get('/list', [DistrictController::class, 'list'])->name('list')->can('view', District::class);
@@ -103,6 +105,7 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
         Route::post('/restore/{id}', [DistrictController::class, 'restore'])->name('restore')->can('delete', District::class);
         Route::post('/force-delete/{id}', [DistrictController::class, 'forceDelete'])->name('force-delete')->can('delete', District::class);
     });
+
     Route::prefix('profile')->name('profile.')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
         Route::put('/update', [ProfileController::class, 'update'])->name('update');
@@ -142,6 +145,12 @@ Route::prefix('/')->name('dashboard.')->middleware('auth')->group(function () {
     Route::get('/library', function () {
         return view('admin.library.index');
     })->name('library');
+    // ajax
+    // Lấy tỉnh thuộc miền theo id miền
+    Route::get('/get-provinces-by-region-id/{region_id}', [ProvinceController::class, 'getProvincesByRegionID']);
+
+
+    Route::get('/get-districts-by-province-id/{province_id}', [DistrictController::class, 'getDistrictsByProvinceID']);
 });
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('/register', [AuthController::class, 'register'])->name('register');

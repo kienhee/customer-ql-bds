@@ -21,8 +21,17 @@ class PostController extends Controller
 
     public function list()
     {
-        $posts = Post::select(['id', 'title', 'cover', 'status', 'province_id', 'user_id', 'deleted_at', 'created_at'])->withTrashed();
-
+        $posts = Post::select(['id', 'title', 'cover', 'status', 'province_id', 'user_id', 'deleted_at', 'created_at']);
+        $userGroupId = Auth::user()->group_id;
+        // admin -> list all,
+        if ($userGroupId == 2) {
+            // Quản lý miền -> list tất cả bài viết nằm trong miền đó.
+            $posts->where('region_id', Auth::user()->region_id);
+        } elseif ($userGroupId == 3 || $userGroupId == 4 || $userGroupId == 5 || $userGroupId == 6 || $userGroupId == 7) {
+            // Quản lý tỉnh, huyện, trưởng phòng, bán hàng , ký hợp đồng -> list tất cả bài viết nằm trong huyện
+            $posts->where('province_id', Auth::user()->province_id);
+        }
+        $posts->withTrashed();
         return DataTables::of($posts)
             ->editColumn('title', function ($post) {
                 return '
@@ -104,6 +113,7 @@ class PostController extends Controller
             'title' => 'required|max:255|unique:posts,title',
             'content' => 'required',
             'papers' => 'nullable',
+            'region_id' => 'required|integer',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
             'address' => 'required|max:255',
@@ -120,6 +130,8 @@ class PostController extends Controller
             'title.unique' => 'Tiêu đề đã tồn tại',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự',
             'content.required' => 'Vui lòng nhập nội dung',
+            'region_id.required' => 'Vui lòng chọn miền',
+            'region_id.integer' => ' Miền phải là số nguyên',
             'province_id.required' => 'Vui lòng chọn tỉnh thành',
             'province_id.integer' => ' Tỉnh/thành phố phải là số nguyên',
             'district_id.required' => 'Vui lòng chọn quận/huyện',
@@ -137,6 +149,7 @@ class PostController extends Controller
             'room_number.integer' => ' Số phòng là số nguyên',
             'direction_id.required' => 'Vui lòng chọn hướng nhà',
             'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
+            'cover.required' => 'Vui lòng thêm ảnh',
         ]);
 
         $data['user_id'] = Auth::id();
@@ -164,6 +177,7 @@ class PostController extends Controller
             'title' => 'required|max:255|unique:posts,title,' . $id,
             'content' => 'required',
             'papers' => 'nullable',
+            'region_id' => 'required|integer',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
             'address' => 'required|max:255',
@@ -180,6 +194,8 @@ class PostController extends Controller
             'title.unique' => 'Tiêu đề đã tồn tại',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự',
             'content.required' => 'Vui lòng nhập nội dung',
+            'region_id.required' => 'Vui lòng chọn miền',
+            'region_id.integer' => ' Miền phải là số nguyên',
             'province_id.required' => 'Vui lòng chọn tỉnh thành',
             'province_id.integer' => ' Tỉnh/thành phố phải là số nguyên',
             'district_id.required' => 'Vui lòng chọn quận/huyện',
