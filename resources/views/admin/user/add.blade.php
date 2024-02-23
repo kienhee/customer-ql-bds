@@ -110,8 +110,7 @@
                             <option value="">Vui lòng chọn</option>
 
                             @foreach (regions() as $region)
-                                <option value="{{ $region->id }}"
-                                    @if (old('region_id') == $region->id) @selected(true) @endif>
+                                <option value="{{ $region->id }}">
                                     {{ $region->name }}</option>
                             @endforeach
 

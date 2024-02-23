@@ -94,93 +94,99 @@
             </form>
             <hr class="mb-5">
             <div class="row gy-4 mb-4">
-                @foreach ($news as $post)
-                    <div class="col-sm-6 col-lg-4">
+                @if ($news->count() > 0)
+                    @foreach ($news as $post)
+                        <div class="col-sm-6 col-lg-4">
 
-                        <div class="card p-2 h-100 shadow-none border">
+                            <div class="card p-2 h-100 shadow-none border">
 
-                            <div class="rounded-2 text-center mb-3">
-                                <a href="{{ route('dashboard.news.detail', $post->id) }}">
-                                    <img class="object-fit-cover " src="{{ $post->cover }}" alt="{{ $post->title }}"
-                                        height="250" width="100%" /></a>
-                            </div>
-                            <div class="card-body p-3 pt-2">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <p class="d-flex align-items-center mb-0">
-                                        <i
-                                            class='bx bx-calendar me-1'></i><small>{{ $post->created_at->format('d/m/y - h:m') }}&nbsp;</small>
-                                        @if (now()->startOfDay()->eq($post->created_at->startOfDay()))
-                                            - &nbsp;<span class="badge bg-label-success"> Mới nhất</span>
+                                <div class="rounded-2 text-center mb-3">
+                                    <a href="{{ route('dashboard.news.detail', $post->id) }}">
+                                        <img class="object-fit-cover " src="{{ $post->cover }}" alt="{{ $post->title }}"
+                                            height="250" width="100%" /></a>
+                                </div>
+                                <div class="card-body p-3 pt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <p class="d-flex align-items-center mb-0">
+                                            <i
+                                                class='bx bx-calendar me-1'></i><small>{{ $post->created_at->format('d/m/y - h:m') }}&nbsp;</small>
+                                            @if (now()->startOfDay()->eq($post->created_at->startOfDay()))
+                                                - &nbsp;<span class="badge bg-label-success"> Mới nhất</span>
+                                            @else
+                                                - <small>&nbsp;{{ $post->created_at->diffForHumans() }}</small>
+                                            @endif
+
+                                        </p>
+                                        @if ($post->status == '1')
+                                            <span class="badge bg-label-success">Bán mạnh</span>
+                                        @endif
+                                        @if ($post->status == '2')
+                                            <span class="badge bg-label-danger">Đã bán</span>
+                                        @endif
+                                        @if ($post->status == '3')
+                                            <span class="badge bg-label-danger">Chủ tự bán</span>
+                                        @endif
+                                    </div>
+
+                                    <div class="truncate-3 mb-3  text-break">
+                                        <a href="{{ route('dashboard.news.detail', $post->id) }}"
+                                            class="h5 d-block mb-0 ">{{ $post->title }}</a>
+                                    </div>
+
+                                    <div class="truncate-3 mb-3 fw-lighter text-break" style="font-size: 14px">
+                                        {!! $post->content !!}
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-between align-items-center ">
+
+                                        @if ($post->user)
+                                            <div class="d-flex justify-content-start align-items-center">
+                                                <div class="avatar-wrapper">
+                                                    <div class="avatar avatar-sm me-3">
+                                                        <img src="{{ $post->user->avatar ? getThumb($post->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
+                                                            alt="Avatar" class="rounded-circle">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <a href="javascript:void(0)" class="text-body text-truncate"><span
+                                                            class="fw-medium">{{ $post->user->full_name }}</span></a>
+                                                    <small
+                                                        class="text-truncate text-muted">{{ $post->user->email }}</small>
+                                                </div>
+                                            </div>
                                         @else
-                                            - <small>&nbsp;{{ $post->created_at->diffForHumans() }}</small>
+                                            <div class="d-flex justify-content-start align-items-center">
+                                                <div class="avatar-wrapper">
+                                                    <div class="avatar avatar-sm me-3">
+                                                        <img src="{{ asset('admin-frontend/assets/img/avatar.png') }}"
+                                                            alt="Avatar" class="rounded-circle">
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex flex-column">
+                                                    <a href="javascript:void(0)" class="text-body text-truncate"><span
+                                                            class="fw-medium">Đang đình chỉ</span></a>
+                                                    <small class="text-truncate text-muted">Không xác định</small>
+                                                </div>
+                                            </div>
                                         @endif
 
-                                    </p>
-                                    @if ($post->status == '1')
-                                        <span class="badge bg-label-success">Bán mạnh</span>
-                                    @endif
-                                    @if ($post->status == '2')
-                                        <span class="badge bg-label-danger">Đã bán</span>
-                                    @endif
-                                    @if ($post->status == '3')
-                                        <span class="badge bg-label-danger">Chủ tự bán</span>
-                                    @endif
+
+
+                                        <a href="javascript:void(0)" onclick="savePost({{ $post->id }})"
+                                            class="text-secondary text-nowrap d-inline-block"><i
+                                                class=' tf-icons bx bx-bookmark fs-4'></i>
+                                        </a>
+                                    </div>
+
                                 </div>
-
-                                <div class="truncate-3 mb-3  text-break">
-                                    <a href="{{ route('dashboard.news.detail', $post->id) }}"
-                                        class="h5 d-block mb-0 ">{{ $post->title }}</a>
-                                </div>
-
-                                <div class="truncate-3 mb-3 fw-lighter text-break" style="font-size: 14px">
-                                    {!! $post->content !!}
-                                </div>
-
-
-                                <div class="d-flex justify-content-between align-items-center ">
-
-                                    @if ($post->user)
-                                        <div class="d-flex justify-content-start align-items-center">
-                                            <div class="avatar-wrapper">
-                                                <div class="avatar avatar-sm me-3">
-                                                    <img src="{{ $post->user->avatar ? getThumb($post->user->avatar) : asset('admin-frontend/assets/img/avatar.png') }}"
-                                                        alt="Avatar" class="rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <a href="javascript:void(0)" class="text-body text-truncate"><span
-                                                        class="fw-medium">{{ $post->user->full_name }}</span></a>
-                                                <small class="text-truncate text-muted">{{ $post->user->email }}</small>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <div class="d-flex justify-content-start align-items-center">
-                                            <div class="avatar-wrapper">
-                                                <div class="avatar avatar-sm me-3">
-                                                    <img src="{{ asset('admin-frontend/assets/img/avatar.png') }}"
-                                                        alt="Avatar" class="rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="d-flex flex-column">
-                                                <a href="javascript:void(0)" class="text-body text-truncate"><span
-                                                        class="fw-medium">Đang đình chỉ</span></a>
-                                                <small class="text-truncate text-muted">Không xác định</small>
-                                            </div>
-                                        </div>
-                                    @endif
-
-
-
-                                    <a href="javascript:void(0)" onclick="savePost({{ $post->id }})"
-                                        class="text-secondary text-nowrap d-inline-block"><i
-                                            class=' tf-icons bx bx-bookmark fs-4'></i>
-                                    </a>
-                                </div>
-
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @else
+                    <p class="h2 text-center text-muted">Chưa có bài viết nào</p>
+                @endif
+
 
 
             </div>

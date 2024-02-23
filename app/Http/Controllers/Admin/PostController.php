@@ -259,7 +259,15 @@ class PostController extends Controller
     public function news(Request $request)
     {
         $result = Post::query();
-
+        $userGroupId = Auth::user()->group_id;
+        // admin -> list all,
+        if ($userGroupId == 2) {
+            // Quản lý miền -> list tất cả bài viết nằm trong miền đó.
+            $result->where('region_id', Auth::user()->region_id);
+        } elseif ($userGroupId == 3 || $userGroupId == 4 || $userGroupId == 5 || $userGroupId == 6 || $userGroupId == 7) {
+            // Quản lý tỉnh, huyện, trưởng phòng, bán hàng , ký hợp đồng -> list tất cả bài viết nằm trong huyện
+            $result->where('province_id', Auth::user()->province_id);
+        }
         if ($request->has('title') && $request->title != null) {
             $result->where('title', 'like', '%' . $request->title . '%');
         }
