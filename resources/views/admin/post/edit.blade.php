@@ -268,7 +268,7 @@
 @section('script')
     <script src="/vendor/laravel-filemanager/js/upload-images-post.js"></script>
     <script>
-        $('#images').filemanager('image');
+        $('.upload').filemanager('image');
         const characteristics = document.querySelector('#characteristics');
         const whitelist = JSON.parse($('#characteristicsData').val())
         // Inline
