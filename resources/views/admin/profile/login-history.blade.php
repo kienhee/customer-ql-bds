@@ -88,7 +88,7 @@
                                 </td>
                                 <td>
                                     <p class="m-0 badge bg-label-success">
-                                        {{ $item->created_at->format('d M Y') }} -
+                                        {{ $item->created_at->format('d/m/Y') }} -
                                         {{ $item->created_at->format('h:i A') }}
                                     </p>
                                 </td>

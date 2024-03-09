@@ -48,13 +48,13 @@ class CharacteristicController extends Controller
                             <button type="submit" class="btn p-0 w-100 justify-content-start" >Xóa vĩnh viễn </button>
                         </form>
                     '
-                : '') . '
+                    : '') . '
             </div>
         </div>';
             })
 
             ->editColumn('created_at', function ($characteristic) {
-                return '<p class="m-0">' . $characteristic->created_at->format('d M Y') . '</p>
+                return '<p class="m-0">' . $characteristic->created_at->format('d/m/Y') . '</p>
                 <small>' . $characteristic->created_at->format('h:i A') . '</small>';
             })
             ->rawColumns(['name', 'status', 'actions', 'created_at'])

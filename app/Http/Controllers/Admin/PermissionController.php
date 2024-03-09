@@ -155,7 +155,7 @@ class PermissionController extends Controller
         </div>';
             })
             ->editColumn('created_at', function ($module) {
-                return '<p class="m-0">' . $module->created_at->format('d M Y') . '</p>
+                return '<p class="m-0">' . $module->created_at->format('d/m/Y') . '</p>
                 <small>' . $module->created_at->format('h:i A') . '</small>';
             })
             ->rawColumns(['title', 'actions', 'created_at'])

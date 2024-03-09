@@ -57,7 +57,7 @@ class ProvinceController extends Controller
             })
 
             ->editColumn('created_at', function ($province) {
-                return '<p class="m-0">' . $province->created_at->format('d M Y') . '</p>
+                return '<p class="m-0">' . $province->created_at->format('d/m/Y') . '</p>
                 <small>' . $province->created_at->format('h:i A') . '</small>';
             })
             ->rawColumns(['name', 'status', 'actions', 'created_at'])

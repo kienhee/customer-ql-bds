@@ -47,4 +47,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Group::class);
     }
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
 }

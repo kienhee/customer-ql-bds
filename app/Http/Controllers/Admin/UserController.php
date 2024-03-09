@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $userGroupId = Auth::user()->group_id;
         // admin -> list all,
-        $users = User::select(['id', 'full_name', 'avatar', 'group_id', 'deleted_at', 'email', 'created_at']);
+        $users = User::select(['id', 'full_name', 'avatar', 'group_id', 'region_id', 'province_id', 'district_id', 'deleted_at', 'email', 'created_at']);
         if ($userGroupId == 2) {
             // Quản lý miền -> list tất cả tài khoản nằm trong miền đó. và không lấy tài khoản admin
             $users->where('region_id', Auth::user()->region_id)->where('group_id', '<>', 1);
@@ -57,6 +57,15 @@ class UserController extends Controller
             ->editColumn('role', function ($user) {
                 return '<span class="text-truncate d-flex align-items-center"><span class="badge badge-center rounded-pill bg-label-warning w-px-30 h-px-30 me-2"><i class="bx bx-user bx-xs"></i></span>' . $user->group->name . '</span>';
             })
+            ->editColumn('region_id', function ($user) {
+                return  $user->region->name;
+            })
+            ->editColumn('province_id', function ($user) {
+                return $user->province->name;
+            })
+            ->editColumn('district_id', function ($user) {
+                return $user->district->name;
+            })
             ->editColumn('status', function ($user) {
                 return '<span class="badge me-1 ' . ($user->deleted_at == null ? 'bg-label-success' : 'bg-label-danger') . '">' . ($user->deleted_at == null ? 'Hoạt động' : 'Đình chỉ') . '</span>';
             })
@@ -85,10 +94,10 @@ class UserController extends Controller
             })
 
             ->editColumn('created_at', function ($user) {
-                return '<p class="m-0">' . $user->created_at->format('d M Y') . '</p>
+                return '<p class="m-0">' . $user->created_at->format('d/m/Y') . '</p>
                 <small>' . $user->created_at->format('h:i A') . '</small>';
             })
-            ->rawColumns(['full_name', 'role', 'status', 'actions', 'created_at'])
+            ->rawColumns(['full_name', 'role', 'region_id', 'province_id', 'district_id', 'status', 'actions', 'created_at'])
             ->make();
     }
 

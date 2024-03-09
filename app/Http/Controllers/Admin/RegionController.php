@@ -54,7 +54,7 @@ class RegionController extends Controller
             })
 
             ->editColumn('created_at', function ($region) {
-                return '<p class="m-0">' . $region->created_at->format('d M Y') . '</p>
+                return '<p class="m-0">' . $region->created_at->format('d/m/Y') . '</p>
                 <small>' . $region->created_at->format('h:i A') . '</small>';
             })
             ->rawColumns(['name', 'status', 'actions', 'created_at'])

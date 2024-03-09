@@ -32,6 +32,9 @@
                         <th style="width: 10px">ID</th>
                         <th>Người dùng</th>
                         <th>Vai trò</th>
+                        <th>Miền</th>
+                        <th>Tỉnh</th>
+                        <th>Quận/Huyện</th>
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
                         <th style="width: 50px">Thao tác</th>
@@ -64,6 +67,24 @@
                         searchable: false
                     },
                     {
+                        data: 'region_id',
+                        name: 'region_id',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'province_id',
+                        name: 'province_id',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'district_id',
+                        name: 'district_id',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
                         data: 'status',
                         name: 'deleted_at',
                         searchable: false
@@ -86,7 +107,7 @@
                 ],
                 initComplete: function() {
                     // Tùy chỉnh vị trí placeholder cho ô tìm kiếm
-                    $('#users-table_filter input').attr('placeholder', 'Tìm kiếm');
+                    $('#users-table_filter input').attr('placeholder', 'Nhập tên để tìm kiếm');
                 },
             });
         });

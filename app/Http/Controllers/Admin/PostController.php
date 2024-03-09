@@ -94,7 +94,7 @@ class PostController extends Controller
             })
 
             ->editColumn('created_at', function ($post) {
-                return '<p class="m-0">' . $post->created_at->format('d M Y') . '</p>
+                return '<p class="m-0">' . $post->created_at->format('d/m/Y') . '</p>
             <small>' . $post->created_at->format('h:i A') . '</small>';
             })
             ->rawColumns(['title', 'author', 'status_1', 'status', 'actions', 'created_at'])
