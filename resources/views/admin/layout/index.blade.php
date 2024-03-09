@@ -37,7 +37,9 @@
     <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/vendor/css/rtl/theme-default.css"
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('admin-frontend') }}/assets/css/demo.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
+        integrity="sha512-+EoPw+Fiwh6eSeRK7zwIKG2MA8i3rV/DGa3tdttQGgWyatG/SkncT53KHQaS5Jh9MNOT3dmFL0FjTY08And/Cw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- Vendors CSS --}}
     <link rel="stylesheet"
         href="{{ asset('admin-frontend') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -116,6 +118,9 @@
 
           <div class="content-backdrop fade"></div>
         </div>
+        <!-- Content for Popup -->
+
+
         {{-- Content wrapper --}}
       </div>
       {{-- / Layout page --}}
@@ -151,7 +156,9 @@
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/i18n/i18n.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/vendor/libs/typeahead-js/typeahead.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/vendor/js/menu.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"
+    integrity="sha512-IsNh5E3eYy3tr/JiX2Yx4vsCujtkhwl7SLqgnwLNgf04Hrt9BT9SXlLlZlWx+OK4ndzAoALhsMNcCmkggjZB1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   {{-- endbuild --}}
 
   {{-- Vendors JS --}}
