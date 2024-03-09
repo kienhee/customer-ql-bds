@@ -5,8 +5,11 @@
         <div class="col-lg-8">
             <div class="card shadow-none border position-relative overflow-hidden">
                 <div class="p-2">
-                    <div class="cursor-pointer">
-                        <img src="{{ $post->cover }}" class="w-100" alt="">
+                    <div class="cursor-pointer ">
+                        <a href="{{ explode(',', $post->images)[0] }}" class="popup-link"> <img
+                                src="{{ explode(',', $post->images)[0] }}" class="img-fluid w-100"
+                                style="height: 500px;object-fit:cover" alt=""></a>
+
                     </div>
                 </div>
                 <div class="card-body p-3 p-md-4 ">
@@ -26,14 +29,28 @@
                     </div>
                     <hr class="my-4" />
                     <h5>Mô tả</h5>
-                    <div class="my-3 content-news">
+                    <div class="my-3 ">
                         {!! $post->content !!}
                     </div>
+                    <div class="slider">
+                        @if (count(explode(',', $post->images)) > 1)
+                            @foreach (explode(',', $post->images) as $image)
+                                <div><a class="popup-link" href="{{ $image }}" title="click để phóng to"><img
+                                            class="img-fluid" src="{{ $image }}"></a></div>
+                            @endforeach
+                        @endif
+                    </div>
                     <hr>
-                    @if (Auth::user()->group_id != 7)
+
+                    @if (Auth::user()->group_id != 7 && $post->papers)
                         <p class="h5">Giấy tờ liên quan</p>
-                        <div class="my-3 content-news">
-                            {!! $post->papers !!}
+                        <div class="slider">
+                            @if (count(explode(',', $post->papers)) > 1)
+                                @foreach (explode(',', $post->papers) as $image)
+                                    <div><a class="popup-link" href="{{ $image }}" title="click để phóng to"><img
+                                                class="img-fluid" src="{{ $image }}"></a></div>
+                                @endforeach
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -233,32 +250,18 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            // Kích hoạt Magnific Popup cho hình ảnh cụ thể
-            $('.content-news img').each(function() {
-                let imageSrc = $(this).attr('src');
-                let imageAlt = $(this).attr('alt');
-                let imageSize = $(this).attr('width') + 'x' + $(this).attr('height');
 
-                // Kích hoạt Magnific Popup cho hình ảnh cụ thể
-                $(this).magnificPopup({
-                    items: {
-                        src: imageSrc,
-                        type: 'image'
-                    },
-                    gallery: {
-                        enabled: true // Kích hoạt chế độ xem ảnh trong gallery
-                    },
-                    titleSrc: function(item) {
-                        return imageAlt + ' (' + imageSize + ')';
-                    },
-                    mainClass: 'mfp-zoom-in',
-                    callbacks: {
-                        open: function() {
-                            // Thiết lập Z-index lớn nhất cho cửa sổ popup
-                            $('.mfp-wrap').css('z-index', 9999);
-                        }
-                    }
-                });
+            $('.slider').slick({
+                autoplay: true,
+                dots: true,
+                arrows: true,
+            });
+            // Kích hoạt Magnific Popup cho hình ảnh cụ thể
+            $('.popup-link').magnificPopup({
+                type: 'image',
+                gallery: {
+                    enabled: true
+                }
             });
         });
     </script>

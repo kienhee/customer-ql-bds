@@ -677,7 +677,8 @@ if (typeof $ !== 'undefined') {
     path_absolute: "/",
     relative_urls: false,
     selector: "textarea.my-editor",
-    codesample_global_prismjs: true,
+   codesample_global_prismjs: true,
+     image_dimensions: false,
     plugins:
         " fullscreen preview anchor autolink charmap  emoticons image link lists media searchreplace table visualblocks wordcount",
     toolbar:

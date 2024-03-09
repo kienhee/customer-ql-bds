@@ -21,7 +21,7 @@ class PostController extends Controller
 
     public function list()
     {
-        $posts = Post::select(['id', 'title', 'cover', 'status', 'province_id', 'user_id', 'deleted_at', 'created_at']);
+        $posts = Post::select(['id', 'title', 'images', 'status', 'province_id', 'user_id', 'deleted_at', 'created_at']);
         $userGroupId = Auth::user()->group_id;
         // admin -> list all,
         if ($userGroupId == 2) {
@@ -37,7 +37,7 @@ class PostController extends Controller
                 return '
         <div class="d-flex justify-content-start gap-2">
                 <div class=" me-3">
-                    <img src="' . (getThumb($post->cover)) . '" alt="image" class="w-px-100 h-px-100  rounded-3 object-fit-cover">
+                    <img src="' . (getThumb(explode(',', $post->images)[0])) . '" alt="image" class="w-px-100 h-px-100  rounded-3 object-fit-images">
                 </div>
             <div class="d-flex flex-column">
                 <strong title=" ' . $post->title . '"><a href="' . route('dashboard.posts.edit', $post->id) . '" class="text-body truncate-3" >
@@ -124,7 +124,8 @@ class PostController extends Controller
             'characteristics' => 'required',
             'room_number' => 'required|integer',
             'direction_id' => 'required|integer',
-            'cover' => 'required',
+            'images' => 'required',
+            'papers' => 'required',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề',
             'title.unique' => 'Tiêu đề đã tồn tại',
@@ -149,10 +150,14 @@ class PostController extends Controller
             'room_number.integer' => ' Số phòng là số nguyên',
             'direction_id.required' => 'Vui lòng chọn hướng nhà',
             'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
-            'cover.required' => 'Vui lòng thêm ảnh',
+            'images.required' => 'Bắt buộc phải thêm một hình làm ảnh bìa',
+            'papers.required' => 'Vui lòng thêm giấy tờ liên quan',
         ]);
 
         $data['user_id'] = Auth::id();
+        if (Auth::user()->group_id == 6) {
+            $validate['deleted_at'] = date("Y-m-d H:m:s", time());
+        }
         $check = Post::insert($data);
 
         if ($check) {
@@ -188,7 +193,8 @@ class PostController extends Controller
             'characteristics' => 'required',
             'room_number' => 'required|integer',
             'direction_id' => 'required|integer',
-            'cover' => 'required',
+            'images' => 'required',
+            'papers' => 'required',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề',
             'title.unique' => 'Tiêu đề đã tồn tại',
@@ -213,9 +219,14 @@ class PostController extends Controller
             'room_number.integer' => ' Số phòng là số nguyên',
             'direction_id.required' => 'Vui lòng chọn hướng nhà',
             'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
+            'images.required' => 'Bắt buộc phải thêm một hình làm ảnh bìa',
+            'papers.required' => 'Vui lòng thêm giấy tờ liên quan',
         ]);
 
         $data['user_id'] = Auth::id();
+        if (Auth::user()->group_id == 6) {
+            $validate['deleted_at'] = date("Y-m-d H:m:s", time());
+        }
         $check = Post::withTrashed()->where('id', $id)->update($data);
 
         if ($check) {

@@ -19,13 +19,13 @@
                 <h5 class="mb-1">Bản tin</h5>
                 <p class="text-muted mb-0">Hãy chọn bộ lọc ở dưới đây</p>
             </div>
-            <div class="d-flex justify-content-md-end align-items-center gap-3 flex-wrap">
+            {{-- <div class="d-flex justify-content-md-end align-items-center gap-3 flex-wrap">
                 @can('create', App\Models\Post::class)
                     <a href="{{ route('dashboard.posts.add') }}" class="btn btn-outline-primary">
                         <i class="fa-solid fa-plus"></i> &nbsp;Bài viết mới
                     </a>
                 @endcan
-            </div>
+            </div> --}}
         </div>
 
         <div class="card-body">
@@ -102,8 +102,8 @@
 
                                 <div class="rounded-2 text-center mb-3">
                                     <a href="{{ route('dashboard.news.detail', $post->id) }}">
-                                        <img class="object-fit-cover " src="{{ $post->cover }}" alt="{{ $post->title }}"
-                                            height="250" width="100%" /></a>
+                                        <img class="object-fit-cover " src="{{ explode(',', $post->images)[0] }}"
+                                            alt="{{ $post->title }}" height="250" width="100%" /></a>
                                 </div>
                                 <div class="card-body p-3 pt-2">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -133,7 +133,8 @@
                                             class="h5 d-block mb-0 ">{{ $post->title }}</a>
                                     </div>
 
-                                    <div class="truncate-3 mb-3 fw-lighter text-break" style="font-size: 14px">
+                                    <div class="truncate-3 mb-3 fw-lighter text-break content-card"
+                                        style="font-size: 14px">
                                         {!! $post->content !!}
                                     </div>
 
@@ -197,38 +198,67 @@
 
 
 @endsection
-<script>
-    function savePost(id) {
-        $.ajax({
-            type: 'POST',
-            url: '{!! route('dashboard.save-post.savePost') !!}',
-            data: {
-                post_id: id,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            }, // Dữ liệu gửi đi (có thể là ID của bài viết)
-            success: function(response) {
-                Swal.fire({
-                    title: 'Bài viết đã được lưu!',
-                    icon: 'success',
-                    timer: 2000,
-                    customClass: {
-                        confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false,
-                })
-            },
-            error: function(error) {
-                Swal.fire({
-                    title: 'Bài viết chưa được lưu!',
-                    icon: 'error',
-                    timer: 2000,
-                    customClass: {
-                        confirmButton: 'btn btn-primary'
-                    },
-                    buttonsStyling: false,
-                })
-            }
+@section('script')
+    <script>
+        $(document).ready(function() {
+            // Lặp qua tất cả các phần tử có class 'content-card'
+            $('.content-card').each(function() {
+                // Lặp qua từng phần tử con
+                $(this).children().each(function() {
+                    // Kiểm tra nếu phần tử là một thẻ <img>, thì xoá nó đi
+                    if ($(this).is('img')) {
+                        $(this).remove();
+                    } else {
+                        // Kiểm tra nếu phần tử không phải là thẻ <p>
+                        if (!$(this).is('p')) {
+                            // Tạo một thẻ <p> và đặt thuộc tính CSS trực tiếp
+                            let paragraph = $('<p></p>').css({
+                                'margin-top': '0',
+                                'margin-bottom': '0px',
+                                'line-height': '1.5'
+                            }).html($(this).html());
+                            // Thay thế phần tử hiện tại bằng thẻ <p>
+                            $(this).replaceWith(paragraph);
+                        }
+                    }
+                });
+            });
         });
 
-    }
-</script>
+
+        function savePost(id) {
+            $.ajax({
+                type: 'POST',
+                url: '{!! route('dashboard.save-post.savePost') !!}',
+                data: {
+                    post_id: id,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                }, // Dữ liệu gửi đi (có thể là ID của bài viết)
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Bài viết đã được lưu!',
+                        icon: 'success',
+                        timer: 2000,
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false,
+                    })
+                },
+                error: function(error) {
+                    Swal.fire({
+                        title: 'Bài viết chưa được lưu!',
+                        icon: 'error',
+                        timer: 2000,
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false,
+                    })
+                }
+            });
+
+        }
+    </script>
+
+@endsection

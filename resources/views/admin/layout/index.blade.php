@@ -40,6 +40,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
         integrity="sha512-+EoPw+Fiwh6eSeRK7zwIKG2MA8i3rV/DGa3tdttQGgWyatG/SkncT53KHQaS5Jh9MNOT3dmFL0FjTY08And/Cw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css" />
     {{-- Vendors CSS --}}
     <link rel="stylesheet"
         href="{{ asset('admin-frontend') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
@@ -189,6 +191,7 @@
   <script src="{{ asset('admin-frontend') }}/assets/js/forms-tagify.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/js/forms-typeahead.js"></script>
   <script src="{{ asset('admin-frontend') }}/assets/js/ui-popover.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
   {{-- import here --}}
   @yield('script')
 

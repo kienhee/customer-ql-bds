@@ -28,25 +28,6 @@
                     <h5 class="card-tile mb-0">Thông tin bài viết</h5>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <div id="holder" class="mb-3">
-                            <img src="{{ $post->cover }}" class="w-100" alt="">
-                        </div>
-                        <div class="input-group d-flex justify-content-center flex-column align-items-center">
-                            <span class="input-group-btn">
-                                <a id="cover" data-input="thumbnail" data-preview="holder"
-                                    class="btn btn-outline-primary">
-                                    <i class='bx bx-cloud-upload'></i>&nbsp;Tải lên ảnh bìa
-                                </a>
-                            </span>
-                            <input id="thumbnail" class="form-control" type="hidden" value="{{ $post->cover }}"
-                                name="cover">
-                            @error('cover')
-                                <p class="text-danger mt-1 fs-6">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                    </div>
 
 
                     <div class="mb-3">
@@ -68,12 +49,52 @@
                             <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="mb-5">
+                        <label class="form-label">Hình ảnh:(Ảnh đầu tiên sẽ là ảnh bìa) <span
+                                class="text-danger">*</span></label>
+                        <div class="upload__box">
+                            <label data-input="thumbnail1" data-preview="holder1"
+                                class="upload form-label upload-label mb-3">
+                                <p class="mb-0">Tải ảnh lên</p>
+                                <small>(Click vào đây)</small>
+                            </label>
+
+                            <input id="thumbnail" class="form-control" type="text" name="images"
+                                value="{{ $post->images }}" hidden multiple>
+                            <div id="holder1" class="d-flex justify-content-center gap-3 flex-wrap">
+                                @if ($post->images)
+                                    @foreach (explode(',', $post->images) as $item)
+                                        <img src="{{ $item }}" class="preview-img">
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        @error('images')
+                            <p class="text-danger my-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                     <div class="mb-3">
-                        <label class="form-label" for="papers">Giấy tờ liên quan: </label>
-                        <textarea name="papers" id="papers" class="my-editor @error('papers') is-invalid @enderror" cols="30"
-                            rows="20">{{ old('papers') ?? $post->papers }}</textarea>
+                        <label class="form-label">Giấy tờ liên quan: <span class="text-danger">*</span></label>
+                        <div class="upload__box">
+                            <label data-input="thumbnail2" data-preview="holder2"
+                                class="upload form-label upload-label mb-3">
+                                <p class="mb-0">Tải ảnh lên</p>
+                                <small>(Click vào đây)</small>
+                            </label>
+
+                            <input id="thumbnail" class="form-control" type="text" name="papers"
+                                value="{{ $post->papers }}" hidden multiple>
+                            <div id="holder2" class="d-flex justify-content-center gap-3 flex-wrap">
+                                @if ($post->papers)
+                                    @foreach (explode(',', $post->papers) as $item)
+                                        <img src="{{ $item }}" class="preview-img">
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
                         @error('papers')
-                            <p class="text-danger mt-1 fs-6">{{ $message }}</p>
+                            <p class="text-danger my-1">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-3">
@@ -119,7 +140,8 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="province_id" class="form-label">Tỉnh thành: <span class="text-danger">*</span></label>
+                        <label for="province_id" class="form-label">Tỉnh thành: <span
+                                class="text-danger">*</span></label>
                         <select id="province_id"
                             class="select2 form-select form-select-lg @error('province_id') is-invalid @enderror"
                             data-allow-clear="true" name="province_id" data-placeholder="Vui lòng chọn tỉnh">
@@ -244,9 +266,9 @@
     </form>
 @endsection
 @section('script')
-    <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
+    <script src="/vendor/laravel-filemanager/js/upload-images-post.js"></script>
     <script>
-        $('#cover').filemanager('image');
+        $('#images').filemanager('image');
         const characteristics = document.querySelector('#characteristics');
         const whitelist = JSON.parse($('#characteristicsData').val())
         // Inline
