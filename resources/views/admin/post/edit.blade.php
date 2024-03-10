@@ -60,7 +60,7 @@
                                 <small>(Click vào đây)</small>
                             </label>
 
-                            <input id="thumbnail" class="form-control" type="text" name="images"
+                            <input id="thumbnail1" class="form-control" type="text" name="images"
                                 value="{{ $post->images }}" hidden multiple>
                             <div id="holder1" class="d-flex justify-content-center gap-3 flex-wrap">
                                 @if ($post->images)
@@ -83,7 +83,7 @@
                                 <small>(Click vào đây)</small>
                             </label>
 
-                            <input id="thumbnail" class="form-control" type="text" name="papers"
+                            <input id="thumbnail2" class="form-control" type="text" name="papers"
                                 value="{{ $post->papers }}" hidden multiple>
                             <div id="holder2" class="d-flex justify-content-center gap-3 flex-wrap">
                                 @if ($post->papers)

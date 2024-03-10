@@ -18,11 +18,12 @@ class UserController extends Controller
         return view('admin.user.index');
     }
 
-    public function list()
+    public function list(Request $request)
     {
         $userGroupId = Auth::user()->group_id;
         // admin -> list all,
-        $users = User::select(['id', 'full_name', 'avatar', 'group_id', 'region_id', 'province_id', 'district_id', 'deleted_at', 'email', 'created_at']);
+        $users = User::select(['id', 'full_name', 'avatar', 'group_id', 'region_id', 'province_id', 'district_id', 'deleted_at', 'email', 'phone', 'created_at']);
+        // Phân luồng
         if ($userGroupId == 2) {
             // Quản lý miền -> list tất cả tài khoản nằm trong miền đó. và không lấy tài khoản admin
             $users->where('region_id', Auth::user()->region_id)->where('group_id', '<>', 1);
@@ -35,6 +36,36 @@ class UserController extends Controller
         } elseif ($userGroupId == 5) {
             // Trưởng phòng -> list tất cả tài khoản có ma giới thiệu của nó. và không lấy cấp trên của chúng
             $users->where('referralCode_parent', Auth::user()->referralCode)->whereNotIn('group_id', range(1, 4));
+        }
+
+        // filter
+        if ($request->has('search_email') && $request->search_email != null) {
+            $email = $request->input('search_email');
+            $users->where('email', 'like', "%$email%");
+        }
+
+        // Xử lý tìm kiếm theo số điện thoại
+        if ($request->has('search_phone') && $request->search_phone != null) {
+            $phone = $request->input('search_phone');
+            $users->where('phone', 'like', "%$phone%");
+        }
+        if ($request->has('search_order_id') && $request->search_order_id != null) {
+            $order_id = $request->input('search_order_id');
+            $users->where('order_id', 'like', "%$order_id%");
+        }
+        if ($request->has('search_role') && $request->search_role != null) {
+            $role = $request->input('search_role');
+            $users->where('group_id', $role);
+        }
+
+        // Xử lý tìm kiếm theo trạng thái đơn hàng
+        if ($request->has('search_status') && $request->search_status != null) {
+            $status = $request->input('search_status');
+            if ($status == 'active') {
+                $users->where('deleted_at', '=', null);
+            } else {
+                $users->where('deleted_at', '<>', null);
+            }
         }
         $users->where('id', '<>', Auth::id())->withTrashed();
         return DataTables::of($users)
@@ -51,6 +82,7 @@ class UserController extends Controller
                         <span class="fw-medium">' . $user->full_name . '</span>
                     </a>
                     <small class="text-muted">' . $user->email . '</small>
+                    <small class="text-muted">' . $user->phone . '</small>
                 </div>
             </div>';
             })

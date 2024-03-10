@@ -27,9 +27,12 @@ class PostController extends Controller
         if ($userGroupId == 2) {
             // Quản lý miền -> list tất cả bài viết nằm trong miền đó.
             $posts->where('region_id', Auth::user()->region_id);
-        } elseif ($userGroupId == 3 || $userGroupId == 4 || $userGroupId == 5 || $userGroupId == 6 || $userGroupId == 7) {
-            // Quản lý tỉnh, huyện, trưởng phòng, bán hàng , ký hợp đồng -> list tất cả bài viết nằm trong huyện
+        } elseif ($userGroupId == 3 || $userGroupId == 4 || $userGroupId == 5) {
+            // Quản lý tỉnh, huyện, trưởng phòng -> list tất cả bài viết nằm trong huyện
             $posts->where('province_id', Auth::user()->province_id);
+        } elseif ($userGroupId == 6 || $userGroupId == 7) {
+            //  bán hàng , ký hợp đồng -> list tất cả bài viết mà nó tạo
+            $posts->where('user_id', Auth::id());
         }
         $posts->withTrashed();
         return DataTables::of($posts)
@@ -77,21 +80,17 @@ class PostController extends Controller
 
         <button class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded me-2"></i></button>
         <div class="dropdown-menu dropdown-menu-end m-0">
-            <a href="' . route('dashboard.posts.edit', $post->id) . '" class="dropdown-item">Xem thêm</a>
-                <form action="' . ($post->trashed() == 1 ? route('dashboard.posts.restore', $post->id) : route('dashboard.posts.soft-delete', $post->id)) . '" class="dropdown-item" method="POST">
-                    ' . csrf_field() . '
-                    <button type="submit" class="btn p-0 w-100 justify-content-start" >' . ($post->trashed() == 1 ? "Hoạt động" : "Đình chỉ") . ' </button>
-                </form>
-                ' . ($post->trashed() == 1 ? '
-                    <form action="' . route('dashboard.posts.force-delete', $post->id) . '" class="dropdown-item" method="POST" onsubmit="return confirm(\'Bạn có chắc chắn muốn xóa vĩnh viễn không?\')">
-                        ' . csrf_field() . '
-                        <button type="submit" class="btn p-0 w-100 justify-content-start" >Xóa vĩnh viễn </button>
-                    </form>
-                '
-                    : '') . '
+            <a href="' . route('dashboard.posts.edit', $post->id) . '" class="dropdown-item">Xem thêm</a>' .
+                    (Auth::user()->group_id != 6 ? '<form action="' . ($post->trashed() == 1 ? route('dashboard.posts.restore', $post->id) : route('dashboard.posts.soft-delete', $post->id)) . '" class="dropdown-item" method="POST">' .
+                        csrf_field() . '<button type="submit" class="btn p-0 w-100 justify-content-start" >' . ($post->trashed() == 1 ? "Hoạt động" : "Đình chỉ") . ' </button>
+                </form>' : '') .
+                    ($post->trashed() == 1 || Auth::user()->id == $post->user_id ? '<form action="' . route('dashboard.posts.force-delete', $post->id) . '" class="dropdown-item" method="POST" onsubmit="return confirm(\'Bạn có chắc chắn muốn xóa vĩnh viễn không?\')">' .
+                        csrf_field() . '<button type="submit" class="btn p-0 w-100 justify-content-start" >Xóa vĩnh viễn </button>
+                </form>' : '') . '
         </div>
     </div>';
             })
+
 
             ->editColumn('created_at', function ($post) {
                 return '<p class="m-0">' . $post->created_at->format('d/m/Y') . '</p>
@@ -156,7 +155,7 @@ class PostController extends Controller
 
         $data['user_id'] = Auth::id();
         if (Auth::user()->group_id == 6) {
-            $validate['deleted_at'] = date("Y-m-d H:m:s", time());
+            $data['deleted_at'] = date("Y-m-d H:m:s", time());
         }
         $check = Post::insert($data);
 
@@ -223,9 +222,9 @@ class PostController extends Controller
             'papers.required' => 'Vui lòng thêm giấy tờ liên quan',
         ]);
 
-        $data['user_id'] = Auth::id();
+
         if (Auth::user()->group_id == 6) {
-            $validate['deleted_at'] = date("Y-m-d H:m:s", time());
+            $data['deleted_at'] = date("Y-m-d H:m:s", time());
         }
         $check = Post::withTrashed()->where('id', $id)->update($data);
 

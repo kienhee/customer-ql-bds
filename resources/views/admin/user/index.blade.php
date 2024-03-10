@@ -26,6 +26,62 @@
             @endcan
         </div>
         <div class="card-datatable table-responsive">
+            <div class="row mb-3 mx-2 g-3 mt-3">
+                <div class="col-sm-3">
+                    <label for="search_email" class="form-label">Tìm kiếm email:</label>
+                    <input type="search" class="form-control" id="search_email" placeholder="Nhập email để tìm kiếm">
+                </div>
+                <div class="col-sm-3">
+                    <label for="search_phone" class="form-label">Tìm kiếm số điện thoại:</label>
+                    <input type="search" class="form-control" id="search_phone"
+                        placeholder="Nhập số điện thoại để tìm kiếm">
+                </div>
+                <div class="col-sm-3">
+                    <label for="search_role" class="form-label">Vai trò:</label>
+                    <select class="form-select" id="search_role">
+                        <option value="">Chọn vai trò</option>
+                        @foreach (groups() as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+
+                    </select>
+                </div>
+                {{-- <div class="col-sm-3">
+                    <label for="search_region" class="form-label">Miền:</label>
+                    <select class="form-select" id="search_region">
+                        <option value="">Chọn trạng thái</option>
+                        @foreach (regions() as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label for="search_province" class="form-label">Tỉnh thành:</label>
+                    <select class="form-select" id="search_province">
+                        <option value="">Chọn trạng thái</option>
+                        @foreach (provinces() as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label for="search_district" class="form-label">quận/huyện:</label>
+                    <select class="form-select" id="search_district">
+                        <option value="">Chọn trạng thái</option>
+                        @foreach (districts() as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div> --}}
+                <div class="col-sm-3">
+                    <label for="search_status" class="form-label">Trạng thái:</label>
+                    <select class="form-select" id="search_status">
+                        <option value="">Chọn trạng thái</option>
+                        <option value="active">Hoạt động</option>
+                        <option value="suspended">Đình chỉ</option>
+                    </select>
+                </div>
+            </div>
             <table class="datatables-users table border-top" id="users-table">
                 <thead>
                     <tr>
@@ -51,7 +107,15 @@
             $('#users-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{!! route('dashboard.users.list') !!}',
+                ajax: {
+                    url: '{!! route('dashboard.users.list') !!}',
+                    data: function(d) {
+                        d.search_email = $('#search_email').val();
+                        d.search_phone = $('#search_phone').val();
+                        d.search_status = $('#search_status').val();
+                        d.search_role = $('#search_role').val();
+                    }
+                },
                 columns: [{
                         data: 'id',
                         name: 'id'
@@ -107,7 +171,27 @@
                 ],
                 initComplete: function() {
                     // Tùy chỉnh vị trí placeholder cho ô tìm kiếm
-                    $('#users-table_filter input').attr('placeholder', 'Nhập tên để tìm kiếm');
+                    $('#users-table_filter input').attr('placeholder', 'Tìm kiếm theo tên');
+
+                    $('#search_status').on('change', function() {
+                        // Gửi dữ liệu tìm kiếm trạng thái đơn hàng tới controller qua Ajax
+                        $('#users-table').DataTable().draw();
+                    });
+                    $('#search_role').on('change', function() {
+                        // Gửi dữ liệu tìm kiếm trạng thái đơn hàng tới controller qua Ajax
+                        $('#users-table').DataTable().draw();
+                    });
+
+                    // Lắng nghe sự kiện khi nhập liệu vào ô tìm kiếm email
+                    $('#search_email').on('keyup', function() {
+                        // Gửi dữ liệu tìm kiếm email tới controller qua Ajax
+                        $('#users-table').DataTable().draw();
+                    });
+                    // Lắng nghe sự kiện khi nhập liệu vào ô tìm kiếm số điện thoại
+                    $('#search_phone').on('keyup', function() {
+                        // Gửi dữ liệu tìm kiếm số điện thoại tới controller qua Ajax
+                        $('#users-table').DataTable().draw();
+                    });
                 },
             });
         });

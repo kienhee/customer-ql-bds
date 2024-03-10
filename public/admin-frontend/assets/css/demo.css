@@ -266,3 +266,11 @@
   display: block;
   object-fit: cover !important;
 }
+
+.mfp-bg,
+.mfp-wrap,
+.mfp-container,
+.mfp-content,
+.mfp-inline-holder {
+  z-index: 9999 !important;
+}
