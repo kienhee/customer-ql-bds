@@ -111,7 +111,6 @@ class PostController extends Controller
         $data = $request->validate([
             'title' => 'required|max:255|unique:posts,title',
             'content' => 'required',
-            'papers' => 'nullable',
             'region_id' => 'required|integer',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
@@ -125,6 +124,7 @@ class PostController extends Controller
             'direction_id' => 'required|integer',
             'images' => 'required',
             'papers' => 'required',
+            'seri' => 'required',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề',
             'title.unique' => 'Tiêu đề đã tồn tại',
@@ -151,6 +151,8 @@ class PostController extends Controller
             'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
             'images.required' => 'Bắt buộc phải thêm một hình làm ảnh bìa',
             'papers.required' => 'Vui lòng thêm giấy tờ liên quan',
+            'seri.required' => 'Vui lòng thêm seri',
+
         ]);
 
         $data['user_id'] = Auth::id();
@@ -180,7 +182,6 @@ class PostController extends Controller
         $data = $request->validate([
             'title' => 'required|max:255|unique:posts,title,' . $id,
             'content' => 'required',
-            'papers' => 'nullable',
             'region_id' => 'required|integer',
             'province_id' => 'required|integer',
             'district_id' => 'required|integer',
@@ -194,6 +195,7 @@ class PostController extends Controller
             'direction_id' => 'required|integer',
             'images' => 'required',
             'papers' => 'required',
+            'seri' => 'required',
         ], [
             'title.required' => 'Vui lòng nhập tiêu đề',
             'title.unique' => 'Tiêu đề đã tồn tại',
@@ -220,6 +222,7 @@ class PostController extends Controller
             'direction_id.integer' => ' Hướng nhà phải là số nguyên.',
             'images.required' => 'Bắt buộc phải thêm một hình làm ảnh bìa',
             'papers.required' => 'Vui lòng thêm giấy tờ liên quan',
+            'seri.required' => 'Vui lòng thêm seri',
         ]);
 
 

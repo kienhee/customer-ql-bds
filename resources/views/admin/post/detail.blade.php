@@ -52,6 +52,10 @@
                                 @endforeach
                             @endif
                         </div>
+                        <div>
+                            <label for="">Số seri sổ đỏ:</label>
+                            <input type="text" value="{{$post->seri}}" readonly class="form-control">
+                        </div>
                     @endif
                 </div>
                 @if ($post->status != 1)

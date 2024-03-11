@@ -74,6 +74,7 @@
                             <p class="text-danger my-1">{{ $message }}</p>
                         @enderror
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Giấy tờ liên quan: <span class="text-danger">*</span></label>
                         <div class="upload__box">
@@ -95,6 +96,15 @@
                         </div>
                         @error('papers')
                             <p class="text-danger my-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="map">Số seri sổ đỏ: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('seri') invalid @enderror"
+                               value="{{ old('seri') ?? $post->seri }}" name="seri" id="seri"
+                               >
+                        @error('seri')
+                        <p class="text-danger mt-1 fs-6">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-3">
