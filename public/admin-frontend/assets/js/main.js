@@ -682,7 +682,7 @@ if (typeof $ !== 'undefined') {
     plugins:
         " fullscreen preview anchor autolink charmap  emoticons image link lists media searchreplace table visualblocks wordcount",
     toolbar:
-        " fullscreen preview undo redo image media | blocks  fontsize | bold italic underline strikethrough | link  table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
+        " fullscreen preview undo redo  | blocks  fontsize | bold italic underline strikethrough | link  table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat",
     file_picker_callback: function (callback, value, meta) {
         var x =
             window.innerWidth ||
